@@ -1,0 +1,73 @@
+# --------------------------------------------------
+#	Project: 	RCMS
+# 	File:		globals.yaml
+#
+# 	Date:
+#
+#	Description:    Global configuration file for RCMS
+#
+#  	Copyright Scott Ryan-Taylor
+# --------------------------------------------------
+
+Admin-Email: scott@oddbyte3d.com
+MailServer: smtp.virginbroadband.com.au
+
+CMS-Name: RCMS
+RCMS-Major-Version: "2"
+RCMS-Minor-Version: "0"
+RCMS-Incremental-Version: "0"
+
+
+
+# Application-Home is the base directory where all applicaiton data is held
+Application-Home: /home/scott/Development/Ruby/Gems/RCMS/data/
+
+# Server-RootPath is the app server root directory
+Server-RootPath: /opt/glassfish/
+
+# Server-DocRootPath  is the document root for the webapp
+# Not sure if this will be needed with Rails...
+Server-DocRootPath: /opt/glassfish/domains/domain1/applications/j2ee-modules/CUPPAIT/
+
+# Server-DataPath is where all the display data is held
+Server-DataPath: /home/scott/Development/Ruby/Gems/RCMS/data/RCMS_Site/live/
+Server-WorkAreaPath: /home/scott/Development/Ruby/Gems/RCMS/data/RCMS_Site/workarea/
+
+# Probably not needed any more
+#Server-StatisticPath: /home/cuppait/CUPPAWEB/CuppaITSite/statistics/
+
+#Server-ConfigPath is where all the configuation files(except this one) are at
+Server-ConfigPath: /home/scott/Development/Ruby/Gems/RCMS/config/
+
+#Server-CachePath is where all the cached xml data files are(hint these may be shared if data for two servers is the same, this will keep the servers in sync with each other)
+Server-CachePath: /home/scott/Development/Ruby/Gems/RCMS/data/RCMS_Site/cache/
+
+# Server-TmpPath is where all Temporary data is held
+Server-TmpPath: /home/scott/Development/Ruby/Gems/RCMS/data/RCMS_Site/tmp/
+
+#OptionReplace shouldnt be needed anymore
+#OptionReplace: NO-REPLACE
+
+Theme-Base: /
+Base-DocRoot: /
+Base-DocRoot-Include: /
+
+Parent-PropertyFile: /parent.yaml
+
+#Folder where all module descriptors are held
+modules: /Modules/
+
+#Mime types are stored here
+mimetypes: /mime_types.yaml
+
+#For the moment, not implemented in RCMS
+#LoadDBConnection1: CONNECT_STRING#jdbc:derby:RSARegister_DB;create=true#DRIVER#org.apache.derby.jdbc.EmbeddedDriver#GLOBAL_KEY#RSARegister_DB#USER#admin#PASS#coder3#
+
+
+LoadRepository1: REPOSITORY#SessionStats.obj#CLASS#FileSafe#
+LoadRepository2: REPOSITORY#EmailLog.obj#CLASS#FileSafe#
+LoadRepository3: REPOSITORY#FileMetaData.obj#CLASS#FileSafe#
+LoadRepository4: REPOSITORY#PublishSchedules.obj#CLASS#FileSafe#
+LoadRepository5: REPOSITORY#FileComments.obj#CLASS#FileSafe#
+LoadRepository6: REPOSITORY#TaskQueues.obj#CLASS#FileSafe#
+LoadRepository7: REPOSITORY#Tasks.obj#CLASS#FileSafe#

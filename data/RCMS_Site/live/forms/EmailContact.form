@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<CUPPA_FORM><FORM_ID><![CDATA[1]]></FORM_ID>
+<FORM_NAME><![CDATA[Register]]></FORM_NAME>
+<FORM_DISPLAY_NAME><![CDATA[Register Form]]></FORM_DISPLAY_NAME>
+<FORM_SUBMIT_VALUE><![CDATA[Submit>>]]></FORM_SUBMIT_VALUE>
+<SHOW_FORM_AFTER_SUBMIT><![CDATA[true]]></SHOW_FORM_AFTER_SUBMIT>
+<FORM_RETURN_MESSAGE><![CDATA[<b><i>Thank you for taking the time to submit this form.</i></b>]]></FORM_RETURN_MESSAGE>
+<FORM_RETURN_ERROR><![CDATA[<b><i>Sorry, a technical error has occurred please contact the administrator</i></b>]]></FORM_RETURN_ERROR>
+<FORM_DESCRIPTION><![CDATA[Form to submit a page rating]]></FORM_DESCRIPTION>
+<FORM_HANDLER><![CDATA[com.cuppait.cuppaweb.cuppaform.actionmods.CuppaFormEmailAction]]></FORM_HANDLER>
+<FORM><PAGE><FORM_SECTION bgcolor="#ffffff"><SECTION_ROW><ROW_COLUMN><TEXT><![CDATA[
+    Name
+  ]]></TEXT>
+</ROW_COLUMN>
+<ROW_COLUMN><FIELD name="NAME" title_align="left" size="20" editable="true" type="text" length="256" title="" required="false"></FIELD>
+</ROW_COLUMN>
+</SECTION_ROW>
+<SECTION_ROW><ROW_COLUMN><TEXT><![CDATA[
+    Email
+  ]]></TEXT>
+</ROW_COLUMN>
+<ROW_COLUMN><FIELD name="EMAIL" title_align="left" length="256" editable="true" required="false" type="text" title="" format="email" size="20"></FIELD>
+</ROW_COLUMN>
+</SECTION_ROW>
+<SECTION_ROW><ROW_COLUMN><TEXT><![CDATA[
+    Telephone
+  ]]></TEXT>
+</ROW_COLUMN>
+<ROW_COLUMN><FIELD name="TEL" title_align="left" length="256" editable="true" required="false" type="text" title="" size="20"></FIELD>
+</ROW_COLUMN>
+</SECTION_ROW>
+<SECTION_ROW><ROW_COLUMN><TEXT><![CDATA[
+    Message
+  ]]></TEXT>
+</ROW_COLUMN>
+<ROW_COLUMN><FIELD name="MESSAGE" title_align="bottom" columns="25" editable="true" type="textarea" rows="5" title="" required="false"></FIELD>
+</ROW_COLUMN>
+</SECTION_ROW>
+</FORM_SECTION>
+</PAGE>
+</FORM>
+</CUPPA_FORM>

@@ -1,0 +1,7 @@
+#Parent yaml:Wed Sep 28 10:35:54 WST 2005
+#Wed Sep 28 10:35:54 WST 2005
+redirect: /redirect.yaml
+OutputRenderers: /OutputRenderers.yaml
+CuppaWEBConfig: /CuppaWEB.yaml
+DocumentConverters: /DocumentConverters.yaml
+TemplateDirectory: /TemplateMatches.yaml

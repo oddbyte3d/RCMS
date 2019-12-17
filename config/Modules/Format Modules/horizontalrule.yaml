@@ -1,0 +1,10 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Horizontal Rule
+moduleIcon: IMAGES/CuppaWEB/hr.png
+moduleDescription: Use this element to add a Horizontal Rule on a page.
+moduleDefaultXML: <horizontalrule><id></id><descriptive_name></descriptive_name><visible><![CDATA[true]]></visible></horizontalrule>
+
+
+link: /global/modules/horizontalRule.jsp
+type: simple

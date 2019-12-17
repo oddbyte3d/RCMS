@@ -1,0 +1,61 @@
+<CUPPA_FORM>
+	<FORM_ID>1</FORM_ID>
+	<FORM_NAME>RatePage</FORM_NAME>
+	<FORM_DISPLAY_NAME>Page Rating form</FORM_DISPLAY_NAME>
+	<FORM_SUBMIT_VALUE><![CDATA[Submit>>]]></FORM_SUBMIT_VALUE>
+	<SHOW_FORM_AFTER_SUBMIT>true</SHOW_FORM_AFTER_SUBMIT>
+	<FORM_RETURN_MESSAGE><![CDATA[<b><i>Thank you for taking the time to rate this page.</i></b>]]></FORM_RETURN_MESSAGE>
+	<FORM_RETURN_ERROR><![CDATA[<b><i>Sorry, a technical error has occurred please contact the administrator</i></b>]]></FORM_RETURN_ERROR>
+
+	<FORM_DESCRIPTION>Form to submit a page rating</FORM_DESCRIPTION>
+	<FORM_HANDLER>com.cuppait.cuppaweb.cuppaform.actionmods.CuppaFormEmailAction</FORM_HANDLER>
+	<FORM>
+	    <PAGE>
+		<FORM_SECTION bgcolor="#8584b8">
+			<SECTION_ID>1</SECTION_ID>
+			<SECTION_TITLE>RateAndReview</SECTION_TITLE>
+			<SECTION_DESCRIPTION>Title</SECTION_DESCRIPTION>
+			<SECTION_ROW>
+				<ROW_COLUMN colspan="4">
+                                        <TEXT><![CDATA[<b>Rate this page</b>]]></TEXT>
+				</ROW_COLUMN>
+			</SECTION_ROW>
+		</FORM_SECTION>	
+		<FORM_SECTION>		
+			<SECTION_ROW >
+				<ROW_COLUMN colspan="4">
+                                        <TEXT>Please tell us what you think of this page</TEXT>
+				</ROW_COLUMN>
+			</SECTION_ROW>
+
+			<SECTION_ROW >
+				<ROW_COLUMN >
+					<FIELD editable="true" required="false" name="RATING" value="exc" type="radio" title="Excelent" title_align="right"></FIELD>
+				</ROW_COLUMN>
+				<ROW_COLUMN >
+					<FIELD editable="true" required="false" name="RATING" value="goo" type="radio" title="Good" title_align="right"></FIELD>
+				</ROW_COLUMN>
+				<ROW_COLUMN >
+					<FIELD editable="true" required="false" name="RATING" value="ave" type="radio" title="Average" title_align="right"></FIELD>
+				</ROW_COLUMN>
+				<ROW_COLUMN >
+					<FIELD editable="true" required="false" name="RATING" value="poo" type="radio" title="Poor" title_align="right"></FIELD>
+				</ROW_COLUMN>
+			</SECTION_ROW>
+
+			<SECTION_ROW >
+				<ROW_COLUMN colspan="4">
+					<FIELD required="false" name="COMMENTS" type="textarea" rows="4" columns="30" title="Comments" title_align="top"></FIELD>
+				</ROW_COLUMN>
+			</SECTION_ROW>
+			<SECTION_ROW >
+				<ROW_COLUMN colspan="4">
+					<FIELD required="false" format="email" name="EMAIL" type="text" length="160" size="20" title="If you would like us to respond please submit your email." title_align="top"></FIELD>
+				</ROW_COLUMN>
+			</SECTION_ROW>
+		</FORM_SECTION>
+	    </PAGE>
+	</FORM>
+</CUPPA_FORM>
+
+

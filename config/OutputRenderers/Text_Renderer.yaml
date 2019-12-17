@@ -1,0 +1,5 @@
+############################################
+# Config info for the CSS Renderer
+############################################
+ApplyFilters: true
+use_renderer_first: true

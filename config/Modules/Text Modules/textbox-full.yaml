@@ -1,0 +1,17 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Textbox Full Size
+moduleIcon: IMAGES/CuppaWEB/kthememgr.png
+moduleDefaultXML: <textbox-full><id></id><descriptive_name></descriptive_name><title><![CDATA[Full Text Box]]></title><height></height><content_block><![CDATA[/system/DefaultBlock.block]]></content_block><visible><![CDATA[true]]></visible></textbox-full>
+
+
+pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.ContentBoxFullSize
+link: /global/modules/textBoxFull.jsp
+eml: /global/modules/textBoxFull.jsp
+type: full
+
+xmlSessionId_0: all-data
+xmlParentNode_0: textbox-full/
+xmlDataToLoad_0: title/height
+#xmlDataToLoad_0: title/text/position/height/picture/pictureposition
+xmlDataMultiple_0: false

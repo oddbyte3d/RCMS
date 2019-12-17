@@ -1,0 +1,20 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+#moduleName: Mini To-Do List
+#moduleIcon: IMAGES/CuppaWEB/cache.png
+#moduleClass: de.codefactor.web.admin.module.modules.CuppaWEBPageEditorModules.HyperLink
+#moduleHelpPage: http://www.cuppait.com/CuppaAdmin_Help/Hyperlink/ModuleHyperlink.html
+
+#fop: com.cuppait.cuppaweb.outputrenderers.xml_pdffop.Link
+#pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.Link
+
+link: /global/modules/EmailLists/Admin.jsp
+#eml: /global/modules/link.jsp
+#xhtml: /xhtmlstrict/modules/link.jsp
+type: simple
+
+
+xmlSessionId_0: all-data
+xmlParentNode_0: emaillist_admin/
+xmlDataToLoad_0: id/visible/
+xmlDataMultiple_0: false

@@ -1,0 +1,14 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Full Page Linebreak
+moduleIcon: IMAGES/CuppaWEB/file_broken.png
+moduleDescription: Use this element to add a page break on a page.
+moduleDefaultXML: <full_linebreak><id></id><descriptive_name></descriptive_name><visible><![CDATA[true]]></visible></full_linebreak>
+
+
+fop: com.cuppait.cuppaweb.outputrenderers.xml_pdffop.FullLineBreak
+pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.FullLineBreak
+
+link: /global/modules/fullLineBreak.jsp
+eml: /global/modules/fullLineBreak.jsp
+type: full

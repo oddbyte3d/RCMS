@@ -1,0 +1,5 @@
+############################################
+# Config info for the Image Renderer
+############################################
+ApplyFilters: true
+use_renderer_first: true

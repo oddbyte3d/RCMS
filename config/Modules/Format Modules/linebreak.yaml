@@ -1,0 +1,20 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Linebreak
+moduleIcon: IMAGES/CuppaWEB/widget_doc.png
+moduleDescription: Use this element to put some space between elements.
+moduleDefaultXML: <linebreak><id></id><descriptive_name></descriptive_name><break_count><![CDATA[1]]></break_count><visible><![CDATA[true]]></visible></linebreak>
+
+fop: com.cuppait.cuppaweb.outputrenderers.xml_pdffop.LineBreak
+pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.LineBreak
+
+link: /global/modules/lineBreak.jsp
+eml: /global/modules/lineBreak.jsp
+xhtml: /xhtmlstrict/modules/lineBreak.jsp
+type: simple
+
+
+xmlSessionId_0: all-data
+xmlParentNode_0: linebreak/
+xmlDataToLoad_0: break_count/
+xmlDataMultiple_0: false

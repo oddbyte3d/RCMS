@@ -1,0 +1,3 @@
+default: html5
+.xml: html5
+.json: json

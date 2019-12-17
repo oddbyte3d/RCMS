@@ -1,0 +1,12 @@
+moduleName: Page Header
+moduleIcon: IMAGES/CuppaWEB/info.png
+moduleDescription: A page title element.
+
+moduleDefaultXML: <pagetitle><![CDATA[Menu]]><id><![CDATA[1]]></id><descriptive_name><![CDATA[Page Title]]></descriptive_name><align><![CDATA[left]]></align><printtext><![CDATA[Replace Me]]></printtext><visible><![CDATA[true]]></visible></pagetitle>
+
+type: full
+
+xmlSessionId_0: all-data
+xmlParentNode_0: pagetitle/
+xmlDataToLoad_0: printtext/align/
+xmlDataMultiple_0: false

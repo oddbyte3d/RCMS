@@ -1,0 +1,17 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Picture With Link
+moduleIcon: IMAGES/CuppaWEB/camera.png
+moduleDescription: Use this element to add a picture that links to somewhere else to your page.
+moduleDefaultXML: <picture_with_link><id></id><descriptive_name></descriptive_name><picture_path><![CDATA[/system/CuppaWEB.png]]></picture_path><position><![CDATA[left]]></position><picturetitle></picturetitle><alt_attribute></alt_attribute><border><![CDATA[0]]></border><visible><![CDATA[true]]></visible><target><![CDATA[_self]]></target><link></link><padding_bottom></padding_bottom><padding_top></padding_top><padding_right></padding_right><padding_left></padding_left></picture_with_link>
+
+
+link: /global/modules/pictureWithLink.jsp
+eml: /global/modules/pictureWithLink.jsp
+type: simple
+
+
+xmlSessionId_0: picture-with-link-data
+xmlParentNode_0: picture_with_link/
+xmlDataToLoad_0: picture_path/position/picturetitle/alt_attribute/border/target/link/padding_bottom/padding_top/padding_right/padding_left/
+xmlDataMultiple_0: false

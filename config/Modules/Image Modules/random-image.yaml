@@ -1,0 +1,16 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Random Image
+moduleIcon: IMAGES/CuppaWEB/iconthemes.png
+moduleClass: de.codefactor.web.admin.module.modules.CuppaWEBPageEditorModules.RandomImage
+
+
+link: /global/modules/extramods/RandomImage.jsp
+eml: /global/modules/extramods/RandomImage.jsp
+type: simple
+
+
+xmlSessionId_0: random-data
+xmlParentNode_0: random-image/
+xmlDataToLoad_0: position/picture_path/picturetitle/alt_attribute/border
+xmlDataMultiple_0: false

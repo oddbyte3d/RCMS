@@ -1,0 +1,17 @@
+<page>
+<pageinfo>
+<cache_page></cache_page>
+<pagetitle></pagetitle>
+<author></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+</pageinfo>
+<module><pagetitle><id><![CDATA[1]]></id>
+<descriptive_name><![CDATA[Page Title]]></descriptive_name>
+<align><![CDATA[left]]></align>
+<printtext><![CDATA[Replace Me]]></printtext>
+<visible><![CDATA[true]]></visible>
+</pagetitle>
+</module>
+</page>

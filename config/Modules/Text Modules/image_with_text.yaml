@@ -1,0 +1,10 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+
+link: /global/modules/extramods/ImageWithText.jsp
+type: full
+
+xmlSessionId_0: all-data
+xmlParentNode_0: image_with_text/
+xmlDataToLoad_0: title/text/height/picture/pictureposition/link_text/link_path/link_target/
+xmlDataMultiple_0: false

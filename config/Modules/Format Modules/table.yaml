@@ -1,0 +1,21 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Table
+moduleIcon: IMAGES/CuppaWEB/1day.png
+moduleClass: de.codefactor.web.admin.module.modules.CuppaWEBPageEditorModules.Table
+
+link: /global/modules/table.jsp
+type: simple
+
+
+xmlSessionId_0: celldata
+xmlParentNode_0: table/
+xmlParentNodeMultiple_0: cell/
+xmlDataToLoad_0: rowspan/colspan/content_block/text/text_color/cbstyle/cbcolor/cbwidth/cbgcolor/ctextalign/ctextvalign/cheight/cheight_type/cwidth/cwidth_type
+xmlDataMultiple_0: true
+
+xmlSessionId_1: tabledata
+xmlParentNode_1: table/
+xmlDataToLoad_1: tbstyle/tbcolor/tbwidth/width/width_type/trows/tcols/cellspacing/cellpadding/tbgcolor/align
+xmlDataMultiple_1: false
+

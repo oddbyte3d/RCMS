@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 109
+/svnroot/cuppaweb/!svn/ver/16/src/conf/CUPPAWEB/CuppaITSite/config/de/codefactor/instantsite/properties/users
+END
+rootProfile.properties
+K 25
+svn:wc:ra_dav:version-url
+V 132
+/svnroot/cuppaweb/!svn/ver/16/src/conf/CUPPAWEB/CuppaITSite/config/de/codefactor/instantsite/properties/users/rootProfile.properties
+END
+cuppawebProfile.properties
+K 25
+svn:wc:ra_dav:version-url
+V 136
+/svnroot/cuppaweb/!svn/ver/16/src/conf/CUPPAWEB/CuppaITSite/config/de/codefactor/instantsite/properties/users/cuppawebProfile.properties
+END
+guestProfile.properties
+K 25
+svn:wc:ra_dav:version-url
+V 133
+/svnroot/cuppaweb/!svn/ver/16/src/conf/CUPPAWEB/CuppaITSite/config/de/codefactor/instantsite/properties/users/guestProfile.properties
+END
+groups.properties
+K 25
+svn:wc:ra_dav:version-url
+V 127
+/svnroot/cuppaweb/!svn/ver/16/src/conf/CUPPAWEB/CuppaITSite/config/de/codefactor/instantsite/properties/users/groups.properties
+END

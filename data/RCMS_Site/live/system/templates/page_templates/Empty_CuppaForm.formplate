@@ -1,0 +1,14 @@
+<CUPPA_FORM>
+	<FORM_ID>1</FORM_ID>
+	<FORM_NAME>TempName</FORM_NAME>
+	<FORM_DISPLAY_NAME>Temporary display name</FORM_DISPLAY_NAME>
+	<FORM_SUBMIT_VALUE>Submit.</FORM_SUBMIT_VALUE>
+	<SHOW_FORM_AFTER_SUBMIT>true</SHOW_FORM_AFTER_SUBMIT>
+	<FORM_RETURN_MESSAGE><![CDATA[<h1>Your data has been recorded. Thank you.</h1>]]></FORM_RETURN_MESSAGE>
+	<FORM_RETURN_ERROR><![CDATA[<h1 style='color: #ff0000'>Sorry, a technical error has occurred please contact the administrator</h1>]]></FORM_RETURN_ERROR>
+	<FORM_DESCRIPTION>Temporary Description</FORM_DESCRIPTION>
+	<FORM_HANDLER>com.cuppait.cuppaweb.cuppaform.actionmods.CuppaFormEmailAction</FORM_HANDLER>
+	<FORM>
+		<PAGE></PAGE>
+	</FORM>
+</CUPPA_FORM>

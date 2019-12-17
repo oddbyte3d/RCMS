@@ -1,0 +1,6 @@
+.xml: XML_HTMLRenderer
+.json: XML_JSONRenderer
+.jpg: Image_Renderer
+.gif: Image_Renderer
+.png: Image_Renderer
+default: Text_Renderer

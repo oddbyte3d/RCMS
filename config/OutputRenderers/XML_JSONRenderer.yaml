@@ -1,0 +1,7 @@
+############################################
+# Config info for the XML_JSONRenderer
+############################################
+ApplyFilters: true
+use_renderer_first: true
+use_templates: true
+module_separator: ","

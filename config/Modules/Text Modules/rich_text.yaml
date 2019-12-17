@@ -1,0 +1,15 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Rich Text
+moduleIcon: IMAGES/CuppaWEB/signature.png
+moduleClass: de.codefactor.web.admin.module.modules.CuppaWEBPageEditorModules.RichText
+
+link: /global/modules/richText.jsp
+eml: /global/modules/richText.jsp
+type: simple
+
+
+xmlSessionId_0: all-data
+xmlParentNode_0: rich_text/
+xmlDataToLoad_0: content/
+xmlDataMultiple_0: false

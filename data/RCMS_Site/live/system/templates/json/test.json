@@ -1,0 +1,28 @@
+{{"title": {
+  "id": "*id*",
+  "align": "left",
+  "visible": "*visible*",
+  "printtext": "Test title"
+  }
+}
+    {"text": {
+      "id": "*id*",
+      "bold": "true",
+      "italic": "true",
+      "underlined": "false",
+      "textcolor": "",
+      "textsize": "default",
+      "textalignment": "default",
+      "visible": "*visible*",
+      "printtext": "Congratulations, your RCMS instance is working!"
+      }
+    }
+{"link": {
+  "id": "*id*",
+  "target": "_blank",
+  "path": "http://www.google.com",
+  "text": "Google",
+  "visible": "*visible*"
+  }
+}
+}

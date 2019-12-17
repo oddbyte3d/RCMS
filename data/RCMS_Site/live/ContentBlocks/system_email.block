@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[CuppaWEB v2]]></pagetitle>
+<author><![CDATA[Scott, Taylor]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><link>
+    <id>9</id>
+    <descriptive_name><![CDATA[System email.]]></descriptive_name>
+    <target><![CDATA[_blank]]></target>
+    <path>mailto:scott@oddbyte3d.com</path>
+    <text><![CDATA[scott@oddbyte3d.com]]></text>
+    <visible><![CDATA[true]]></visible>
+  </link>
+</module>
+</page>

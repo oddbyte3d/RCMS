@@ -1,0 +1,18 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Textbox Half Size
+moduleIcon: IMAGES/CuppaWEB/tgz.png
+moduleDefaultXML: <textbox-half><id></id><descriptive_name></descriptive_name><title><![CDATA[Full Text Box]]></title><height></height><position>left</position><content_block><![CDATA[/system/DefaultBlock.block]]></content_block><visible><![CDATA[true]]></visible></textbox-half>
+
+
+
+pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.ContentBoxHalfSize
+link: /global/modules/textBoxHalf.jsp
+eml: /global/modules/textBoxHalf.jsp
+type: simple
+
+
+xmlSessionId_0: all-data
+xmlParentNode_0: textbox-half/
+xmlDataToLoad_0: title/text/height/position
+xmlDataMultiple_0: false

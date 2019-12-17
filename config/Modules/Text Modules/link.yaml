@@ -1,0 +1,22 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Hyperlink
+moduleIcon: IMAGES/CuppaWEB/cache.png
+moduleClass: de.codefactor.web.admin.module.modules.CuppaWEBPageEditorModules.HyperLink
+moduleHelpPage: http://www.cuppait.com/CuppaAdmin_Help/Hyperlink/ModuleHyperlink.html
+
+moduleDefaultXML: <link><id></id><descriptive_name><![CDATA[Link]]></descriptive_name><target><![CDATA[_self]]></target><path></path><text><![CDATA[Link]]></text><visible><![CDATA[true]]></visible></link>
+
+fop: com.cuppait.cuppaweb.outputrenderers.xml_pdffop.Link
+pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.Link
+
+link: /global/modules/link.jsp
+eml: /global/modules/link.jsp
+xhtml: /xhtmlstrict/modules/link.jsp
+type: simple
+
+
+xmlSessionId_0: all-data
+xmlParentNode_0: link/
+xmlDataToLoad_0: text/path/target/
+xmlDataMultiple_0: false

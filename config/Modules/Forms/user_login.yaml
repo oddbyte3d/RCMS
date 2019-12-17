@@ -1,0 +1,11 @@
+#Login module descriptor file
+#-----------------------------------------------
+moduleName: CuppaWEB User Login Form
+moduleIcon: IMAGES/CuppaWEB/decrypted.png
+moduleDescription: Use this page element to add a user login form to a page.
+moduleDefaultXML: <user_login><id></id><descriptive_name></descriptive_name><visible><![CDATA[true]]></visible></user_login>
+
+
+link: /global/modules/userLogin.jsp
+eml: /global/modules/userLogin.jsp
+type: simple

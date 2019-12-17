@@ -1,0 +1,9 @@
+#CuppaWEB System redirects
+#Mon Mar 09 11:54:13 WST 2009
+ADMIN: admin/modules/page/renderPage.jsp?
+XML: global/modules/page/renderPage.jsp?
+CSS: global/util/css.jsp?
+EMAIL: email/modules/page/renderPage.jsp?
+/test.xml: /Test.xml
+/mysql.xml: /index.xml
+XHTML: xhtmlstrict/modules/page/renderPage.jsp?

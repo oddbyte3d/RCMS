@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[Test]]></pagetitle>
+<author><![CDATA[Scott, Taylor]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+<page-menu><menu-entry><menu-link>/index.xml</menu-link><menu-link-target>_self</menu-link-target><menu-text>Jackass</menu-text><menu-image></menu-image></menu-entry></page-menu></pageinfo>
+<module><pagetitle><![CDATA[Test]]><id><![CDATA[1]]></id>
+<descriptive_name><![CDATA[Page Title]]></descriptive_name>
+<align><![CDATA[left]]></align>
+<printtext><![CDATA[This is a page title]]></printtext>
+<visible><![CDATA[true]]></visible>
+</pagetitle>
+</module>
+<module><text><id><![CDATA[3]]></id>
+<descriptive_name></descriptive_name>
+<bold><![CDATA[false]]></bold>
+<italic><![CDATA[false]]></italic>
+<underlined><![CDATA[false]]></underlined>
+<textcolor></textcolor>
+<textsize><![CDATA[default]]></textsize>
+<textalignment><![CDATA[default]]></textalignment>
+<printtext><![CDATA[A bunch of text which will make up the content of my page................]]></printtext>
+<visible><![CDATA[true]]></visible>
+</text>
+</module>
+<module><picture><id><![CDATA[2]]></id>
+<descriptive_name></descriptive_name>
+<picture_path><![CDATA[/images/SiteImages/Surfer.jpg]]></picture_path>
+<position><![CDATA[left]]></position>
+<picturetitle></picturetitle>
+<alt_attribute></alt_attribute>
+<border><![CDATA[0]]></border>
+<popup_picture></popup_picture>
+<popup_alt_attribute></popup_alt_attribute>
+<popup_title></popup_title>
+<visible><![CDATA[true]]></visible>
+<picture_link_target><![CDATA[_self]]></picture_link_target>
+<picture_link></picture_link>
+</picture>
+</module>
+<module><full_linebreak><id><![CDATA[5]]></id>
+<descriptive_name><![CDATA[Please ignore.]]></descriptive_name>
+<visible><![CDATA[true]]></visible>
+</full_linebreak>
+</module>
+</page>

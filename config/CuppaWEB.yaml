@@ -1,0 +1,28 @@
+#CuppaWEB System Properties
+#Mon Aug 10 14:39:30 WST 2009
+ShowPageFormatsAvailable: true
+TemplateDirectory: templates
+DojoSource: http\://o.aolcdn.com/dojo/1.3.1
+DojoSourceBak: /system/dojo/1.2.3
+copyright: RCMS
+PageUpdatedShow: true
+DateFormat_Day: dd/MM/yyyy
+PageUpdatedDateFormat: E d MMM yyyy HH\:mm\:ss
+OutputFilters: ./filters/GlobalWordMatch,
+emailTemplates: de/codefactor/instantsite/properties/EmailTemplates/
+RecursivePermissions: true
+FormatsAvailable: XML_PDFRenderer,XML_EMAILRenderer,XML_PRINTRenderer
+UserAdmin: scott.taylor@cuppait.com
+Domain: localhost\:11323
+CuppaWEB-Version: 2.0.0a
+ShowSearchResultsPerPage: 20
+UseTablesInLayout: false
+DefaultUserGroup: users
+CompanyName: CuppaIT
+MailServer: mail.cuppait.com
+ResourceNodesPublishCheck: path,content_block,menu-link,picture_path,popup_picture
+UseApplicationProfiler: false
+DateFormat_Time: HH\:m\:ss
+DateFormat_DayTime: dd/MM/yyyy HH\:mm
+Image-NotFound-Replacement: /images/dummy.gif
+ShowSearchBar: true

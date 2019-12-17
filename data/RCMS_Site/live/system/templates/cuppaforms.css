@@ -1,0 +1,27 @@
+
+table.outerform {border-style: solid; border-color: #000000; border-width: 0px}
+table.formsection {border-style: solid; border-color: #000000; border-width: 1px}
+table.formrowcol {}
+table.formboundry {background-color: #cccccc; border-style: solid; border-color: #000000; border-width: 1px}
+
+input {border-style: solid; border-color: #878787; border-width: 1px}
+input.ok {background: #FCF3EB;border-style: solid; border-color: #878787; border-width: 1px}
+input.warn {border-style: solid; border-color: #e59803; border-width: 1px}
+input.error {border-style: solid; border-color: #ff0000; border-width: 1px}
+
+textarea {border-style: solid; border-color: #878787; border-width: 1px}
+textarea.ok {background: #FCF3EB; border-style: solid; border-color: #878787; border-width: 1px}
+textarea.warn {border-style: solid; border-color: #e59803; border-width: 1px}
+textarea.error {border-style: solid; border-color: #ff0000; border-width: 1px}
+
+
+button {border-style: solid; border-color: #878787; border-width: 1px}
+button.ok {border-style: solid; border-color: #878787; border-width: 1px}
+button.warn {border-style: solid; border-color: #e59803; border-width: 1px}
+button.error {border-style: solid; border-color: #ff0000; border-width: 1px}
+
+select {border-style: solid; border-color: #878787; border-width: 1px}
+select.ok {background: #FCF3EB; border-style: solid; border-color: #878787; border-width: 1px}
+select.warn {border-style: solid; border-color: #e59803; border-width: 1px}
+select.error {border-style: solid; border-color: #ff0000; border-width: 1px}
+

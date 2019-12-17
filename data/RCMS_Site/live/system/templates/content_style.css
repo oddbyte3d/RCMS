@@ -1,0 +1,334 @@
+body,  p, td, th
+{
+	 font-family:verdana;
+	 color:#000000;
+
+	 font-size:10pt; 
+	 text-align:left;
+	 vertical-align:top;
+	 
+}
+
+td.productlistlight {background: #ffffff; border-style: solid; border-color: #000000; border-width: 1px}
+td.productlistdark {background: #f8e8da; border-style: solid; border-color: #000000; border-width: 1px}
+
+
+/* Text color and type */
+td.menu_background
+{
+    background-repeat:repeat-y;
+    background-image:url(/images/bgr.gif);
+}
+
+div.menu	/* Defines the menu style*/
+{
+	
+	background-color:#ffffff;
+	background-repeat:no-repeat;
+	
+	
+	height:98%;
+	width: 201px;
+	padding-left: 5px;
+	
+        border-color:#ffffff;
+        border-style:none;	
+	border-width:0px;
+}
+div.menu_entry	/* Defines the menu style*/
+{
+	color:#4a4a96;
+	background-repeat:no-repeat;	
+	width:90%;
+	/*width:200px;*/
+	background-color:#ffffff;	
+	padding-left: 5px;
+        border-color:#ffffff;
+        border-style:solid;	
+	border-width:1px;
+}
+div.menu_entry_sub	/* Defines the menu style*/
+{
+	color:#4a4a96;
+	background-repeat:no-repeat;	
+	width:80%;
+        position: relative;
+        left: 10%;
+	/*width:200px;*/
+	background-color:#ffffff;	
+	padding-left: 5px;
+        border-color:#ffffff;
+        border-style:solid;	
+	border-width:1px;
+}
+
+
+div.menu_entry_hover	/* Defines the menu style*/
+{
+	background-repeat:repeat;	
+        cursor: pointer;
+	width:90%;
+        padding-left: 5px;
+        color:#ffffff;
+        border-color:#000000;
+        border-style:solid;	
+        border-width:1px;
+        background-color:#cc6600;
+}
+div.menu_entry_sub_hover	/* Defines the menu style*/
+{
+	background-repeat:repeat;	
+        cursor: pointer;
+	width:80%;
+        position: relative;
+        left: 10%;
+        padding-left: 5px;
+        color:#ffffff;
+        border-color:#000000;
+        border-style:solid;	
+        border-width:1px;
+        background-color:#cc6600;
+}
+
+div.menu_entry_selected	/* Defines the menu style*/
+{
+        cursor:pointer;
+	background-repeat:repeat;	
+	color:#ffffff;
+        width:90%;
+	background-color:#4a4a96;
+	padding-left: 5px;
+        border-color:#000000;
+        border-style:solid;	
+	border-width:1px;
+}
+div.menu_entry_sub_selected	/* Defines the menu style*/
+{
+        cursor:pointer;
+	background-repeat:repeat;	
+	color:#ffffff;
+	width:80%;
+        position: relative;
+        left: 10%;
+	background-color:#4a4a96;
+	padding-left: 5px;
+        border-color:#000000;
+        border-style:solid;	
+	border-width:1px;
+}
+
+
+/*---------------------------Menu Style END---------------------*/
+
+/*---------------------------Menu Links END---------------------*/
+
+ul  /* Unordered list style*/
+{
+	padding: 0px;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	margin-left: 15px;
+	list-style-type:disc;
+}
+
+
+
+/* How should the Links look like */
+a:link
+{
+	 color:#cc6600;
+	 text-decoration:underline;
+	 font-weight:bold;
+}
+
+/* How should the visited Links look like */
+a:visited
+{
+	 color:#cc6600;
+	 text-decoration:underline;
+	 font-weight:bold;
+}
+
+/* How should a link behave on hover */
+a:hover
+{
+	 text-decoration:none;
+}
+td.head_top_right
+{
+	background-image:url(/images/dummy.gif);
+	background-color:#cc6600;
+	background-repeat:repeat;
+}
+
+/* Module Page-title style*/
+h1.pageTitle{
+	background-image:url(/images/dummy.gif);
+	
+        background-repeat:no-repeat;
+    background-color:#ffffff;
+    color:#cc6600;
+    font-size:14pt;
+    text-align:left;
+    width:100%;
+}
+/* How should H2 text look like */
+h2{
+        font-size:13pt;
+        font-weight:bold;
+        margin-top:0px;
+}
+
+/* How should H3 text look like */
+h3{
+        font-size:10pt;
+        font-weight:bold;
+}
+
+/* Footer link */
+a.footer:link{
+        font-weight:bold;
+        font-size:10px;
+        color: #ffffff;
+        text-decoration:none;
+}
+
+/* Visited footer link*/
+a.footer:visited{
+        font-weight:bold;
+        font-size:10px;
+        color: #ffffff;
+        text-decoration:none;
+}
+
+/* Footer background */
+td.footer{
+	background-color:#ffffff;
+	background-image:url(/images/SiteTemplate/Footer.jpg);	
+	background-repeat:repeat-x;        
+}
+
+td.footer_version
+{
+	background-color:#ffffff;
+        font-size:10px;
+	background-image:url(/images/SiteTemplate/Footer.jpg);	
+	background-repeat:repeat-x;        
+        cursor: pointer;
+}
+a.footer_version
+{
+	font-size:9px;
+	color: #d7d8ea;
+	text-decoration:none;
+}
+
+
+ /*Module Picture with link */
+.picture_with_link
+{
+        border-color:#001E2B;
+        color:#001E2B;
+        border-style: solid;
+}
+
+
+
+/*Module Picture undertitle */
+td.picture_under{
+	background-color:#4a4a96;
+	font-size:8pt;
+	color:#ffffff;
+}
+
+/* Diverses for images */
+img{
+	border-color:#4a4a96;
+}
+
+/* Picture with popup*/
+td.picture_zoom{
+	background-color:#4a4a96;
+	vertical-align: top;
+}
+
+
+
+td.head_search
+{
+        background-image:url(/images/dummy.gif);
+	background-repeat:no-repeat;
+	background-color:#ffffff;
+}
+
+ td.head_under{
+	background-image:url(/images/SiteTemplate/TabAreaBackground.jpg);;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	background-color:#ffffff;
+	background-repeat:repeat-x;
+ }
+
+hr
+{
+	color:#ffffff;
+}
+
+h1 {
+	/*color: #CCDBE2;*/
+	padding: 0px 0px 0px 0px;
+	border-style: solid;
+	border-width: 0px 0px 0px 0px;
+	border-color: #000000;
+}
+
+/**********************************************************************************/
+/*  Styles for textboxes */
+div.textbox-divmain
+{
+	width:100%;
+	background-color:#f5efde;
+	border-style:solid;
+	border-width:1px;
+	border-color:#000000;
+
+}
+table.textbox-tablemain
+{
+	width:100%;
+}
+td.textbox-content
+{
+	color:#000000;
+}
+
+td.textbox-tabletitle
+{
+	background-image:url(./TextboxTitleBackground.gif);
+	
+        background-repeat:repeat-x;
+	width:100%;
+	left:0;
+	text-decoration:none;
+	background-color:#f5efde;
+	color:#ffffff;
+	position:relative;
+	font-size:10pt;
+	font-weight:bold;
+	/*top:0;*/
+}
+
+div.textbox-content
+{
+	overflow: auto;
+}
+/* Style for the copyright bar at the bottom with the footer */
+
+td.copyright
+{
+	background-color:transparent;
+	font-size:10px;	
+}
+/***********************************************************************************/
+
+
+
+
