@@ -1,0 +1,4 @@
+#Module access priviliges, do not edit!
+#Tue Feb 24 14:21:05 WST 2009
+SuperUser(group): ;license_admin;sysprops_admin;email_admin;filter_admin;email_template_admin;module_admin;redirects_admin;theme_admin;mime_admin;renderers_admin;datasource_admin;pubschedule_admin;
+root(user): ;license_admin;sysprops_admin;email_admin;filter_admin;email_template_admin;module_admin;redirects_admin;theme_admin;mime_admin;renderers_admin;datasource_admin;pubschedule_admin;

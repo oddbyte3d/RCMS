@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.min.css" />
+    <link rel="stylesheet" type="text/css" href="/system/admin/icons.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/system/admin/w2ui-1.5.rc1.min.js"></script>
+    <title>cms_name vrcms_mav.rcms_miv.rcms_iv dashboard</title>
+</head>
+<body>
+    <div id="adminLayout"></div>
+</body>
+<script>
+  $(function () {
+      var pstyle = 'background-color: #F5F6F7; border: 1px solid #dfdfdf; padding: 5px;';
+      $('#adminLayout').w2layout({
+          name: 'adminLayout',
+          panels: [
+              { type: 'top',  size: 50, resizable: true, style: pstyle , title: 'Hi user_fname!! Welcome to the cms_name vrcms_mav.rcms_miv.rcms_iv dashboard :)'},
+              { type: 'left', size: 270, resizable: true, style: pstyle, content: '<div id="mySidebar" style="height: 450px; width: 250px;"></div>' },
+              { type: 'main', style: pstyle, content: 'main' },
+              { type: 'right', size: 250, resizable: true, style: pstyle, content: 'right' },
+              { type: 'bottom', size: 50, resizable: true, style: pstyle, content: 'bottom' }
+          ]
+      });
+
+      // then define the sidebar
+      w2ui['adminLayout'].content('left', $().w2sidebar({
+      	name: 'sidebar',
+      	img: null,
+      	nodes: [
+      		{ id: 'content-folder', text: 'Content', img: 'icon-folder', expanded: true, group: true,
+      		  nodes: [ { id: 'pages', text: 'Pages', img: 'icon-page' },
+      				       { id: 'assets', text: 'Assets', img: 'icon-page' }
+
+      				 ]
+      		}
+      	],
+      	onClick: function (event) {
+          if(event.target == "pages")
+          {
+            loadRFS(event.target, 'folder','/admin/actions/list_folders?sub_dir=/&file_type=*');
+            loadRFS(event.target, 'file','/admin/actions/list_files?sub_dir=/&file_type=xml');
+          }
+          else if(event.target.startsWith("folder"))
+          {
+            var folder = event.target;
+            var subFolder = folder.substring(6, folder.length);
+            loadRFS(event.target, 'folder','/admin/actions/list_folders?sub_dir='+subFolder+'&file_type=*');
+            loadRFS(event.target, 'file','/admin/actions/list_files?sub_dir='+subFolder+'&file_type={xml,form,block}');
+
+          }
+          else if(event.target.startsWith("file"))
+          {
+            var file = event.target;
+            var fileSelected = file.substring(4, file.length);
+            //alert(fileSelected);
+            var h = w2ui['adminLayout'].get('main').height-15;
+            w2ui['adminLayout'].content('main', '<object data="'+fileSelected+'" width="100%" height="'+h+'" type="text/html">'+
+              'Alternative Content</object>');
+          }
+          else
+          {
+            //alert(fileSystem);
+          }
+      	}
+      }));
+      w2ui['sidebar'].click('pages');
+  });
+  /*
+``  Load a subsection of the Remote File System (RFS)
+  */
+  function loadRFS(parentId, idPrefix, path)
+  {
+      $.get( path, {} )
+        .done(function( data ) {
+          processRFS(parentId, idPrefix, data);
+        });
+  }
+  /*
+``  Process a subsection of the Remote File System (RFS)
+  */
+  function processRFS(parentId, idPrefix, obj)
+  {
+    var nextObj = obj["files"];
+    Object.keys(nextObj).forEach(function(key) {
+        var value = nextObj[key];
+        addFileNode(parentId, idPrefix+key, value);
+    });
+  }
+  /*
+``  Add a File/Folder node to the local representation of the Remote File System (RFS)
+  */
+  function addFileNode(parentId, nodeId, nodeText)
+  {
+    var icon = getIcon(nodeId);
+    w2ui['sidebar'].add(parentId, [{ id: nodeId, text: nodeText, img: icon }]);
+    w2ui['sidebar'].expand(parentId);
+  }
+  /*
+``  Determine what kind of icon to display based on file type
+  */
+  function getIcon(nodeId)
+  {
+    if(nodeId.startsWith("folder"))
+      return 'icon-folder-custom';
+    else
+    {
+      var fileType = nodeId.substring(nodeId.indexOf('.'), nodeId.length);
+      var icon = "";
+      //alert(fileType)
+      switch(fileType) {
+        case ".admin":
+          icon = 'icon-xml';
+          break;
+        case ".block":
+          icon = 'icon-block';
+          break;
+      }
+      return icon;
+
+    }
+
+  }
+
+  var h = window.innerHeight;
+  $('#adminLayout').css('height', h+'px');
+
+
+</script>
+</html>

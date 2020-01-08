@@ -1,0 +1,16 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Picture
+moduleIcon: IMAGES/CuppaWEB/camera.png
+moduleDescription: Use this element to add a picture to your page.
+
+
+xmlSessionId_0: image-data
+xmlParentNode_0: rcmsimage/
+xmlDataToLoad_0: position/path/title/alt_attribute/border/rounded/padding_left/padding_right/padding_top/padding_bottom/
+xmlDataMultiple_0: false
+
+xmlSessionId_1: popup-data
+xmlParentNode_1: rcmsimage/
+xmlDataToLoad_1: popup_picture/popup_alt_attribute/popup_title
+xmlDataMultiple_1: false

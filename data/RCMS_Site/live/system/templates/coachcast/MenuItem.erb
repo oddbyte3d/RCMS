@@ -1,0 +1,12 @@
+*IF(SUB_MENU|[!empty]){*
+  <li>
+    <span class="opener">*LINK_TITLE*</span>
+    <ul>
+    *SUB_MENU*
+    </ul>
+  </li>
+*}*
+
+*IF(SUB_MENU|[empty]){*
+<li><a href="*LINK_HREF*" title="*LINK_TOOLTIP*">*LINK_TITLE*</a></li>
+*}*

@@ -1,0 +1,15 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Header
+moduleDescription: Coach cast header
+
+xmlSessionId_0: banner-data
+xmlParentNode_0: banner/
+xmlDataToLoad_0: header_title/header_text/banner_text/image/image_alt
+xmlDataMultiple_0: false
+
+xmlSessionId_1: action_data
+xmlParentNode_1: action_items/
+xmlParentNodeMultiple_1: action_item/
+xmlDataToLoad_1: action/action_text/
+xmlDataMultiple_1: true

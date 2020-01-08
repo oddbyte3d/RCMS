@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[Another page.....]]></pagetitle>
+<author><![CDATA[Uncle, Root]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+</pageinfo>
+<module><pagetitle><![CDATA[Contact Page]]><id><![CDATA[1]]></id>
+<descriptive_name><![CDATA[Page Title]]></descriptive_name>
+<align><![CDATA[left]]></align>
+<printtext><![CDATA[Contact Us]]></printtext>
+<visible><![CDATA[true]]></visible>
+</pagetitle>
+</module>
+<module><cuppa_form><id><![CDATA[2]]></id>
+<descriptive_name></descriptive_name>
+<path><![CDATA[/system/test.form]]></path>
+<params></params>
+<visible><![CDATA[true]]></visible>
+</cuppa_form>
+</module>
+</page>

@@ -1,0 +1,19 @@
+<section id="banner">
+  <div class="content">
+    <header>
+      <h1>*header_title*</h1>
+      <p>*header_text*</p>
+    </header>
+    <p>*banner_text*</p>
+    <ul class="actions">
+      <%@action_data.each{ |key|
+        action_item = key
+        %>
+      <li><a href="<%=action_item["action"]%>" class="button big"><%=action_item["action_text"]%></a></li>
+      <%}%>
+    </ul>
+  </div>
+  <span class="image object">
+    <img src="*image*" alt="*image_alt*" />
+  </span>
+</section>

@@ -1,0 +1,7 @@
+Hi *fname* *lname*,
+
+You have a new tasks waiting for you...
+
+<a href="http://*domain*/admin">CuppaWEB Dashboard</a>
+
+Thank you!

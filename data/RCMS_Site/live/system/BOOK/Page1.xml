@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[true]]></cache_page>
+<pagetitle><![CDATA[Demo CuppaBOOK Page 1]]></pagetitle>
+<author><![CDATA[ScottAdmin, Taylor]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+</pageinfo>
+<module><pagetitle><![CDATA[Demo CuppaBOOK Page 1]]><id><![CDATA[1]]></id>
+<descriptive_name><![CDATA[Page Title]]></descriptive_name>
+<align><![CDATA[left]]></align>
+<printtext><![CDATA[Page 1 of the Demo CuppaBOOK]]></printtext>
+<visible><![CDATA[true]]></visible>
+</pagetitle>
+</module>
+<module><linebreak><id><![CDATA[3]]></id>
+<descriptive_name><![CDATA[LineBreak]]></descriptive_name>
+<break_count><![CDATA[2]]></break_count>
+<visible><![CDATA[true]]></visible>
+</linebreak>
+</module>
+<module><picture><id><![CDATA[4]]></id>
+<descriptive_name></descriptive_name>
+<picture_path><![CDATA[/system/CuppaWEB.png]]></picture_path>
+<position><![CDATA[left]]></position>
+<picturetitle></picturetitle>
+<alt_attribute></alt_attribute>
+<border><![CDATA[0]]></border>
+<popup_picture></popup_picture>
+<popup_alt_attribute></popup_alt_attribute>
+<popup_title></popup_title>
+<visible><![CDATA[true]]></visible>
+<picture_link_target><![CDATA[_self]]></picture_link_target>
+<picture_link></picture_link>
+</picture>
+</module>
+<module><text><id><![CDATA[2]]></id>
+<descriptive_name></descriptive_name>
+<bold><![CDATA[false]]></bold>
+<italic><![CDATA[false]]></italic>
+<underlined><![CDATA[false]]></underlined>
+<textcolor></textcolor>
+<textsize><![CDATA[default]]></textsize>
+<textalignment><![CDATA[default]]></textalignment>
+<printtext><![CDATA[This is Page 1 of the Demo CuppaBOOK, just for testing purposes.]]></printtext>
+<visible><![CDATA[true]]></visible>
+</text>
+</module>
+</page>

@@ -1,0 +1,20 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: List
+moduleIcon: ??
+moduleDefaultXML: <list><id></id><descriptive_name></descriptive_name><position><![CDATA[default]]></position><elements><element><![CDATA[Element text]]></element></elements><visible><![CDATA[true]]></visible></list>
+
+moduleHelpPage: http://somewebaddress/help/ModuleList.html
+
+type: simple
+
+xmlSessionId_0: list_items
+xmlParentNode_0: elements/
+xmlParentNodeMultiple_0: element/
+xmlDataToLoad_0: element/
+xmlDataMultiple_0: true
+
+xmlSessionId_1: position
+xmlParentNode_1: list/
+xmlDataToLoad_1: position/
+xmlDataMultiple_1: false

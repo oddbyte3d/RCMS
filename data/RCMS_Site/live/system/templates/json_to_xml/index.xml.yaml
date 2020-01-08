@@ -1,0 +1,6 @@
+cache: page_tag;cache
+pagetitle: page_tag;title
+author: page_tag;author
+owner: page_tag;owner
+keywords: page_tag;keywords
+description: page_tag;description

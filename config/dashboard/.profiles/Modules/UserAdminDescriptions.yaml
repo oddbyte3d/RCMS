@@ -1,0 +1,13 @@
+modify_user: Enables a user to modify user accounts.
+block_web: Enables a user to block user accounts from logging into thier web account.
+block_admin: Enables a user to block user accounts from logging into thier administrator account.
+delete_user: Enables a user to delete user accounts.
+change_user_pass: Enables a user to change user account passwords.
+create_user: Enables a user to create new user accounts.
+create_group: Enables a user to create new groups.
+modify_permissions: Enables a user to modify all permissions. (Be very carefull who gets this permission)
+modify_groups: Enables a user to modify groups.
+modify_user_file_permissions: Enables a user to modify file permissions for accounts.
+modify_admin_groups: Enables a user to modify group access for administrators.
+modify_group_file_permissions: Enables a user to modify file permissions allocated to Groups.
+delete_group: Enables a user to delete Groups.

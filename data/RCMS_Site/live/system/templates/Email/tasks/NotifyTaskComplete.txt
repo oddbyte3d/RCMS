@@ -1,0 +1,7 @@
+Hi *FNAME* *LNAME*,
+
+Task completed!
+
+<a href="http://*domain*/admin">CuppaWEB Dashboard</a>
+
+Thank you!

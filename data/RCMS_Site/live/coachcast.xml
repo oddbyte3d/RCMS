@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[RCMS v0.0.1]]></pagetitle>
+<author><![CDATA[]]></author>
+<owner><![CDATA[]]></owner>
+<keywords><![CDATA[]]></keywords>
+<description><![CDATA[]]></description>
+<page-menu>
+	<menu-entry>
+		<menu-link><![CDATA[/Contact.xml]]></menu-link>
+		<menu-link-target><![CDATA[_self]]></menu-link-target>
+		<menu-text><![CDATA[Contact]]></menu-text>
+		<menu-image><![CDATA[]]></menu-image>
+	</menu-entry>
+</page-menu>
+</pageinfo>
+<module>
+  <header>
+    <id><![CDATA[0]]></id>
+    <descriptive_name><![CDATA[Header]]></descriptive_name>
+    <title><![CDATA[Coachcast]]></title>
+    <facebook><![CDATA[true]]></facebook>
+    <twitter><![CDATA[true]]></twitter>
+    <linkedin><![CDATA[true]]></linkedin>
+    <instagram><![CDATA[true]]></instagram>
+  </header>
+</module>
+<module>
+  <banner>
+    <id><![CDATA[1]]></id>
+    <descriptive_name><![CDATA[Banner]]></descriptive_name>
+    <header_title><![CDATA[A Title]]></header_title>
+    <header_text><![CDATA[Some title text which is a little bit longer...]]></header_text>
+    <banner_text><![CDATA[Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.]]></banner_text>
+
+    <action_items>
+      <action_item>
+        <action><![CDATA[/index.xml]]></action>
+        <action_text><![CDATA[Click Here]]></action_text>
+      </action_item>
+    </action_items>
+
+    <image><![CDATA[/images/mushrooms.jpg]]></image>
+    <image_alt><![CDATA[Some mushrooms]]></image_alt>
+  </banner>
+</module>
+</page>

@@ -1,0 +1,13 @@
+#User profile file, do not edit
+#Wed Dec 03 16:07:55 WST 2008
+group1: users
+group0: admin
+fname: Uncle
+adminGroup0: SuperUser
+userIcon: /bookmark_add.png
+comments: Root user is a super user which may not be deleted or blocked.
+email: root@cuppait.com
+lname: Root
+login: root
+orga: 0
+password: bcd0d5bbe5b980218139e147593040e48ad409bf

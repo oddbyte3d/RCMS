@@ -1,0 +1,13 @@
+{
+  type : 'list',
+  data : {
+    items : [
+      <%@list_items.each{ |key|
+        list_item = key
+        %>
+      '<%=list_item["element"]%>',
+      <%}%>
+    ],
+    style: 'unordered'
+  }
+},

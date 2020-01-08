@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[RCMS Login page]]></pagetitle>
+<author><![CDATA[Scott, Taylor]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+<page-menu></page-menu>
+</pageinfo>
+
+<module>
+  <pagetitle>
+    <id><![CDATA[1]]></id>
+    <descriptive_name><![CDATA[Page Title]]></descriptive_name>
+    <align><![CDATA[left]]></align>
+    <printtext><![CDATA[Test title]]></printtext>
+    <visible><![CDATA[true]]></visible>
+  </pagetitle>
+
+</module>
+<module><text><id><![CDATA[8]]></id>
+<descriptive_name></descriptive_name>
+<bold><![CDATA[true]]></bold>
+<italic><![CDATA[true]]></italic>
+<underlined><![CDATA[false]]></underlined>
+<textcolor></textcolor>
+<textsize><![CDATA[default]]></textsize>
+<textalignment><![CDATA[default]]></textalignment>
+<printtext><![CDATA[Congratulations, your RCMS instance is working!]]></printtext>
+<visible><![CDATA[true]]></visible>
+</text>
+</module>
+<module>
+  <link>
+    <id>9</id>
+    <descriptive_name><![CDATA[Link]]></descriptive_name>
+    <target><![CDATA[_blank]]></target>
+    <path>http://www.google.com</path>
+    <text><![CDATA[Google]]></text>
+    <visible><![CDATA[true]]></visible>
+  </link>
+</module>
+<module>
+  <list>
+    <id>10</id>
+    <descriptive_name></descriptive_name>
+    <position><![CDATA[default]]></position>
+    <elements>
+      <element><![CDATA[Cool Element 1]]></element>
+      <element><![CDATA[Element 2]]></element>
+      <element><![CDATA[Element 3]]></element>
+    </elements>
+    <visible><![CDATA[true]]></visible>
+  </list>
+
+</module>
+</page>

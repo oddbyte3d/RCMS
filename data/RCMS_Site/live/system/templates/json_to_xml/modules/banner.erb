@@ -1,0 +1,19 @@
+<banner>
+  <id><![CDATA[*id*]]></id>
+  <descriptive_name><![CDATA[*descriptive_name*]]></descriptive_name>
+  <header_title><![CDATA[*header_title*]]></header_title>
+  <header_text><![CDATA[*header_text*]]></header_text>
+  <banner_text><![CDATA[*banner_text*]]></banner_text>
+
+  <action_items>
+    <%@items.each{ |key|%>
+    <action_item>
+      <action><![CDATA[<%=key["action"]%>]]></action>
+      <action_text><![CDATA[<%=key["action_text"]%>]]></action_text>
+    </action_item>
+    <%}%>
+  </action_items>
+
+  <image><![CDATA[*image*]]></image>
+  <image_alt><![CDATA[*image_alt*]]></image_alt>
+</banner>

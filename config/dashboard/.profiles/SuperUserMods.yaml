@@ -1,0 +1,5 @@
+# All Modules must be registered here
+UserAdmin=true
+FileAdmin=true
+SystemAdmin=true
+

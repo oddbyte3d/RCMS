@@ -1,0 +1,3 @@
+1: com.cuppait.cuppaadmin.modules.FileAdmin
+2: com.cuppait.cuppaadmin.modules.UserAdmin
+3: com.cuppait.cuppaadmin.modules.SystemAdmin

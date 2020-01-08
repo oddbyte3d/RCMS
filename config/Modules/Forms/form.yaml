@@ -1,0 +1,21 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: CuppaFORM
+moduleIcon: IMAGES/CuppaWEB/kudesigner.png
+moduleDescription: Use this element to add a picture to your page.
+moduleDefaultXML: <form><id></id><descriptive_name></descriptive_name><path><![CDATA[/system/test.form]]></path><params></params><visible><![CDATA[true]]></visible></form>
+
+type: full
+
+
+xmlSessionId_0: form_data
+xmlParentNode_0: form/
+xmlDataToLoad_0: path/
+xmlDataMultiple_0: false
+
+
+xmlSessionId_1: parameters
+xmlParentNode_1: params/
+xmlParentNodeMultiple_1: param/
+xmlDataToLoad_1: param/
+xmlDataMultiple_1: true

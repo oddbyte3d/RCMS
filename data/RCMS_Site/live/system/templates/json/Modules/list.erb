@@ -1,0 +1,8 @@
+{
+  "type": "list",
+  "id": "*id*",
+  "position": "*position*",
+  "elements": [<%at = 0
+    @list_items.each{|list_item|
+      at = at.next%>"<%=list_item["element"]%>"<%if at < @list_items.size%><%=","%><%end%><%}%>]
+  }

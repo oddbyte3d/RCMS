@@ -1,0 +1,12 @@
+email_admin: Mange system emails
+email_template_admin: Manage Email Templates
+theme_admin: Manage Themes
+module_admin: Manage Page modules
+redirects_admin: Manage redirects
+sysprops_admin: Manage properties
+mime_admin: Manage Mime-Types
+renderers_admin: Manage Renderers
+filter_admin: Manage Filters
+license_admin: Manage Licenses
+datasource_admin: Manage Datasources
+pubschedule_admin: Manage Publish schedules

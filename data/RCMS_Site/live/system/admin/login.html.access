@@ -1,0 +1,4 @@
+users: ;guest;
+groups: ;
+adminUsers: ;scott;root(rwp);
+adminGroups: ;SuperUser(r);

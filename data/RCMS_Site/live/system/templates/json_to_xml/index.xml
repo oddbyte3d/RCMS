@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[*cache*]]></cache_page>
+<pagetitle><![CDATA[*pagetitle*]]></pagetitle>
+<author><![CDATA[*author*]]></author>
+<owner><![CDATA[*owner*]]></owner>
+<keywords><![CDATA[*keywords*]]></keywords>
+<description><![CDATA[*description*]]></description>
+<page-menu></page-menu>
+</pageinfo>
+*CONTENT*
+</page>

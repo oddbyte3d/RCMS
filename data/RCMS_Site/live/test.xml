@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[my page title]]></pagetitle>
+<author><![CDATA[scott]]></author>
+<owner><![CDATA[scott]]></owner>
+<keywords><![CDATA[keywords,then some]]></keywords>
+<description><![CDATA[A longer page description...]]></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><pagetitle>
+  <id><![CDATA[0]]></id>
+  <descriptive_name><![CDATA[Header module]]></descriptive_name>
+  <align><![CDATA[center]]></align>
+  <printtext><![CDATA[This is the page TITLE]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</pagetitle>
+</module><module><text>
+  <id><![CDATA[1]]></id>
+  <descriptive_name>Paragraph module</descriptive_name>
+  <bold><![CDATA[*bold*]]></bold>
+  <italic><![CDATA[*italic*]]></italic>
+  <underlined><![CDATA[*underlined*]]></underlined>
+  <textcolor><![CDATA[*textcolor*]]></textcolor>
+  <textsize><![CDATA[*textsize*]]></textsize>
+  <textalignment><![CDATA[*textalignment*]]></textalignment>
+  <printtext><![CDATA[Some page content which is text....<br>]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</text>
+</module><module><list>
+  <id><![CDATA[2]]></id>
+  <descriptive_name><![CDATA[List module]]></descriptive_name>
+  <position><![CDATA[*position*]]></position>
+  <elements>
+    
+    <element><![CDATA[Cool Element 1]]></element>
+    
+    <element><![CDATA[Element 2]]></element>
+    
+    <element><![CDATA[Element 3]]></element>
+    
+    <element><![CDATA[test 4]]></element>
+    
+    <element><![CDATA[Test 5<br>]]></element>
+    
+  </elements>
+  <visible><![CDATA[true]]></visible>
+</list>
+</module><module><text>
+  <id><![CDATA[3]]></id>
+  <descriptive_name>Paragraph module</descriptive_name>
+  <bold><![CDATA[*bold*]]></bold>
+  <italic><![CDATA[*italic*]]></italic>
+  <underlined><![CDATA[*underlined*]]></underlined>
+  <textcolor><![CDATA[*textcolor*]]></textcolor>
+  <textsize><![CDATA[*textsize*]]></textsize>
+  <textalignment><![CDATA[*textalignment*]]></textalignment>
+  <printtext><![CDATA[Hello this is another test............<br>]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</text>
+</module><module><list>
+  <id><![CDATA[4]]></id>
+  <descriptive_name><![CDATA[List module]]></descriptive_name>
+  <position><![CDATA[*position*]]></position>
+  <elements>
+    
+    <element><![CDATA[A list...]]></element>
+    
+    <element><![CDATA[With elements....<br>]]></element>
+    
+  </elements>
+  <visible><![CDATA[true]]></visible>
+</list>
+</module>
+</page>

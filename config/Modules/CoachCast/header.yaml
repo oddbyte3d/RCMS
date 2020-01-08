@@ -1,0 +1,9 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Header
+moduleDescription: Coach cast header
+
+xmlSessionId_0: header-data
+xmlParentNode_0: header/
+xmlDataToLoad_0: title/facebook/twitter/linkedin/instagram
+xmlDataMultiple_0: false

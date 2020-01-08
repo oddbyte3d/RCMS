@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<!--
+	Paradigm Shift by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.min.css" />
+    <link rel="stylesheet" type="text/css" href="/system/admin/icons.css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/system/admin/w2ui-1.5.rc1.min.js"></script>
+	</head>
+  <body>
+		<div id="login_form" style="width: 600px">
+        <div class="w2ui-page page-0">
+            <div class="w2ui-field">
+                <label>Login Name:</label>
+                <div>
+                    <input name="user_name" maxlength="100" size="30"/>
+                </div>
+            </div>
+            <div class="w2ui-field">
+                <label>Password:</label>
+                <div>
+                    <input name="user_pass" type="password" maxlength="100" size="30"/>
+                </div>
+            </div>
+        </div>
+        <div class="w2ui-buttons">
+            <input type="button" value="Reset" name="reset"/>
+            <input type="button" value="Save" name="save"/>
+        </div>
+    </div>
+  </body>
+  <script>
+  $(function () {
+      $('#login_form').w2form({
+          name   : 'login_form',
+        	header   : 'Login Form',
+        	url      : '/login',
+        	formURL  : '/system/admin/login.html',
+          fields : [
+              { name: 'user_name', type: 'text', required: true },
+              { name: 'user_pass',  type: 'password', required: true }
+          ],
+          actions: {
+              reset: function () {
+                  this.clear();
+              },
+              save: function () {
+									this.save(function(data) {
+										if (typeof data.errors != 'undefined') {
+											Main.showServerResponseErrors(form, data.errors);
+										}
+										else {
+											window.location.replace("/system/admin/index.html")
+										}
+									});
+
+              }
+          }
+      });
+  });
+  </script>
+</html>
