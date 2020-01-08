@@ -1,3 +1,6 @@
-text: text.tmpl
-link: link.tmpl
-pagetitle: pagetitle.tmpl
+text: text.erb
+link: link.erb
+pagetitle: pagetitle.erb
+list: list.erb
+form: form.erb
+rcmsimage: rcmsimage.erb

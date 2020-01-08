@@ -10,7 +10,7 @@ require_relative '../file/exception/FileAccessDenied'
 require_relative '../Hub'
 require_relative './OutputRenderer'
 require_relative '../template/Template'
-
+require "erb"
 
 class XML_JSONRenderer < OutputRenderer
 
@@ -99,13 +99,13 @@ class XML_JSONRenderer < OutputRenderer
                     modTemplate = myTemplate.getModuleTemplate(modType)
                     modTemplate.setModuleToRender(mod)
                     pageModuleContent.concat(modTemplate.parseTemplate)
-                    if at < mods.size-1
-                      pageModuleContent.concat(rendererConfig["module_separator"])
-                    end
-                    at = at.next
                 else
-                    pageModuleContent.concat("<br>Module not supported:#{modType}<br>")
+                    pageModuleContent.concat("\"unsupported\": \"Module not supported:#{modType}\"")
                 end
+                if at < mods.size-1
+                  pageModuleContent.concat(rendererConfig["module_separator"])
+                end
+                at = at.next
 
             }
         end
@@ -122,21 +122,21 @@ class XML_JSONRenderer < OutputRenderer
 
     #TO-DO: make private
     def getTemplate(theme)
-        puts "Theme : #{theme}"
+        #puts "Theme : #{theme}"
         tmpTheme = theme
         themeFound = false
         while(tmpTheme != "")
 
-            puts "myPropertyLoader :  #{@myPropertyLoader.getProperties("TemplateDirectory")}"
+            #puts "myPropertyLoader :  #{@myPropertyLoader.getProperties("TemplateDirectory")}"
             if(@myPropertyLoader.getProperties("TemplateDirectory")[tmpTheme] != nil)
 
                 theme = @myPropertyLoader.getProperties("TemplateDirectory")[tmpTheme]
                 themeFound = true
                 tmpTheme = ""
-                puts "theme found..."
+                #puts "theme found..."
             else
                 #if(tmpTheme.index("/") != nil)
-                  puts "--------------------\n#{tmpTheme}\n-------------------------------"
+                  #puts "--------------------\n#{tmpTheme}\n-------------------------------"
                   tmpTheme = tmpTheme[0..tmpTheme.rindex("/")-1]
                 #end
             end

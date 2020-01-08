@@ -5,13 +5,7 @@ moduleIcon: IMAGES/CuppaWEB/kpersonalizer.png
 moduleDescription: Use this element to import a re-usable content block into your page.
 moduleDefaultXML: <contentblock><id></id><descriptive_name></descriptive_name><content_block><![CDATA[system/DefaultBlock.block]]></content_block><visible><![CDATA[true]]></visible></contentblock>
 
-
-pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.ContentBlock
-link: /global/modules/contentBlock.jsp
-eml: /global/modules/contentBlock.jsp
-type: full
-
-#xmlSessionId_0: all-data
-#xmlParentNode_0: htmlinclude/
-#xmlDataToLoad_0: id/path
-#xmlDataMultiple_0: false
+xmlSessionId_0: data
+xmlParentNode_0: contentblock/
+xmlDataToLoad_0: content_block/
+xmlDataMultiple_0: false

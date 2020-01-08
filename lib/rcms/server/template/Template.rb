@@ -51,6 +51,7 @@ class Template
                             #puts "module template path: #{tempTempl}"
                             if(File.exist?(tempTempl))
                                 modTmp = TemplateFile.new(@myTemplateDir, tempTempl, @myPageToRender)
+                                modTmp.setAdditionalParameters(@params) if @params != nil
                                 @myModuleTemplates[key] = modTmp
                             end
                         }
@@ -61,6 +62,11 @@ class Template
         end
 
     end
+
+    def setAdditionalParameters(params)
+      @params = params
+    end
+
 
     def getRenderer
       return @myRenderer
@@ -114,6 +120,7 @@ class Template
                         tf = TemplateFile.new(@myTemplateDir,
                             "#{@myTemplateDir}#{@@FS}#{@myConfig["_#{start}#{pageSpecific}"]}",
                             @myPageToRender)
+                        tf.setAdditionalParameters(@params) if @params != nil
                         tf.setTemplate(self)
                         parsed = tf.parseTemplate
                         #puts "Parsed Template : #{parsed}"
@@ -126,6 +133,9 @@ class Template
 
             end
         end
+
+        @myParsedTemplate = Template.filterOutput(nil, @params, @myParsedTemplate)
+
         return @myParsedTemplate
     end
 
@@ -135,6 +145,7 @@ class Template
      # @return
     def self.filterOutput(user, otherFields, input)
 
+      #puts "Filteroutput :::: #{otherFields}"
         globals = GlobalSettings.getAllGlobals
         globals.each{ |key|
             if(key.is_a?(String))
@@ -148,8 +159,8 @@ class Template
             end
         }
         if(otherFields != nil)
-            otherFields.each{ |key|
-                while( input.index("*#{otherFields[key]}*") != nil)
+            otherFields.keys.each{ |key|
+                while( input.index("*#{key}*") != nil)
                     input = Parser.replaceAll(input, "*#{key}*", otherFields[key])
                 end
             }
@@ -210,12 +221,15 @@ class Template
         if(input.index("*DATE*") != nil)
             input = Parser.replaceAll(input, "*DATE*", GlobalSettings.formatDate(GlobalSettings.FORMAT_DATE_DAY, nil))
         end
-        if(input.indexOf("*DATE_TIME*") != nil)
+        if(input.index("*DATE_TIME*") != nil)
             input = Parser.replaceAll(input, "*DATE_TIME*", GlobalSettings.formatDate(GlobalSettings.FORMAT_DATE_DAY_TIME, nil))
         end
-        if(input.indexOf("*TIME*") > -1)
+        if(input.index("*TIME*") != nil)
             input = Parser.replaceAll(input, "*TIME*", GlobalSettings.formatDate(GlobalSettings.FORMAT_DATE_TIME, nil))
         end
+
+
+
         return input
     end
 

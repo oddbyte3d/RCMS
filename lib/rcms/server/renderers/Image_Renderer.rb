@@ -21,7 +21,7 @@ class Image_Renderer < OutputRenderer
                       baseDocRootInclude, onlyModules)
             @FS = File::SEPARATOR
             rendererConfig = YAML.load_file( "#{GlobalSettings.getGlobal("Server-ConfigPath")}OutputRenderers/Image_Renderer.yaml")
-            puts "CSS Renderer config : #{rendererConfig}"
+            #puts "Image Renderer config : #{rendererConfig}"
 
             cWorkArea = GlobalSettings.getCurrentWorkArea(session)
             cssFile = FileCMS.new(session, "#{cWorkArea}#{@FS}#{fileToRender}")

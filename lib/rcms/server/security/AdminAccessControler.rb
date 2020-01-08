@@ -1,4 +1,5 @@
 require "yaml"
+require "encrypted_strings"
 require_relative "../user/RCMSUser"
 require_relative "../user/RCMSGroup"
 require_relative "../GlobalSettings"
@@ -9,17 +10,17 @@ require_relative "./AdminSession"
 
 class AdminAccessControler
 
-    @APPLICATION_HOME = GlobalSettings.getGlobal("Application-Home")
-    @CONFIG_ROOT = GlobalSettings.getGlobal("Server-ConfigPath")
-    @CONFIG_REST_PATH = "de/codefactor/instantsite/properties/users/"
-    @FS = File::SEPARATOR
-    @ACCESS_NONE = 0
-    @ACCESS_READ = 1
-    @ACCESS_READWRITE = 2
-    @ACCESS_READPUBLISH = 3
-    @ACCESS_FULL = 4
 
     def initialize
+      @APPLICATION_HOME = GlobalSettings.getGlobal("Server-ConfigPath")
+      #@CONFIG_ROOT = GlobalSettings.getGlobal("Server-ConfigPath")
+      #@CONFIG_REST_PATH = "de/codefactor/instantsite/properties/users/"
+      @FS = File::SEPARATOR
+      @ACCESS_NONE = 0
+      @ACCESS_READ = 1
+      @ACCESS_READWRITE = 2
+      @ACCESS_READPUBLISH = 3
+      @ACCESS_FULL = 4
 
     end
 
@@ -29,18 +30,17 @@ class AdminAccessControler
         return false
     end
 
-    def self.userExists(userName)
+    def userExists(userName)
 
         if(userName == "root")
             return true
         end
-        serverRoot = "default/"
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
-        if(userName == nil)
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"
+        if(userName == nil || !File.exist?(fullPath))
             return false
         else
           user = YAML.load_file(fullPath)
-          puts "Admin User: #{user}"
+          #puts "Admin User: #{user}"
           if(user != nil)
               return true
           else
@@ -51,41 +51,35 @@ class AdminAccessControler
     end
 
 
-    def self.listUsers
+    def listUsers
 
-        userDir = "#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/"
+        userDir = "#{@APPLICATION_HOME}/dashboard/default/.profiles/"
         Dir.chdir(userDir)
-        filtered = Dir.glob("*Profile.properties")
+        filtered = Dir.glob("*.yaml")
         users = Array.new
         at = 0
         filtered.each{ |user|
 
-          users[at] = user[0..(user.index("Profile.properties")-1)]
-          puts "Username : #{users[at]}"
+          users[at] = user[0..(user.index(".yaml")-1)]
+          #puts "Username : #{users[at]}"
           at = at.next
         }
 
         return users
     end
 
-    def self.getServerRoot(sessionId)
-      serverRoot = AdminSession.getFromSession(sessionId,"serverRoot");
-      if(serverRoot == nil)
-          serverRoot="default/"
-      end
-      return serverRoot
+
+    def groupExists(groupName)
+        return File.exist?("#{@APPLICATION_HOME}/dashboard/.profiles/#{groupName}Mods.yaml" )
     end
 
-    def self.groupExists(groupName)
-        return File.exist?("#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/#{groupName}Mods.properties" )
-    end
-
-    def self.createNewGroup(groupName)
+    def createNewGroup(groupName)
       group = Hash.new
-      File.write("#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/#{groupName}Mods.properties", group.to_yaml)
+      File.write("#{@APPLICATION_HOME}/dashboard/default/.profiles/#{groupName}Mods.yaml", group.to_yaml)
     end
 
-    def self.createNewUser(userName, initialGroup, userEmail, fname, lname, password)
+    def createNewUser(userName, initialGroup, userEmail, fname, lname, password)
+        password = password.encrypt
         user = Hash.new;
         user["login"] = userName
         user["adminGroup0"] = initialGroup
@@ -93,60 +87,57 @@ class AdminAccessControler
         user["fname"] = fname
         user["lname"] = lname
         user["password"] = password
-        File.write("#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/#{userName}Profile.properties", user.to_yaml)
+        File.write("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml", user.to_yaml)
     end
 
-    def self.getModuleActions(sessionId, moduleName)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}Actions.properties"
+    def getModuleActions(sessionId, moduleName)
+      fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}Actions.yaml"
       return YAML.load_file(GlobalSettings.changeFilePathToMatchSystem(fullPath) )
     end
 
-    def self.getPossibleModuleActions(sessionId, moduleName)
+    def getPossibleModuleActions(sessionId, moduleName)
 
-        return AdminAccessControler.getModuleActions.keys
+        return getModuleActions.keys
     end
 
-    def self.getModuleActionLongDescription(sessionId, moduleName, actionName)
-        return AdminAccessControler.getModuleActions[actionName]
+    def getModuleActionLongDescription(sessionId, moduleName, actionName)
+        return getModuleActions[actionName]
     end
 
-    def self.getModuleActionDescription(sessionId, moduleName, actionName)
-        return AdminAccessControler.getModuleActions[actionName]
+    def getModuleActionDescription(sessionId, moduleName, actionName)
+        return getModuleActions[actionName]
     end
 
 
-    def self.canUseModuleAction(user, moduleName, moduleAction)
+    def canUseModuleAction(user, moduleName, moduleAction)
 
         if(user.USER_NAME == "root")
             return true
         end
-        if(!AdminAccessControler.userHasModuleAction("", user.USER_NAME, moduleName, moduleAction))
+        if(!userHasModuleAction("", user.USER_NAME, moduleName, moduleAction))
             user.getAdminGroups.each{ |ngroup|
-              return AdminAccessControler.groupHasModuleAction("", ngroup, moduleName, moduleAction)
+              return groupHasModuleAction("", ngroup, moduleName, moduleAction)
             }
         else
             return true
         end
     end
 
-    def self.canUseModuleAction(group, moduleName, moduleAction)
-        return AdminAccessControler.groupHasModuleAction("", group.GROUP_NAME, moduleName, moduleAction)
+    def canUseModuleAction(group, moduleName, moduleAction)
+        return groupHasModuleAction("", group.GROUP_NAME, moduleName, moduleAction)
     end
 
     #Return the user parameters from profile
-    def self.getUser(sessionId, userName)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
+    def getUser(sessionId, userName)
+      fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"
       if(userName != nil)
 
         return YAML.load_file(fullPath)
       end
     end
 
-    def self.setUserGroupAccess(sessionId, userName, groupName, access)
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
+    def setUserGroupAccess(sessionId, userName, groupName, access)
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"
         if(userName != nil)
 
           user = YAML.load_file(fullPath)
@@ -173,9 +164,9 @@ class AdminAccessControler
         end
     end
 
-    def self.userBelongsToGroup(sessionId, userName, groupName)
+    def userBelongsToGroup(sessionId, userName, groupName)
 
-      user = AdminAccessControler.getUser
+      user = getUser
       if user.has_value?(groupName)
         return user.key(groupName).start_with?("adminGroup")
       end
@@ -183,54 +174,48 @@ class AdminAccessControler
     end
 
 
-    def self.getModule(sessionId, moduleName)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+    def getModule(sessionId, moduleName)
+      fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
       if(userName != nil)
 
         return YAML.load_file(fullPath)
       end
     end
 
-    def self.saveModule(sessionId, moduleName, mod)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+    def saveModule(sessionId, moduleName, mod)
+      fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
       if(userName != nil)
-
         File.write(fullPath, mod.to_yaml)
       end
     end
 
 
 
-    def self.getGroupModule(sessionId, groupName)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      groupPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{groupName}Mods.properties"
+    def getGroupModule(sessionId, groupName)
+      groupPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{groupName}Mods.yaml"
       return YAML.load_file(groupPath)
     end
 
-    def self.saveGroupModule(sessionId, groupName, group)
-      serverRoot = AdminAccessControler.getServerRoot(sessionId)
-      groupPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{groupName}Mods.properties"
+    def saveGroupModule(sessionId, groupName, group)
+      groupPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{groupName}Mods.yaml"
       File.write(groupPath, group.to_yaml)
     end
 
 
-    def self.setGroupModuleAccess(sessionId, groupName, moduleName, access)
+    def setGroupModuleAccess(sessionId, groupName, moduleName, access)
 
-      group = AdminAccessControler.getGroupModule(sessionId, groupName)
+      group = getGroupModule(sessionId, groupName)
       group[moduleName] = access
-      AdminAccessControler.saveGroupModule(sessionId, groupName, group)
+      saveGroupModule(sessionId, groupName, group)
     end
 
-    def self.setGroupModuleActionAccess(sessionId, groupName, moduleName, moduleAction, access)
+    def setGroupModuleActionAccess(sessionId, groupName, moduleName, moduleAction, access)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
 
         if(groupName != nil)
           #Make sure that the group has appropriate access to the Module
-          groupPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{groupName}Mods.properties"
+          groupPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{groupName}Mods.yaml"
           gr = YAML.load_file(GlobalSettings.changeFilePathToMatchSystem(groupPath))
 
 
@@ -257,10 +242,9 @@ class AdminAccessControler
         end
     end
 
-    def self.setUserModuleAccess(sessionId, userName, moduleName, moduleAction, access)
+    def setUserModuleAccess(sessionId, userName, moduleName, moduleAction, access)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
 
         if(userName != nil)
 
@@ -281,13 +265,13 @@ class AdminAccessControler
         end
     end
 
-    def self.userHasModuleAction(sessionId, userName, moduleName, moduleAction)
+    def userHasModuleAction(sessionId, userName, moduleName, moduleAction)
 
         if userName == "root"
             return true
         end
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
         if(userName == nil)
             return false
         end
@@ -302,19 +286,19 @@ class AdminAccessControler
 
     end
 
-    def self.getModules(sessionId)
+    def getModules(sessionId)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/LoadModules.properties"
+
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/LoadModules.yaml"
         mod = YAML.load_file(GlobalSettings.changeFilePathToMatchSystem(fullPath))
         return mod
     end
 
 
-    def self.groupHasModuleAction(sessionId, group, moduleName, moduleAction)
+    def groupHasModuleAction(sessionId, group, moduleName, moduleAction)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/Modules/#{moduleName}.properties"
+
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/Modules/#{moduleName}.yaml"
         if(group == nil)
             return false
         end
@@ -329,58 +313,61 @@ class AdminAccessControler
     end
 
 
-    def self.checkUserLogin(sessionId, userName, userPass)
+    def checkUserLogin(sessionId, userName, userPass)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
+        userPass = userPass.encrypt
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
         if(userName == nil)
             return false
         end
-        user = YAML.load_file(GlobalSettings.changeFilePathToMatchSystem(fullPath) )
-        userPassLoaded = user["password"]
-        blocked = user["BLOCKED"]
-        if(blocked == nil)
-          blocked = "false"
+        if(File.exist?(fullPath))
+          user = YAML.load_file(fullPath)
+          userPassLoaded = user["password"]
+          blocked = user["BLOCKED"]
+          if(blocked == nil)
+            blocked = false
+          end
+          if(userPassLoaded == userPass && !blocked)
+            return true
+          else
+            return false
+          end
         end
-        if(userPassLoaded == userPass && blocked == "false")
-          return true
-        else
-          return false
-        end
+        return false
     end
 
-    def self.userBlocked(sessionId, userName)
+    def userBlocked(sessionId, userName)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
+
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"
         if(userName == nil)
             return false
         end
         user = YAML.load_file(GlobalSettings.changeFilePathToMatchSystem(fullPath))
         blocked = user["BLOCKED"]
-        if(blocked == nil || blocked == "true")
+        if(blocked == nil || blocked)
             return true
         else
             return false
         end
     end
 
-    def self.deleteUser(sessionId, userName)
+    def deleteUser(sessionId, userName)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = "#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"
+
+        fullPath = "#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"
         if(userName == nil)
             return false
         end
         return File.delete(fullPath)
     end
 
-    def self.setUserFilePermissions(userName, filePath, permissions)
+    def setUserFilePermissions(userName, filePath, permissions)
 
         if(userName == "root" && (permissions != @ACCESS_FULL || permissions != @ACCESS_READWRITE))
             return false
         end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/#{userName}Profile.properties")
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/default/.profiles/#{userName}.yaml")
 
         perms = ""
         case permissions
@@ -426,7 +413,7 @@ class AdminAccessControler
     end
 
 
-    def self.setGroupFilePermissions(groupName, filePath, permissions)
+    def setGroupFilePermissions(groupName, filePath, permissions)
 
         perms = ""
         case permissions
@@ -470,19 +457,22 @@ class AdminAccessControler
     end
 
 
-    def self.changeUserPassword(sessionId, userName, oldPass, newPass, newPassConfirm)
+    def changeUserPassword(sessionId, userName, oldPass, newPass, newPassConfirm)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
-        if(newPass == newPassConfirm)
+        oldPassEncrypt = oldPass.encrypt
+        newPassEncrypt = newPass.encrypt
+        newPassConfirmEncrypt = newPassConfirm.encrypt
 
-            if(AdminAccessControler.checkUserLogin(sessionId, userName, oldPass))
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
+        if(newPassEncrypt == newPassConfirmEncrypt)
+
+            if(checkUserLogin(sessionId, userName, oldPass))
 
                 if(userName == nil)
                     return false
                 end
                 user = YAML.load_file(fullPath)
-                user["password"] = newPass
+                user["password"] = newPassEncrypt
                 File.write(fullPath, user.to_yaml)
                 return true
             else
@@ -494,48 +484,34 @@ class AdminAccessControler
     end
 
 
-    def self.checkFileAccessRead(sessionId, userName, accessCheck)
+    def checkFileAccessRead(sessionId, userName, filePath)
 
-        serverRoot = sessionId
-        if(sessionId != nil && sessionId != "default/")
-            if(adminSession.getSessionHash(sessionId)!= null)
-                serverRoot = AdminSession.getFromSession(sessionId,"serverRoot")
-            end
-        end
-        if(serverRoot == nil)
-            serverRoot="default/"
-        end
-        return AdminAccessControler.checkFileAccessRead(serverRoot, userName, accessCheck.getAbsolutePath())
-
-    end
-
-    def self.checkFileAccessRead(serverRoot, userName, filePath)
-
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        #if(serverRoot == null || serverRoot.trim().equals(""))
-        #    serverRoot = "default/";
-
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
+        #puts "UserPath: #{fullPath}"
         fAccess = "#{filePath}.access"
-
+        #puts "#{fAccess} :::: #{File.exist?(fAccess)}"
         if(File.exist?(fAccess))
 
             fileProps = YAML.load_file(fAccess)
             fileUsers = fileProps["adminUsers"]
             fileGroups = fileProps["adminGroups"]
-
             if(userName == nil)
                 return false
             end
 
+
+
             user = YAML.load_file(fullPath)
+            #puts "=========================\nCheck 1: #{fileUsers != nil && fileUsers.index(";#{userName}(r") != nil || fileUsers.index(";everyone(r") != nil}\n====================================="
             if(fileUsers != nil && fileUsers.index(";#{userName}(r") != nil || fileUsers.index(";everyone(r") != nil)
+              #puts "++++++++++++++++++++++++++++++++++++++++Returning true++++++++++++++++++++++++"
                 return true
             end
             at = 0
-            while(user.getProperty("adminGroup#{at}") != nil)
+            while(user["adminGroup#{at}"] != nil)
 
-                group = user["adminGroup"].concat("#{at}")
+                group = user["adminGroup#{at}"]#.concat("#{at}")
+                #puts "User Group : #{group}"
                 at = at.next
                 if(fileGroups != nil && fileGroups.index(";#{group}(r") != nil ||
                   fileGroups.index(";everyone(r;") != nil)
@@ -544,17 +520,19 @@ class AdminAccessControler
             end
             return false
 
-        elsif(!checkDirectoryAccessRead(serverRoot,userName,filePath[0..filePath.rindex(@FS)+1]))
+        elsif(!checkDirectoryAccessRead(sessionId, userName,filePath[0..filePath.rindex(@FS)+1]))
+            #puts "Returning false at checkDirectoryAccessRead"
             return false
         else
+            #puts "Returning true......??????"
             return true
         end
 
-        return false;
+        return true
     end
 
 
-    def self.checkGroupFileAccessRead(groupName, filePath)
+    def checkGroupFileAccessRead(groupName, filePath)
 
         fAccess = GlobalSettings.changeFilePathToMatchSystem("#{filePath}.access")
         if(File.exist?(fAccess))
@@ -570,7 +548,7 @@ class AdminAccessControler
         return false
     end
 
-    def self.checkGroupFileAccessWrite(groupName, filePath)
+    def checkGroupFileAccessWrite(groupName, filePath)
 
         fAccess = GlobalSettings.changeFilePathToMatchSystem("#{filePath}.access")
         if(File.exist?(fAccess))
@@ -586,7 +564,7 @@ class AdminAccessControler
         return false
     end
 
-    def self.checkGroupFileAccessPublish(groupName, filePath)
+    def checkGroupFileAccessPublish(groupName, filePath)
 
         fAccess = GlobalSettings.changeFilePathToMatchSystem("#{filePath}.access")
         if(File.exist?(fAccess))
@@ -604,24 +582,14 @@ class AdminAccessControler
     end
 
 
-    def self.checkDirectoryAccessRead(sessionId, userName, accessCheck)
-
+    def checkDirectoryAccessRead(sessionId, userName, accessCheck)
+        #puts "AdminSession ::::::::: #{AdminSession.getSessionHash(sessionId)}"
         if(AdminSession.getSessionHash(sessionId)== nil)
             return false
         end
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        return AdminAccessControler.checkDirectoryAccessRead(serverRoot, userName, File.absolute_path(accessCheck))
 
-    end
-
-
-    def self.checkDirectoryAccessRead(serverRoot, userName, filePath)
-
-        if(serverRoot == nil || serverRoot.strip == "")
-            serverRoot = "default/"
-        end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
-        filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
+        filePath = GlobalSettings.changeFilePathToMatchSystem(accessCheck)
 
         if(!(File.directory?(filePath)) && filePath.rindex(@FS) != nil)
             filePath = filePath[0..filePath.rindex(@FS)]
@@ -664,23 +632,12 @@ class AdminAccessControler
     end
 
 
-
-    def self.checkFileAccessWrite(sessionId, userName, accessCheck)
-
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        return AdminAccessControler.checkFileAccessWrite(serverRoot, userName, File.absolute_path(accessCheck))
-
-    end
-
-
-    def self.checkFileAccessWrite(serverRoot, userName, filePath)
-
-        if(serverRoot == nil || serverRoot.strip == "")
-            serverRoot = "default/"
-        end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
+    def checkFileAccessWrite(sessionId, userName, filePath)
+        #puts "+++++++++++++++++++++++++++++++++++++checkFileAccessWrite++++++++++++++++++++++++++"
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
         filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
         fAccess = "#{filePath}.access"
+        #puts fAccess
         if(File.exist?(fAccess))
 
             fileProps = YAML.load_file(fAccess)
@@ -688,11 +645,13 @@ class AdminAccessControler
             fileGroups = fileProps["adminGroups"]
 
             if(userName == nil)
+              #puts "Returning false...."
                 return false
             end
             user = YAML.load_file(fullPath)
-
+            #puts "Checking :: #{fileUsers.index(";#{userName}(rw")}"
             if(fileUsers.index(";#{userName}(rw") != nil || fileUsers.index(";everyone(rw") != nil)
+              #puts "+++++++++++Returning true 1"
                 return true
             end
             at = 0
@@ -701,100 +660,90 @@ class AdminAccessControler
                 group = user["adminGroup#{at}"]
                 at = at.next
                 if(fileGroups.index(";#{group}(rw") != nil || fileGroups.index(";everyone(rw") != nil)
+                  #puts "+++++++++++Returning true 2"
                     return true
                 end
             end
+            #puts "Returning false 1"
             return false
 
-        elsif(!AdminAccessControler.checkDirectoryAccessWrite(serverRoot,userName,filePath[0..filePath.rindex(@FS)+1]))
-            return false
-        else
+        elsif(checkDirectoryAccessWrite(sessionId, userName,filePath[0..filePath.rindex(@FS)+1]))
             return true
+        else
+            return false
         end
         return false
     end
 
 
-    def self.checkDirectoryAccessWrite(sessionId, userName, accessCheck)
+    def checkDirectoryAccessWrite(sessionId, userName, accessCheck)
 
         if(AdminSession.getSessionHash(sessionId)== nil)
             return false
         else
-          serverRoot = AdminAccessControler.getServerRoot(sessionId)
-          return AdminAccessControler.checkDirectoryAccessWrite(serverRoot, userName, File.absolute_path(accessCheck));
+          #return checkDirectoryAccessWrite( userName, File.absolute_path(accessCheck));
+          if(userName == nil)
+              return false
+          end
+          userPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
+          filePath = GlobalSettings.changeFilePathToMatchSystem(accessCheck)
+
+          if(!File.directory?(filePath) && filePath.index(@FS) != nil)
+              filePath = filePath[0..filePath.rindex(@FS)-1]
+          end
+          if(filePath.end_with?(@FS))
+              filePath = filePath[0..filePath.rindex(@FS)-1]
+          end
+          fAccess = filePath.concat(".access")
+          if(File.exist?(fAccess))
+
+              fileProps = YAML.load_file(fAccess)
+              fileUsers = fileProps["adminUsers"]
+              fileGroups = fileProps["adminGroups"]
+
+              user = YAML.load_file(userPath)
+
+
+              if(fileUsers.index(";#{userName}(rw") != nil || fileUsers.index(";everyone(rw") != nil)
+                  return true
+              end
+              at = 0
+              while(user["adminGroup#{at}"] != nil)
+
+                  group = user["adminGroup#{at}"]
+                  at = at.next
+                  if(fileGroups.index(";#{group}(rw") != nil || fileGroups.index(";everyone(rw") != nil)
+                      return true
+                  end
+              end
+              return false
+
+          else
+              return true
+          end
         end
     end
 
 
-    def self.checkDirectoryAccessWrite(serverRoot, userName, filePath)
-
-        if(userName == nil)
-            return false
-        end
-        if(serverRoot == nil || serverRoot.strip =="")
-            serverRoot = "default/"
-        end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
-        filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
-
-        if(!File.directory?(filePath) && filePath.index(@FS) != nil)
-            filePath = filePath[0..filePath.rindex(@FS)-1]
-        end
-        if(filePath.end_with?(@FS))
-            filePath = filePath[0..filePath.rindex(@FS)-1]
-        end
-        fAccess = filePath.concat(".access")
-        if(File.exist?(fAccess))
-
-            fileProps = YAML.load_file(fAccess)
-            fileUsers = fileProps["adminUsers"]
-            fileGroups = fileProps["adminGroups"]
-
-            user = YAML.load_file(fullPath)
-
-
-            if(fileUsers.index(";#{userName}(rw") != nil || fileUsers.index(";everyone(rw") != nil)
-                return true
-            end
-            at = 0
-            while(user["adminGroup#{at}"] != nil)
-
-                group = user["adminGroup#{at}"]
-                at = at.next
-                if(fileGroups.index(";#{group}(rw") != nil || fileGroups.index(";everyone(rw") != nil)
-                    return true
-                end
-            end
-            return false
-
-        else
-            return true
-        end
-    end
-
-
-    def self.checkDirectoryAccessPublish(sessionId, userName, accessCheck)
+    def checkDirectoryAccessPublish(sessionId, userName, accessCheck)
 
         if(AdminSession.getSessionHash(sessionId)== nil)
             return false
         end
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        return AdminAccessControler.checkDirectoryAccessPublish(serverRoot, userName, File.absolute_path(accessCheck))
+
+        return checkDirectoryAccessPublish( userName, File.absolute_path(accessCheck))
 
     end
 
 
-    def self.checkDirectoryAccessPublish(serverRoot, userName, filePath)
+    def checkDirectoryAccessPublish( userName, filePath)
 
         if(userName == nil)
             return false
         end
 
 
-        if(serverRoot == nil || serverRoot.strip == " ")
-            serverRoot = "default/"
-        end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
         filePath = GlobalSettings.changeFilePathToMatchSystem(filePath);
 
         if(!File.directory?(filePath) && filePath.index(@FS) != nil)
@@ -833,32 +782,19 @@ class AdminAccessControler
     end
 
 
-    def self.checkFileAccessPublish(sessionId, userName, accessCheck)
 
-        if(AdminSession.getSessionHash(sessionId) == nil)
-            return false
-        end
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        return AdminAccessControler.checkFileAccessPublish(serverRoot, userName, File.absolute_path(accessCheck))
-
-    end
-
-
-    def self.checkFileAccessPublish(serverRoot, userName, filePath)
+    def checkFileAccessPublish(sessionId, userName, filePath)
 
         if(userName == nil)
             return false
         end
-        if(serverRoot == nil || serverRoot.strip == "")
-            serverRoot = "default/"
-        end
-        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties")
+        fullPath = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml")
         filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
 
         fAccess = "#{filePath}.access"
         if(File.exist?(fAccess))
 
-            fileProps = File.load_file(new FileInputStream(fAccess))
+            fileProps = YAML.load_file(fAccess)
             fileUsers = fileProps["adminUsers"]
             fileGroups = fileProps["adminGroups"]
 
@@ -880,28 +816,28 @@ class AdminAccessControler
             end
             return false
 
-        elsif(!AdminAccessControler.checkDirectoryAccessPublish(serverRoot,userName,filePath[0..filePath.rindex(@FS)]))
+        elsif(!checkDirectoryAccessPublish(userName,filePath[0..filePath.rindex(@FS)]))
             return false
         else
             return true
         end
     end
 
-    def self.getUserProps(sessionId, userName)
-            if(userName == nil || sessionId == nil ||sessionId == "")
-                return nil
-            end
-            serverRoot = AdminAccessControler.getServerRoot(sessionId)
-            return YAML.load_file(GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{userName}Profile.properties"))
+    def getUserProps(sessionId, userName)
+      if(userName == nil || sessionId == nil)
+          return nil
+      end
+
+      return YAML.load_file(GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{userName}.yaml"))
     end
     #private :getUserProps
 
-    def self.getUserName(sessionId, userName)
+    def getUserName(sessionId, userName)
 
         if(userName == nil)
             return "Username was nil!"
         end
-        user = self.getUserProps(sessionId, userName)
+        user = getUserProps(sessionId, userName)
         if(user != nil)
           return "#{user["fname"]} #{user["lname"]}"
         else
@@ -909,7 +845,7 @@ class AdminAccessControler
         end
     end
 
-    def self.getUserEmail(*args)
+    def getUserEmail(*args)
       userName = nil
       sessionId = ""
       if(args.size == 1)
@@ -921,7 +857,7 @@ class AdminAccessControler
       if(userName == nil)
           return "Username was nil!"
       end
-      user = self.getUserProps(sessionId, userName)
+      user = getUserProps(sessionId, userName)
       if(user != nil)
         return user["email"]
       else
@@ -930,7 +866,7 @@ class AdminAccessControler
 
     end
 
-    def self.getUserField(*args)
+    def getUserField(*args)
 
       sessionId = ""
       userName = nil
@@ -951,7 +887,7 @@ class AdminAccessControler
       if(field == "password")
         return "Passwords are secret...."
       end
-      user = self.getUserProps(sessionId, userName)
+      user = getUserProps(sessionId, userName)
       if(user != nil)
         return user[field]
       else
@@ -960,7 +896,7 @@ class AdminAccessControler
 
     end
 
-    def self.getUserFields(*args)
+    def getUserFields(*args)
       userName = nil
       sessionId = ""
       if(args.size == 1)
@@ -975,8 +911,9 @@ class AdminAccessControler
       end
 
       if(userName != nil)
-        user = self.getUserProps(sessionId, userName)
-        #puts "User: #{user.class.name}"
+        #puts "AdminAccessControler 913: #{sessionId} #{userName}"
+        user = getUserProps(sessionId, userName)
+        #puts "User: #{user}"
         #puts "From delete: #{user.delete("Sassword")}"
         user.delete("password")
         return user
@@ -986,17 +923,14 @@ class AdminAccessControler
     end
 
 
-    def self.checkModuleAccess(userName, sessionId, moduleName)
-
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-
-        user = AdminAccessControler.getUserProps("", userName)
+    def checkModuleAccess(userName, sessionId, moduleName)
+        user = getUserProps(sessionId, userName)
         at = 0
         while(user["adminGroup#{at}"] != nil)
 
             group = user["adminGroup#{at}"]
             at = at.next
-            allModsLoadFile = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{group}Mods.properties")
+            allModsLoadFile = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{group}Mods.yaml")
             if(File.exist?(allModsLoadFile))
 
                 allMods = YAML.load_file(allModsLoadFile)
@@ -1009,10 +943,10 @@ class AdminAccessControler
 
     end
 
-    def self.checkGroupModuleAccess(groupName, sessionId, moduleName)
+    def checkGroupModuleAccess(groupName, sessionId, moduleName)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
-        allModsLoadFile = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/#{groupName}Mods.properties")
+
+        allModsLoadFile = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/#{groupName}Mods.yaml")
         if(File.exist?(allModsLoadFile))
 
             allMods = YAML.load_file(allModsLoadFile)
@@ -1025,18 +959,18 @@ class AdminAccessControler
 
 
 
-    def self.getAllGroups(sessionId)
+    def getAllGroups(sessionId)
 
-        serverRoot = AdminAccessControler.getServerRoot(sessionId)
 
-        allGroupsDir = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/#{serverRoot}.profiles/")
+
+        allGroupsDir = GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/.profiles/")
         if(File.directory?(dir))
           Dir.chdir(dir)
-          filtered = Dir.glob("*Mods.properties")
+          filtered = Dir.glob("*Mods.yaml")
           groups = Array.new
           at = 0
           filtered.each{ |group|
-            groups[at] = group[0..group.index("Mods.properties")-1]
+            groups[at] = group[0..group.index("Mods.yaml")-1]
             at = at.next
           }
         end
@@ -1046,14 +980,14 @@ class AdminAccessControler
 
 
 
-    def self.setUserField(userName, field, value)
+    def setUserField(userName, field, value)
 
       if(userName == nil)
           return false
       end
       user = getUserProps("", userName)
       user[field] = value
-      File.write(GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/webAdmin/servers/default/.profiles/#{userName}Profile.properties"), user.to_yaml)
+      File.write(GlobalSettings.changeFilePathToMatchSystem("#{@APPLICATION_HOME}/dashboard/default/.profiles/#{userName}.yaml"), user.to_yaml)
       return true
 
     end

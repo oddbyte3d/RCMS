@@ -5,27 +5,27 @@ class Hub
 
 
   def self.applyFilters(request, response, session, content)
-      puts "-----------------------------------\nIn Apply Filters\n----------------------------------------"
+      #puts "-----------------------------------\nIn Apply Filters\n----------------------------------------"
       if(request["APPLY_FILTERS"] != nil && request["APPLY_FILTERS"] == "false")
           return content
       else
         filterClasses = GlobalSettings.getGlobal("OutputFilters")
-        puts "All Filter Classes: #{filterClasses}"
+        #puts "All Filter Classes: #{filterClasses}"
         filters = filterClasses.split(",")
         myContent = content
         filters.each{ |filter|
 
             if(filter.strip.size > 0)
 
-                puts "Filter : #{filter}"
+                #puts "Filter : #{filter}"
                 className = filter[filter.rindex("/")+1..filter.size]
-                puts "ClassName : #{className}"
+                #puts "ClassName : #{className}"
                 require_relative(filter)
                 obFilter = Kernel.const_get(className).new(session)
-                puts "obFilter.is_a?(OutputFilter) #{obFilter.class.name}"
+                #puts "obFilter.is_a?(OutputFilter) #{obFilter.class.name}"
                 if(obFilter.is_a?(OutputFilter))
 
-                    puts "\tAccepted filter..."
+                    #puts "\tAccepted filter..."
                     myContent = obFilter.filterOutput(request, response, session, myContent)
                     #puts "\t...filter done #{myContent}"
                 end

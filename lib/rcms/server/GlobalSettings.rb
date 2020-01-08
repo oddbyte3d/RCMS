@@ -29,7 +29,7 @@ class GlobalSettings
     def initialize
 
       GlobalSettings.loadSettingsFile
-      puts "GlobalSettings initialized...\n\n#{@@SETTINGS}"
+      #puts "GlobalSettings initialized...\n\n#{@@SETTINGS}"
       #private static final String repositoryCacheName = "RepositoryCache.obj";
     end
 
@@ -44,7 +44,7 @@ class GlobalSettings
 
     def self.loadSettingsFile
       @OBMANAGER = ObjectRepositoryManager.new
-      puts "Try to load : #{@@GLOBALS_FILE}"
+      #puts "Try to load : #{@@GLOBALS_FILE}"
       @@SETTINGS = YAML.load_file(@@GLOBALS_FILE)
       #puts "Settings\n#{@@SETTINGS}"
       if @@SETTINGS != nil
@@ -142,35 +142,6 @@ class GlobalSettings
     end
 
 
-=begin
-    public static TemplateFile getModuleTemplateFile(HttpServletRequest request, String xmlFile, String templateType)
-            throws FileNotFoundException, IOException
-    {
-        String fs = GlobalSettings.getFileSeparator();
-        File tempDir = GlobalSettings.getTemplateDirectory(request);
-
-        Properties templateProps = new Properties();
-        templateProps.load(new FileInputStream(tempDir+
-                fs+"template.properties"));
-
-        System.out.println("----------------------------------\n"+templateProps+"\n----------------------------------\n");
-
-        File newsTemplate = null;
-        String workarea = GlobalSettings.getCurrentWorkArea(request.getSession());
-        if(templateProps.containsKey(templateType))
-            newsTemplate = new File(tempDir.getAbsolutePath()+fs+templateProps.getProperty(templateType));
-        else
-            newsTemplate = new File(workarea+"system"+fs+"templates"+fs+"Modules"+fs+templateType+".html");
-
-
-        System.out.println(templateType+" file:"+newsTemplate);
-
-        Page cuppaPage = new Page(new File(workarea+xmlFile), request.getSession());
-        TemplateFile tf = new TemplateFile(tempDir, newsTemplate, cuppaPage);
-        return tf;
-
-    }
-=end
 
     def getTemplateDirectory(request)
         theme = getTemplate(request);
@@ -207,7 +178,7 @@ class GlobalSettings
         tmpTheme = theme
         themeFound = false
         while tmpTheme != "" do
-          puts "TemplateDirectory : #{properties.getProperties('TemplateDirectory')}"
+          #puts "TemplateDirectory : #{properties.getProperties('TemplateDirectory')}"
 
             if(properties.getProperties("TemplateDirectory")[tmpTheme] != nil)
                 theme = properties.getProperties("TemplateDirectory")[tmpTheme]
@@ -231,29 +202,49 @@ class GlobalSettings
 
     def getUserCurrentPath(userSession)
 
-        if(userSession["CuppaWEB:CurrentPath"] != nil)
-            return FileCMS.new(userSession, userSession["CuppaWEB:CurrentPath"])
+        if(userSession["RCMS:CurrentPath"] != nil)
+            return FileCMS.new(userSession, userSession["RCMS:CurrentPath"])
         else
             return FileCMS.new(userSession, "/index.xml")
         end
     end
 
-    def removeUserSession(userSession)
+    def self.trackSession(session)
+      if @@SETTINGS == nil
+        self.init(true)
+      end
+
+      if !@@SETTINGS.key? (session.sessionId)
+        @@SETTINGS[session.sessionId] = session
+      end
+    end
+
+    def self.getSession(sessionId)
+      if @@SETTINGS.key?(sessionId)
+        return @@SETTINGS[sessionId]
+      else
+        return nil
+      end
+    end
+
+
+    def self.removeUserSession(userSession)
         @@CURRENT_USERS.delete(getUserLoggedIn(userSession))
     end
 
-    def addUserSession(userSession)
-
-        if !@@CURRENT_USERS.containsKey?(getUserLoggedIn(userSession))
-            @@CURRENT_USERS[getUserLoggedIn(userSession)] = userSession
+    def self.addUserSession(userSession)
+        user = getUserLoggedIn(userSession)
+        #puts "In addUserSession : user:: #{user}"
+        if !@@CURRENT_USERS.key?(user)
+            @@CURRENT_USERS[user] = userSession
         else
 
-            @@CURRENT_USERS.delete(getUserLoggedIn(userSession))
-            @@CURRENT_USERS[getUserLoggedIn(userSession)] = userSession
+            @@CURRENT_USERS.delete(user)
+            @@CURRENT_USERS[user] = userSession
         end
     end
 
-    def getUserSession(userName)
+    def self.getUserSession(userName)
 
         if @@CURRENT_USERS[userName] != nil
           return @@CURRENT_USERS[userName]
@@ -262,16 +253,16 @@ class GlobalSettings
     end
 
 
-    def getUsersLoggedIn
+    def self.getUsersLoggedIn
         return @@CURRENT_USERS
     end
 
     #Return repository keys
-    def getLoadedRepositoryNames
+    def self.getLoadedRepositoryNames
         return @OBMANAGER.listRepositorys
     end
 
-    def getLoadedRepository(repositoryName)
+    def self.getLoadedRepository(repositoryName)
         return @OBMANAGER.getObjectRepsoitory(repositoryName)
     end
 =begin
@@ -659,7 +650,7 @@ class GlobalSettings
             cmsf = FileCMS.new(session, pagePath)
             vf = cmsf.getVersionedFile
             fv = vf.getVersionByNumber(version)
-            puts "Version File ::: #{vf.getVersionByNumber(version)}"
+            #puts "Version File ::: #{vf.getVersionByNumber(version)}"
             if(fv == nil)
                 version = -1
             else
@@ -670,7 +661,7 @@ class GlobalSettings
 
         dataArea = GlobalSettings.getDocumentDataDirectory()
         workArea = GlobalSettings.getDocumentWorkAreaDirectory()
-        puts "DataArea : #{dataArea}"
+        #puts "DataArea : #{dataArea}"
         if(pagePath.start_with?(workArea))
             pagePath = Parser.replaceAll(pagePath, workArea, "")
             workingDir = "WORKAREA"
@@ -685,19 +676,19 @@ class GlobalSettings
         end
         origPagePath = pagePath
         pagePath = "#{workingDir}#{Parser.replaceAll(pagePath, "/", ".")}"
-        puts "Clearing:: #{pagePath} version :#{version}"
+        #puts "Clearing:: #{pagePath} version :#{version}"
 
         @OBMANAGER.getObjectRepsoitory(@@XML_CACHE_REPOSITORY).removeRepositoryObject(pagePath)
         if(workingDir == "WORKAREA")
 
             clear = Parser.replaceAll("#{workArea}#{origPagePath[1..origPagePath.size-1]}", "/", "-")
-            puts "Clearing 2:: #{clear}"
+            #puts "Clearing 2:: #{clear}"
             @OBMANAGER.getObjectRepsoitory(@@XML_CACHE_REPOSITORY).removeRepositoryObject(clear)
 
         else
-          puts "OriginalPath:"
+          #puts "OriginalPath:"
           clear = Parser.replaceAll("#{dataArea}#{origPagePath[1..origPagePath.size-1]}", "/", "-")
-          puts "Clearing 2:: #{clear}"
+          #puts "Clearing 2:: #{clear}"
           @OBMANAGER.getObjectRepsoitory(@@XML_CACHE_REPOSITORY).removeRepositoryObject(clear)
         end
     end
@@ -917,7 +908,7 @@ class GlobalSettings
                 return "/#{path}"
             end
         end
-        puts "returning nil"
+        #puts "returning nil"
         return nil
 
 
@@ -987,7 +978,7 @@ class GlobalSettings
     def self.getUserLoggedIn(session)
         #puts "Retrieving User: #{session}"
         if(session.instance_of?String)
-          currentUser = @@CURRENT_USERS.containsKey?(session)
+          currentUser = @@CURRENT_USERS.key?(session)
           if(AccessControler.new.userExists(session))
             return currentUser
           else
@@ -996,7 +987,7 @@ class GlobalSettings
         else
 
           if session["loginName"] != nil
-              #puts "\n\nUser : #{session["loginName"]}\n\n"
+              #puts "\n\nUser 1 : #{session.sessionId}\n#{@@CURRENT_USERS}\n"
               user = session["loginName"]
               if(AccessControler.new.userExists(user))
                 return user
@@ -1006,6 +997,42 @@ class GlobalSettings
           end
         end
     end
+
+    #Do user login
+    def self.loginUser(session, userName, userPass)
+        loggedIn = false
+        webAccess = AccessControler.new
+        adminAccess = AdminAccessControler.new
+        if webAccess.checkUserLogin(userName, userPass)
+          session["loginName"] = userName
+          #puts "SessionId: #{session.sessionId}"
+          GlobalSettings.addUserSession(session)
+          loggedIn = true
+          #puts "Web logged in!"
+        end
+        if adminAccess.checkUserLogin(session.sessionId, userName, userPass)
+          AdminSession.addNewSession(session.sessionId)
+          #puts "Admin logged in!"
+        end
+        return loggedIn
+    end
+
+    # User logout process.
+    def self.logoutUser(session)
+      if session["loginName"] != nil
+        session.delete("loginName")
+        removeUserSession(session)
+      end
+      AdminSession.deleteSession(session.sessionId)
+    end
+
+
+    # Check if a user is logged in???
+    def self.isUserLoggedIn(session)
+      userName = getUserLoggedIn(session)
+      return (userName != "guest" && @@CURRENT_USERS.key?(session.sessionId))
+    end
+
 
     def self.getModuleXMLFile(request)
 
@@ -1231,7 +1258,7 @@ class GlobalSettings
      # @param key Hashtable Identifier
      # @return Object found, or null
 
-    def self.getConfigPath()
+    def self.getConfigPath
         return props["Server-ConfigPath"]
     end
 
@@ -1289,13 +1316,13 @@ class GlobalSettings
     end
 
 
-    def self.setCuppaAdminSessionId(session, sessionId)
+    def self.setAdminSessionId(session, sessionId)
 
-        session["CuppaADMIN.sessionId"] = sessionId
+        session["ADMIN.sessionId"] = sessionId
     end
 
-    def self.getCuppaAdminSessionid(session)
-        return session["CuppaADMIN.sessionId"]
+    def self.getAdminSessionid(session)
+        return session["ADMIN.sessionId"]
     end
 
     # Retrieves a global parameter
@@ -1329,7 +1356,7 @@ class GlobalSettings
     # Retrieves all global parameters in a hashtable
      # @return Hashtable
 
-    def getAllGlobals
+    def self.getAllGlobals
         if(!@@INITIALIZED)
             init(false)
         end
@@ -1340,7 +1367,7 @@ class GlobalSettings
     # @param key global to remove
     # @return Object removed
 
-    def removeGlobal(key)
+    def self.removeGlobal(key)
       if(!@@INITIALIZED)
           init(false)
       end

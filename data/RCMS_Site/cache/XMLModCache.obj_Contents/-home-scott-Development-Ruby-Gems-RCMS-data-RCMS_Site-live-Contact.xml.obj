@@ -78,7 +78,7 @@ REPOSITORY_OBJ:
     nodeValue: ''
     nodeAttributes: {}
     0:
-      nodeName: cuppa_form
+      nodeName: form
       nodeValue: ''
       nodeAttributes: {}
       0:
@@ -98,9 +98,19 @@ REPOSITORY_OBJ:
         childCount: 0
       3:
         nodeName: params
-        nodeValue: ''
+        nodeValue: "\n  "
         nodeAttributes: {}
-        childCount: 0
+        0:
+          nodeName: param
+          nodeValue: test:testing
+          nodeAttributes: {}
+          childCount: 0
+        1:
+          nodeName: param
+          nodeValue: key:value
+          nodeAttributes: {}
+          childCount: 0
+        childCount: 2
       4:
         nodeName: visible
         nodeValue: 'true'
@@ -110,5 +120,5 @@ REPOSITORY_OBJ:
     childCount: 1
   childCount: 3
 CLASS_NAME: Hash
-CREATION_DATE: 2019-12-15
+CREATION_DATE: 2019-12-26
 IS_MEMORY_CACHED: true

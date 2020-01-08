@@ -33,7 +33,7 @@ class MenuItem
         xml.concat("</menu-link>")
 
         xml.concat("<menu-link-target>")
-        xml.concat(getOpenLinkIn_String(@openLinkIn))
+        xml.concat(MenuItem.getOpenLinkIn_String(@openLinkIn))
         xml.concat("</menu-link-target>")
 
         xml.concat("<menu-text>")

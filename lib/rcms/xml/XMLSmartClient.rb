@@ -124,34 +124,40 @@ class XMLSmartClient
     # must be set to get the wanted child nodes
     # @param node Node to use
     def setNode(node)
+        #puts "Set Node:::: #{node}"
         if(@xml != nil)
-
+          #puts "xml???? #{@xml}"
           @node = node
           tokens = node.split("/")
           working = @xml
 
-          if(@xmlStoreMap != nil && @xmlStoreMap != "")
-              working = @xmlStore.get(@xmlStoreMap)
-          elsif(@nodeValues.size > 0 && @store)
-              working = @nodeValues.get(@index);
-          end
+          #if(@xmlStoreMap != nil && @xmlStoreMap != "")
+          #    working = @xmlStore.get(@xmlStoreMap)
+          #elsif(@nodeValues.size > 0 && @store)
+          #    working = @nodeValues.get(@index);
+          #end
 
           @nodeValues.clear
           localIndex = 0
           localNode = ""
           localHashNode = nil
-          @xmlTool.setCountToZero()
+          #@xmlTool.setCountToZero
+          #puts "\n\n----------------------------\nworking:#{working}\ntokens[0]:#{tokens[0]}\nlocalIndex:#{localIndex}\nCheck:::: #{@xmlTool.getHashForNameAtPos(working,tokens[0],localIndex)}\n----------------------------------"
+          @xmlTool.setCountToZero
           while((localHashNode = @xmlTool.getHashForNameAtPos(working,tokens[0],localIndex)) != nil)
               localIndex = localIndex.next
               @xmlTool.setCountToZero()
               @nodeValues << localHashNode
           end
+          #puts "nodeValues.size = #{@nodeValues.size}"
           if(tokens.length != 1 && @nodeValues.size != nil)
-              for i in 1..tokens.size
+              for i in 1..tokens.size-1
                   @nodeValues = traverseNodes(@nodeValues,tokens[i])
+                  #puts "Next node: #{tokens[i]} :: #{@nodeValues}"
               end
           end
           @node = tokens[tokens.size-1];
+          #puts "End Node: #{@node}"
         end
     end
 
@@ -180,7 +186,7 @@ class XMLSmartClient
     # @return Attribute found
     def getAttribute
     	if(@nodeValues.size > @index)
-    	    tmp = @nodeValues[index]
+    	    tmp = @nodeValues[@index]
     	    result = @xmlTool.searchForAttribute(tmp, @attributeElementName, @attributName)
     	    return result
     	else
@@ -241,6 +247,9 @@ class XMLSmartClient
   end
 
 
+
+
+
   # Combines the methods
   #    setNode()
   #    setIndex(int)
@@ -251,12 +260,12 @@ class XMLSmartClient
   # @param index
   # @param nodeElement Element to search for
   # @return Element Array.
-    def getNodeElement(node, index, nodeElement)
+    def getNodeElement_3(node, index, nodeElement)
     	setNode(node)
     	setIndex(index)
     	setNodeElement(nodeElement)
     	returnElements = Array.new
-    	for i in 0..nodeElements.size
+    	for i in 0..@nodeElements.size
     	    returnElements[i] = getNodeElement
     	end
     	return returnElements
@@ -270,11 +279,12 @@ class XMLSmartClient
 
     #Return the name of the next node element to be requested
     def getNextNodeElementName
-
+        #puts @nodeValues
       	if(@nodeValues.size > @index)
 
       	    if(@nodeAt < @nodeElements.size)
           		retStr = @nodeElements[@nodeAt];
+              #@nodeAt = @nodeAt.next
           		return retStr.strip
       	    end
       	    return ""
@@ -287,9 +297,20 @@ class XMLSmartClient
 
     # get a nodeElement of a xml-tree from the node
     # @return next node
-    def getNodeElement
+
+    def getNodeElement(*args)
+      if(args.size == 0)
+        return getNodeElement_0
+      elsif(args.size == 3)
+
+        return getNodeElement_3(args[0], args[1], args[2])
+      end
+    end
+
+    def getNodeElement_0
+      nodeAt = 0
     	if(@nodeValues.size > @index)
-    	    tmp = @nodeValues[index]
+    	    tmp = @nodeValues[@index]
     	    if(@nodeAt < @nodeElements.size)
             retStr = nil
             if(@nodeElements[@nodeAt].index(':') != nil)
@@ -302,6 +323,7 @@ class XMLSmartClient
         		if(@nodeElements.size != 1)
         		    nodeAt = nodeAt.next
         		end
+            @nodeAt = @nodeAt.next
         		return retStr.strip
 
     	    end

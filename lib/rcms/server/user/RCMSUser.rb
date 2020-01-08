@@ -16,12 +16,12 @@ class RCMSUser
 
       @ADMIN_ACCESS_CONTROL = AdminAccessControler.new
       @ACCESS_CONTROL = AccessControler.new
-      @ADMIN_GROUPS = Hash.new
-      @WEB_GROUPS = Hash.new
+      @ADMIN_GROUPS = Array.new
+      @WEB_GROUPS = Array.new
 
       @USER_NAME = userName
       @IS_ADMIN = @ADMIN_ACCESS_CONTROL.userExists(@USER_NAME)
-      puts "User is admin: #{@USER_NAME} ?#{@IS_ADMIN}"
+      #puts "User is admin: #{@USER_NAME} ?#{@IS_ADMIN}"
       @IS_WEB = @ACCESS_CONTROL.userExists(@USER_NAME)
       if(@IS_ADMIN)
           @ADMIN_PROPS = @ADMIN_ACCESS_CONTROL.getUserFields(@USER_NAME)

@@ -3,3 +3,10 @@
 company_address: 999 Carbarup Rd, Kendenup WA 6232
 phone_number: 0474 201 965
 body_color: '#ffffff'
+cms_name: global;CMS-Name
+rcms_mav: global;RCMS-Major-Version
+rcms_miv: global;RCMS-Minor-Version
+rcms_iv: global;RCMS-Incremental-Version
+user_fname: user;fname
+user_lname: user;lname
+user_email: user;email

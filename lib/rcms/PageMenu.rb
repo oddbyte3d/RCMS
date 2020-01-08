@@ -82,9 +82,9 @@ class PageMenu
     def compileMenu
 
         menu = "<page-menu>"
-        for i in 0..@menuItems.size
-            menu.concat(@menuItems[i].menuItemToXML)
-        end
+        @menuItems.each{ |mitem|
+          menu.concat(mitem.menuItemToXML)
+        }
         menu.concat("</page-menu>")
         return menu
     end
@@ -130,42 +130,51 @@ class PageMenu
         showSubMenu = true
         menu = renderPage
         menu = GlobalSettings.changeFilePathToMatchSystem(menu)
-        #puts "Menu setXmlFile : #{menu}"
 
         mainSmart = XMLSmartClient.new
 
         if(!forceReload)
             @pageSmart.setXmlFile(menu)
             mainSmart.setXML(@pageSmart.getXML)
+            #puts "-----------------------\n\nMenu setXmlFile 1 : #{menu}\n\n---------------------------------"
+
         else
             mainSmart.setXmlFile(menu)
+            #puts "-----------------------\n\nMenu setXmlFile 2 : #{menu}\n\n---------------------------------"
+
         end
 
         xmlMenu = XMLSmartClient.new
+        #puts "#{mainSmart.getNodeElement("page/pageinfo/page-menu/menu-entry",0,"menu-link/menu-text/menu-link-target")}"
 
-        mainSmart.setNode("page/page-menu/menu-entry")
-        if(mainSmart.getCount <= 0)
+
+
+        mainSmart.setNode("page/pageinfo/page-menu/menu-entry")
+        if(mainSmart.getCount == nil)
+            #puts "Setting xml ::::: #{renderPage}"
             xmlMenu.setXmlFile(renderPage)
             showSubMenu = false
-            xmlMenu.setNode("page/page-menu/menu-entry")
+            xmlMenu.setNode("page/pageinfo/page-menu/menu-entry")
             if(xmlMenu.getCount > 0)
                 mainSmart.setXmlFile(xmlMenu.getXmlFile)
             end
-            mainSmart.setNode("page/page-menu/menu-entry")
+            mainSmart.setNode("page/pageinfo/page-menu/menu-entry")
         end
+        #puts "XML:::: #{mainSmart.getXML}"
         count = mainSmart.getCount
-        for i in 0..count
+        for i in 0..count-1
             menuTmp = mainSmart.getNode(i)
+            #puts " Check menuTmp :::#{menuTmp}"
             smart = XMLSmartClient.new
             smart.setXML(menuTmp)
-            smart.setNode("menu-entry/")
+            smart.setNode("menu-entry")
             smart.setIndex(0)
             smart.setNodeElement("menu-link/menu-text/menu-link-target/")
-            link = smart.getNodeElement()
-            linkText = smart.getNodeElement()
-            linkTarget = smart.getNodeElement()
+            link = smart.getNodeElement
+            linkText = smart.getNodeElement
+            linkTarget = smart.getNodeElement
             submenu = makeSubMenu("#{@docDataDir}#{@FS}#{link}");
-
+            #puts "Menu Item -- link:#{link} :: link_text: #{linkText}"
             linkOpenType = MenuItem.getOpenLinkIn_String(linkTarget)
             #(linkTarget == "_self"? MenuItem.OPEN_SAME_WINDOW:MenuItem.OPEN_NEW_WINDOW )
             menuItem = MenuItem.new(link, linkOpenType, linkText, submenu)
@@ -173,22 +182,23 @@ class PageMenu
             @menuItems << menuItem
 
         end
+        puts "All menu items ::: #{@menuItems}"
     end
 
 
     def makeSubMenu(xmlFile)
-
+        puts "Making sub menu:::: #{xmlFile}"
         xmlMenu = XMLSmartClient.new
         xmlMenu.setXmlFile(xmlFile)
-        xmlMenu.setNode("page/page-menu/menu-entry")
+        xmlMenu.setNode("page/pageinfo/page-menu/menu-entry")
         count = xmlMenu.getCount
         submenu = Array.new
-        for i in 0..count
+        for i in 0..count-1
 
             menuTmp = xmlMenu.getNode(i)
             smart = XMLSmartClient.new
             smart.setXML(menuTmp)
-            smart.setNode("menu-entry/")
+            smart.setNode("menu-entry")
             smart.setIndex(0)
             smart.setNodeElement("menu-link/menu-text/menu-link-target/")
             link = smart.getNodeElement()

@@ -156,6 +156,7 @@ class XMLSmart
 
                     #puts "1 Commiting :#{fullPathMod}"
                     @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(fullPathMod, hmXML, true)
+                    @XML = hmXML
                     File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE.to_time, fullPath)
 
                     GlobalSettings.clearPageModules(@session, @XMLFILE, -1)
@@ -173,6 +174,7 @@ class XMLSmart
                     hmXML = @xmlTool.createHashtableFromXMLDocument(XMLDocument.new(@XMLFILE, true))
                     @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).removeRepositoryObject(xmlFileMod)
                     @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(xmlFileMod, hmXML, true)
+                    @XML = hmXML
                     File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getCreationDate(), fullPath)
                     File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getCreationDate(), @XMLFILE)
                     GlobalSettings.clearPageModules(@session, @XMLFILE, -1)
@@ -310,30 +312,30 @@ class XMLSmart
     # TO-DO: make private
     def traverseNodes(nodes, nextNode)
         tVec = Array.new
+        #puts "***********************\ntraverseNodes :#{nextNode} \n_______________________________\n#{nodes}\n***********************************"
         for i in 0..nodes.size
             tmp = nodes[i]
             @xmlTool.setCountToZero()
             at = 0
-            tmpNode = @xmlTool.getHashForNameAtPos(tmp, nextNode, at)
-            #puts "TmpNode : #{tmpNode}"
-            while (tmpNode != nil)
+            #tmpNode = @xmlTool.getHashForNameAtPos(tmp, nextNode, at)
+            while ((tmpNode =@xmlTool.getHashForNameAtPos(tmp, nextNode, at) )!= nil)
                 at = at.next
                 @xmlTool.setCountToZero()
-                #puts "Adding to tVec.... #{at}"
                 tVec.push(tmpNode) # alternative is tVec.push(tmpNode)
-                tmpNode = @xmlTool.getHashForNameAtPos(tmp, nextNode, at)
+                #tmpNode = @xmlTool.getHashForNameAtPos(tmp, nextNode, at)
             end
         end
-        #puts "Returning : #{tVec.size}"
         return tVec
     end
+
+
 
     # a String like ParentNode/ChildNode
     # must be set to get the wanted child nodes
     # @param node Node to use
 
     def setNode(node)
-        #puts "----setNode --1"
+        #puts "----setNode --1 #{node}"
         if (@XML != nil)
             #puts "----setNode --2"
             @node = node
@@ -354,17 +356,18 @@ class XMLSmart
             localIndex = 0
             localNode = ""
             #localHashNode = nil
-            #puts "Working : #{working}"
+            #puts "Working : #{tokens[0]}   ------\n#{working}"
             localHashNode = @xmlTool.getHashForNameAtPos(working, tokens[0], localIndex)
-            #puts "LocalHash :#{tokens[0]}:\n--------------\n#{localHashNode}\n--------------------------\n"
+            #puts "LocalHash :#{localIndex}  :: #{tokens[0]}:\n--------------\n#{localHashNode}\n--------------------------\n"
             @xmlTool.setCountToZero
-            while (localHashNode != nil)
+            while ((localHashNode = @xmlTool.getHashForNameAtPos(working, tokens[0], localIndex)) != nil)
                 localIndex = localIndex.next
                 @xmlTool.setCountToZero
                 @nodeValues << localHashNode
-                localHashNode = @xmlTool.getHashForNameAtPos(working, tokens[0], localIndex)
-                #puts "#{localIndex} LocalHash :#{tokens[0]}:\n--------------\n#{localHashNode}\n--------------------------\n"
+                #localHashNode = @xmlTool.getHashForNameAtPos(working, tokens[0], localIndex)
+                #puts "LocalHash :#{localIndex}  :: #{tokens[0]}:\n--------------\n#{localHashNode}\n--------------------------\n"
             end
+            #puts "Tokens: #{tokens} #{@nodeValues}"
             if (tokens.size != 1 && @nodeValues.size > 0)
                 for i in 0..(tokens.size-1)
                   #puts "About to traverseNodes... #{i} #{tokens[i]}"
@@ -411,6 +414,7 @@ class XMLSmart
     # @return xml fragment in @XML form
 
     def retNode(index)
+      #puts "Node Values: #{@nodeValues}"
         if (@nodeValues.size > index)
             return @nodeValues[index]
         else
@@ -537,7 +541,11 @@ class XMLSmart
                 if (@nodeElements.size != 1)
                     @nodeAt = @nodeAt.next
                 end
-                return retStr.strip
+                if(retStr.is_a? String)
+                  return retStr.strip
+                else
+                  return retStr
+                end
             end
             return ""
         else

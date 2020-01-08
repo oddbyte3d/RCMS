@@ -121,6 +121,7 @@ jpe: image/jpeg
 hpp: text/plain
 hdf: application/x-hdf
 xml: text/html
+admin: text/html
 smil: application/smil
 bcpio: application/x-bcpio
 ra: audio/vnd.rn-realaudio

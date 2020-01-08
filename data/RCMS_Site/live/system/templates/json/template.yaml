@@ -1,2 +1,2 @@
-_0: base.json
+_0: base.erb
 module_templates: Modules/module_templates.yaml

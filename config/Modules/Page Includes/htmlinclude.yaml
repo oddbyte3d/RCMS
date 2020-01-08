@@ -5,11 +5,7 @@ moduleIcon: IMAGES/CuppaWEB/htmltype.png
 moduleDescription: Use this element to import a HTML page fragment into your page. WARNING - If your HTML code is not correct it could cause the system to malfunction!
 moduleDefaultXML: <htmlinclude><id></id><descriptive_name></descriptive_name><path><![CDATA[/system/newhtmlimport.html]]></path><visible><![CDATA[true]]></visible></htmlinclude>
 
-link: /global/modules/htmlInclude.jsp
-eml: /global/modules/htmlInclude.jsp
-type: full
-
-xmlSessionId_0: all-data
+xmlSessionId_0: data
 xmlParentNode_0: htmlinclude/
 xmlDataToLoad_0: id/path
 xmlDataMultiple_0: false

@@ -13,11 +13,14 @@
 <visible><![CDATA[true]]></visible>
 </pagetitle>
 </module>
-<module><cuppa_form><id><![CDATA[2]]></id>
+<module><form><id><![CDATA[2]]></id>
 <descriptive_name></descriptive_name>
 <path><![CDATA[/system/test.form]]></path>
-<params></params>
+<params>
+  <param><![CDATA[test:testing]]></param>
+  <param><![CDATA[key:value]]></param>
+</params>
 <visible><![CDATA[true]]></visible>
-</cuppa_form>
+</form>
 </module>
 </page>

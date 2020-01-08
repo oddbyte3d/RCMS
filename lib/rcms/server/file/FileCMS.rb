@@ -3,6 +3,9 @@ require 'exception/FileAccessDenied'
 require 'exception/FileNotFound'
 require 'rcms/server/net/HttpSession'
 require 'rcms/server/security/AccessControler'
+require 'rcms/server/file/versioning/VersionedFile'
+require 'rcms/server/file/versioning/FileVersion'
+require 'rcms/server/file/versioning/FileVersionInfo'
 require 'fileutils'
 require 'open-uri'
 # FileCMS controls user access to files within the CMS
@@ -18,6 +21,8 @@ class FileCMS
     #private String adminSessionId;
     #private HttpSession session;
     def initialize(*args)
+      @ACCESS_CONTROL = AccessControler.new
+      @ADMIN_ACCESS_CONTROL = AdminAccessControler.new
       case args.size
       when 2
         init_2(args[0], args[1])
@@ -42,9 +47,12 @@ class FileCMS
     def init_3(sess, path, create)
 
         @SESSION = sess
-        @ACCESS_CONTROL = AccessControler.new
-        @ADMIN_ACCESS_CONTROL = nil#AdminAccessControler.new
-        @ADMIN_SESSION_ID = nil#GlobalSettings.getCuppaAdminSessionid(@SESSION)
+        adminSessionHash = AdminSession.getSessionHash(@SESSION.sessionId)
+        if adminSessionHash != nil
+          @ADMIN_SESSION_ID = adminSessionHash["sessionId"]
+        else
+          @ADMIN_SESSION_ID = nil
+        end
         currentArea = GlobalSettings.getCurrentWorkArea(@SESSION)
         #puts "Workarea = #{currentArea}"
         if path.index(File.absolute_path(GlobalSettings.getDocumentDataDirectory())) == nil &&
@@ -56,13 +64,13 @@ class FileCMS
         @FILE = path
         #puts "FileCMS 57 path=#{@FILE}"
         @USER_NAME = GlobalSettings.getUserLoggedIn(@SESSION)
-        #puts "User : #{@USER_NAME}"
+        #puts "User 2 : #{@USER_NAME}"
 
         #Firstly check if we are dealing with an admin user, if the user can not access the file from a web session then throw an exception
-        if @ADMIN_SESSION_ID != nil# && @ADMIN_ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE)
-          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+        if @ADMIN_SESSION_ID != nil && !@ADMIN_ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE)
+          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
         elsif @ADMIN_SESSION_ID == nil && !@ACCESS_CONTROL.checkUserFileAccess(@USER_NAME, File.absolute_path(@FILE))
-          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
         end
 
 
@@ -70,14 +78,15 @@ class FileCMS
         #TO-DO: create versioned file system and then implement the Following
         if (!File.exist?(@FILE) && @VERSIONED_FILE.getAllVersions() != nil)
           #puts "File does not exist..."
-          raise FileNotFound.new("File #{@FILE} not found...")
+          raise FileNotFound.new("File #{getFileURL} not found...")
             #FileVersion vers[] = myVersionedFile.getAllVersions();
         else
 
             if !File.exist?(@FILE) && !create
-                raise FileNotFound.new("File: #{@FILE} does not exist!")
+                raise FileNotFound.new("File: #{getFileURL} does not exist!")
             elsif !File.exist?(@FILE)
-                File.new(@FILE,  "w+")
+                file = File.new(@FILE,  "w")
+                file.close
             end
         end
     end
@@ -91,23 +100,30 @@ class FileCMS
 
         @USER_NAME = userName
         @ADMIN_SESSION_ID = sessionId
-        @FILE = File.absolute_path(path)
-        @ACCESS_CONTROL = AccessControler.new
+        @SESSION = GlobalSettings.getSession(sessionId)
+        currentArea = GlobalSettings.getCurrentWorkArea(@SESSION)
+        if path.index(File.absolute_path(GlobalSettings.getDocumentDataDirectory())) == nil &&
+                path.index(File.absolute_path(GlobalSettings.getDocumentConfigDirectory())) == nil &&
+                path.index(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory())) == nil
+            path = "#{currentArea}#{path}"
+            #puts "FileCMS 54 path=#{@FILE}"
+        end
+        @FILE = path
 
         #If the user has no read permissions to this file then just throw an exception and do not provide the opportunity for access.
         if !@ADMIN_ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE)
-          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{@FILE}")
+          raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
         end
 
         @VERSIONED_FILE = VersionedFile.new(@USER_NAME, @SESSION, @FILE)
 
         if (!File.exist?(@FILE) && @VERSIONED_FILE.getAllVersions() != nil)
           #puts "File does not exist..."
-          raise FileNotFound.new("File #{@FILE} not found...")
+          raise FileNotFound.new("File #{getFileURL} not found...")
         else
 
           if (!File.exist?(@FILE) && !create)
-              raise FileNotFound("File: #{@FILE} does not exist!");
+              raise FileNotFound.new("File: #{getFileURL} does not exist!");
           elsif (!File.exist?(@FILE) && create)
               File.new(@FILE,  "w+")
           end
@@ -131,7 +147,7 @@ class FileCMS
         return MimeTypes.getFileMimeType(@FILE)
     end
 
-    def getFileExtension()
+    def getFileExtension
 
         if File.file?(@FILE)
             return File.extname(@FILE)
@@ -140,7 +156,9 @@ class FileCMS
         end
     end
 
-
+    def getFileName
+      return File.basename(@FILE)
+    end
 
     def getFileURL
         return GlobalSettings.getWebPath(@FILE)
@@ -169,18 +187,18 @@ class FileCMS
 
     def getFileForRead
 
-        if @SESSION != nil
+        if @SESSION != nil && @ADMIN_SESSION_ID == nil
             if(@ACCESS_CONTROL.checkUserFileAccess(@USER_NAME, File.absolute_path(@FILE)))
-              return open(@FILE)
+              return File.open(@FILE)
             else
-                raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+                raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
             end
         elsif @ADMIN_SESSION_ID != nil
 
-            if(@ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
-                return open(@FILE)
+            if(@ADMIN_ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
+                return File.open(@FILE)
             else
-                throw new FileAccessDenied("Read access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+                raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
             end
         end
         return nil
@@ -194,18 +212,20 @@ class FileCMS
      # @throws com.cuppait.cuppaweb.file.FileAccessDenied
 
     def getFileForWrite
-      if @SESSION != nil
-          if(@ACCESS_CONTROL.checkFileAccessWrite(@USER_NAME, File.absolute_path(@FILE)))
-            return open(@FILE)
-          else
-              raise FileAccessDenied.new("Write access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
-          end
-      elsif @ADMIN_SESSION_ID != nil
+      #if @SESSION != nil
+      #    if(@ADMIN_ACCESS_CONTROL.checkFileAccessWrite(@SESSION.sessionId, @USER_NAME, File.absolute_path(@FILE)))
+      #      return open(@FILE)
+      #    else
+      #        raise FileAccessDenied.new("Write access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+      #    end
+      #elsif @ADMIN_SESSION_ID != nil
+      if @ADMIN_SESSION_ID != nil
 
-          if(@ACCESS_CONTROL.checkFileAccessWrite(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
-              return open(@FILE)
+          if(@ADMIN_ACCESS_CONTROL.checkFileAccessWrite(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
+            #puts "Opening to write!!!"
+              return File.open(@FILE, "w+")
           else
-              throw new FileAccessDenied("Write access denied to user: #{@USER_NAME} for file: #{File.absolute_path(@FILE)}")
+              raise FileAccessDenied.new("Write access denied to user: #{@USER_NAME} for file: #{getFileURL}")
           end
       end
       return nil
@@ -234,7 +254,7 @@ class FileCMS
                 return publishFile()
             end
             if(!File.exist?(@FILE))   #This case, is when we are to publish a deleted file or better said unpublishing a file
-                return (new File(GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL())).delete();
+                return (File.new(GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL())).delete();
             end
             versions = @VERSIONED_FILE.getAllVersions()
             versions.each { |n_version|

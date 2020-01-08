@@ -42,7 +42,9 @@ class AdminSession
 
 			hmNewSession = Hash.new
       hmNewSession["created"] = Time.now.to_f
+      hmNewSession["sessionId"] = sessionName
 			@@ALL_SESSIONS[sessionName] = hmNewSession
+      puts "Added session: #{@@ALL_SESSIONS}"
 			return true
   	end
 
@@ -64,7 +66,8 @@ class AdminSession
 
 	def self.getSessionHash(sessionName)
 
-		if(@@ALL_SESSIONS.key(sessionName))
+    #puts "getSessionHash #{@@ALL_SESSIONS}"
+		if(@@ALL_SESSIONS.key?(sessionName))
 			return @@ALL_SESSIONS[sessionName]
 		else
 			return nil
@@ -84,6 +87,7 @@ class AdminSession
 
 	def self.getFromSession(sessionName, objName)
 
+    puts "AdminSession: #{@@ALL_SESSIONS}"
 		if(@@ALL_SESSIONS.key?(sessionName))
 		    return @@ALL_SESSIONS[sessionName][objName]
 		else

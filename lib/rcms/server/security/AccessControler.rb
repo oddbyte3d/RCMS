@@ -3,8 +3,10 @@
  #
  # Created on 17 September 2004, 15:04
 require "yaml"
+require "encrypted_strings"
 require_relative "../net/HttpSession"
 require_relative "../GlobalSettings"
+
 
 class AccessControler
 
@@ -31,7 +33,11 @@ class AccessControler
 
     def changeUserPassword(userName, oldPass, newPass, newPassConfirm)
 
-        if newPass == newPassConfirm
+        newPassEncrypt = newPass.encrypt
+        newPassConfirmEncrypt = newPassConfirm.encrypt
+        oldPassEncrypt = oldPass.encrypt
+
+        if newPassEncrypt == newPassConfirmEncrypt
 
             if checkUserLogin(userName, oldPass)
 
@@ -39,7 +45,7 @@ class AccessControler
                     return false
                 end
                 user = loadUser(userName)
-                user["password"] = newPass
+                user["password"] = newPassEncrypt
                 saveUser(userName, user)
                 return true
             else
@@ -59,16 +65,13 @@ class AccessControler
      # @return
 
     def checkUserFileAccess(userName, filePath)
-        #puts "User Exists? #{userName}"
-        if(userExists(userName) || userName == "guest")
+        return false if filePath.end_with?(".access")
+        if(userExists(userName))
 
           fAccess = filePath+".access"
-
           if File.exist?(fAccess)
-            #puts "Checking file access..."
-              return checkFileAccess(userName, filePath, fAccess)
+            return checkFileAccess(userName, filePath, fAccess)
           else
-              #puts "Can access directory : #{filePath[0..filePath.rindex(@FS)]} : #{checkUserDirectoryAccess(userName,filePath[0..filePath.rindex(@FS)])}"
               return checkUserDirectoryAccess(userName,filePath[0..filePath.rindex(@FS)])
           end
         end
@@ -130,7 +133,6 @@ class AccessControler
 
         #filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
         fAccess = filePath+".access"
-        puts "Access file exists :#{fAccess} #{File.exist?(fAccess)}"
 
         access = Hash.new
         if !File.exist?(fAccess)
@@ -173,9 +175,6 @@ class AccessControler
 
         #filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
         fAccess = filePath.concat ".access"
-        #System.out.println("Access file exists :"+fAccess.exists()+" "+fAccess.getAbsolutePath());
-        #Properties access = new Properties();
-        #puts "AccessFile : #{fAccess}"
         access = Hash.new {}
         if !File.exist?(fAccess)
           if grantAccess
@@ -192,20 +191,14 @@ class AccessControler
           access["adminGroups"] = ""
         else
             access = YAML.load_file(fAccess)
-            #puts "loaded access file: #{access}"
             users = access["users"]
             if users.index(userName) == nil && grantAccess
-                #puts "1 users: #{users}"
                 users.concat( userName+";")
-                #puts "2 users: #{users}"
             elsif users.index(userName) != nil && !grantAccess
 
                 beginning = users[0..users.index(userName)]
                 gend = users[users.index(";", users.index(userName)+userName.size)]
-                #puts "Beginning: #{beginning} ; End: #{gend}"
-                #gend = users[users.indexOf(";", users.indexOf(userName)+userName.length())+1]
                 users = beginning.concat gend
-                #puts "Users: #{users}"
             end
             access["users"] = users
         end
@@ -220,51 +213,55 @@ class AccessControler
      # @return
 
     def checkUserDirectoryAccess(userName, filePath)
-
-      if(userExists(userName))
-        #puts "Checking user Dir access #{userName} : #{filePath}"
+      return false if filePath.end_with?(".access")
+      if(userExists(userName) || userName == "guest")
         #filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
         if(filePath.end_with?(@FS))
           filePath = filePath[0..filePath.rindex(@FS)]
         elsif (filePath.strip == "")
           filePath = GlobalSettings.getGlobal("Server-DataPath")
         end
-        #System.out.println("2: In checkUserDirecotyAccess("+userName+", "+filePath+");");
 
         fAccess = filePath+".access"
-        #puts "FileToCheck : #{fAccess}"
-        #puts "RecursivePermissions : #{GlobalSettings.getGlobal("RecursivePermissions")}"
         if File.exist?(fAccess)
           return checkFileAccess(userName, filePath, fAccess)
         elsif(GlobalSettings.getGlobal("RecursivePermissions") != nil &&
-            GlobalSettings.getGlobal("RecursivePermissions") == "true")
+            GlobalSettings.getGlobal("RecursivePermissions"))
 
             noRecursivePast = nil
-            if(filePath.index(File.absolute_path(GlobalSettings.getDocumentDataDirectory())) != nil)
-                    noRecursivePast = GlobalSettings.getDocumentDataDirectory()
-            elsif(filePath.index(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory())) != nil)
-                    noRecursivePast = GlobalSettings.getDocumentWorkAreaDirectory()
-            elsif(filePath.indexOf(File.absolute_path(GlobalSettings.getDocumentConfigDirectory())) != nil)
-                    noRecursivePast = GlobalSettings.getDocumentConfigDirectory()
+            if(filePath.index(File.absolute_path(GlobalSettings.getDocumentDataDirectory)) != nil)
+                    noRecursivePast = GlobalSettings.getDocumentDataDirectory
+            elsif(filePath.index(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory)) != nil)
+                    noRecursivePast = GlobalSettings.getDocumentWorkAreaDirectory
+            elsif(filePath.index(File.absolute_path(GlobalSettings.getDocumentConfigDirectory)) != nil)
+                    noRecursivePast = GlobalSettings.getDocumentConfigDirectory
             end
-
-            puts "Recursive Permissions: currently at:#{filePath} no go past: #{noRecursivePast}"
+            #puts "No recursive past: #{noRecursivePast}"
+            if(noRecursivePast == nil)
+              return true #TO-DO: Need to check if this is correct????
+            end
+            if(!noRecursivePast.end_with?(@FS))
+              noRecursivePast.concat(@FS)
+            end
             if(File.exist?(fAccess) && noRecursivePast != nil)
-                if(File.absolute_path(fAccess) == File.absolute_path(noRecursivePast))
+                if(File.absolute_path(fAccess)[0..fAccess.rindex(@FS)] == File.absolute_path(noRecursivePast))
                     rootAccess = File.absolute_path(fAccess)+@FS+".access"
                     if File.exist?(rootAccess)
                       return checkFileAccess(userName, fAccess, rootAccess)
                     else
                       return true
                     end
-                else
-
-                    myParent = File.dirname(fAccess)
-                    if(myParent != nil && File.exist?(myParent))
-                        return checkUserDirectoryAccess(userName, File.absolute_path(myParent)+@FS)
-                    end
                 end
-            end
+              else
+                  #puts "#{filePath} ::: #{noRecursivePast}"
+                  if(filePath == noRecursivePast)
+                      return true
+                  end
+                  myParent = File.absolute_path(filePath)[0..File.absolute_path(filePath).rindex(@FS)]
+                  if(myParent != nil && File.exist?(myParent))
+                      return checkUserDirectoryAccess(userName, File.absolute_path(myParent)+@FS)
+                  end
+              end
         end
         return true
       end
@@ -353,28 +350,21 @@ class AccessControler
 
     def checkFileAccess(userName, fToAccess, fAccess)
 
+        #return false if fAccess.end_with?(".access")
         if File.exist?(fAccess) && userExists(userName)
 
           fileProps = YAML.load_file(fAccess)
-          puts "FileProps : #{fAccess} : #{fileProps}"
           fileUsers = fileProps["users"]
           fileGroups = fileProps["groups"]
-          if fileUsers.index(";guest;") != nil
-              return true
-          end
           if fileGroups.index(";guests;") != nil
               return true
           end
 
-          if userName == nil || userName == "guest"
+          if userName == nil
               return false
           end
-          if(File.exist? (@CONFIG_ROOT+@CONFIG_REST_PATH+userName+"Profile.properties") )
-            user = YAML.load_file(@CONFIG_ROOT+@CONFIG_REST_PATH+userName+"Profile.properties")
-          else
-            return false
-          end
 
+          user = loadUser(userName)
           groups = Array.new
           groupFound = true
           groupAt = 0
@@ -401,7 +391,6 @@ class AccessControler
                   return true
               end
           end
-          puts "2 Access Denied: #{fToAccess}"
           return false
         end
         return false
@@ -442,7 +431,6 @@ class AccessControler
       if(user != nil && (!user.key?("BLOCKED") || user["BLOCKED"] == false))
           return true
       end
-      #puts "Returning false......"
       return false
     end
 
@@ -454,14 +442,16 @@ class AccessControler
      # @return
 
     def checkUserLogin(userName, userPass)
-
-      user = loadUser(userFile)
+      userPass = userPass.encrypt
+      user = loadUser(userName)
       if(user == nil)
         return false
       end
       userPassLoaded = user["password"]
+      #puts "----------------------\nPass1: [#{userPass}]\nPass2: [#{userPassLoaded}]\n-----------------------------------"
+
       blocked = user["BLOCKED"]
-      if userPassLoaded == userPass  && (blocked == nil || blocked == "false")
+      if userPassLoaded == userPass  && (blocked == nil || !blocked)
           return true
       else
           return false
@@ -471,12 +461,10 @@ class AccessControler
     #Load the user Hash
     #TO-DO: Make this a private member....
     def loadUser(userName)
-      #puts "------------------------\nLoaing user: #{userName}\n--------------------------------"
       if(userName == nil)
           return nil
       end
       userFile = @CONFIG_ROOT+@CONFIG_REST_PATH+userName+".yaml"
-      #puts "Loading User profile : #{userFile}"
       if File.exist?(userFile)
         user = YAML.load_file(userFile)
         #puts "User: #{user}"
@@ -498,7 +486,7 @@ class AccessControler
 
       user = loadUser(userName)
       blocked = user["BLOCKED"]
-      if(blocked != nil && blocked == "true")
+      if(blocked != nil && blocked)
           return true
       else
           return false
@@ -546,7 +534,6 @@ class AccessControler
     def getUserName(session)
 
         if(isUserLoggedIn(session))
-
             return session["loginName"]
         end
         return nil
@@ -563,7 +550,6 @@ class AccessControler
           return user["fname"]+" "+user["lname"]
         end
         return "User not Found!"
-
     end
 
 
@@ -580,7 +566,6 @@ class AccessControler
         at = 0
         groupsV = []
         while user["group#{at}"] != nil do
-
             groupsV <= user["group#{at}"]
             at = at.next
         end
@@ -696,6 +681,7 @@ class AccessControler
 
     def createNewUser(userName, initialGroup, userEmail, fname, lname, password)
 
+        password = password.encrypt
         user = {"login" => userName,
                 "group0" => initialGroup,
                 "email" => userEmail,

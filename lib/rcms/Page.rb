@@ -15,7 +15,7 @@ require_relative './PageMenu'
     def initialize(*args)
       beforeInit
       if(args.size == 2)
-        #puts "Args : #{args[0].class.name}"
+        puts "Args : #{args[1].class.name} #{args[1]}"
         if(args[1].class.name == "HttpSession")
           initialize_session(args[0], args[1])
         else

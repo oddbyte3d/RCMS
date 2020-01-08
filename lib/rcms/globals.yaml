@@ -13,9 +13,9 @@ Admin-Email: scott@oddbyte3d.com
 MailServer: smtp.virginbroadband.com.au
 
 CMS-Name: RCMS
-RCMS-Major-Version: "2"
+RCMS-Major-Version: "0"
 RCMS-Minor-Version: "0"
-RCMS-Incremental-Version: "0"
+RCMS-Incremental-Version: "1"
 
 
 

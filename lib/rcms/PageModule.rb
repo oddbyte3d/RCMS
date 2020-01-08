@@ -60,11 +60,11 @@ class PageModule
         xmlHelperMod = XMLSmart.new
         xmlHelperMod.setXML(@descriptor); #Load xml Data
         modData = 0
-        #puts "NodeType :#{@nodeType}"
+        #puts "Module ID :#{@moduleIDS}"
         #puts "Loading mod data :#{@modules.getProperty(@nodeType,"xmlParentNode_#{modData}")}"
         while(@modules.getProperty(@nodeType, "xmlParentNode_#{modData}") != nil)
 
-            xmlHelperMod.setNode(@modules.getProperty(@nodeType,"xmlParentNode_#{modData}"));    #Select the correct module
+            xmlHelperMod.setNode(@modules.getProperty(@nodeType,"xmlParentNode_#{modData}"))    #Select the correct module
             xmlHelperMod.setIndex(0)
             xmlHelperMod.setNodeElement("id")
             at = 0
@@ -74,32 +74,46 @@ class PageModule
                 idSt = xmlHelperMod.getNodeElement()
                 if(xmlHelperMod.getNodeElement() == @moduleIDS)
                     at = j
+                    #puts "Found Module at: #{j}"
                 end
             end
+            #puts "Setting INDEX to: #{at}"
             xmlHelperMod.setIndex(at)
-            multiData = (@modules.getProperty(@nodeType,"xmlDataMultiple_#{modData}") == true)
 
-            if(multiData == "true")
+            #puts "=====================================\nMod Data #{modData} has multiple entries? #{@modules.getProperty(@nodeType,"xmlDataMultiple_#{modData}")}\n====================================="
+            multiData = @modules.getProperty(@nodeType,"xmlDataMultiple_#{modData}")
+            #puts "MultiData : #{multiData}"
+            #at = 0
+            if(multiData)
 
                 tmpSm = XMLSmartClient.new
-                tmpSm.setXML(xmlHelperMod.getNode(at))
+                #xmlHelperMod.setNode(@modules.getProperty(@nodeType,"xmlParentNode_#{modData}"))    #Select the correct module
+                #xmlHelperMod.setIndex(0)
+                nextNode = xmlHelperMod.getNode(at)
+                #puts "MultiData Node: #{at} : #{nextNode}"
+                tmpSm.setXML(nextNode)
                 tmpSm.setNode(@modules.getProperty(@nodeType,"xmlParentNodeMultiple_#{modData}"))
                 countDMod = tmpSm.getCount
                 vData = Array.new
-                for j in 0..countDMod
+                for j in 0..countDMod-1
 
                     tmpSm.setIndex(j)
+
                     tmpSm.setNodeElement(@modules.getProperty(@nodeType,"xmlDataToLoad_#{modData}"))
                     htDataTmp = Hash.new
-                    for k in 0..tmpSm.getNodeElementCount()
+                    puts "------HELP-----\n#{@modules.getProperty(@nodeType,"xmlDataToLoad_#{modData}")}\n#{tmpSm.getNodeElementCount}"
+                    for k in 0..tmpSm.getNodeElementCount-1
 
-                        nodeName = tmpSm.getNextNodeElementName()
-                        workon = tmpSm.getNodeElement()
-                        htDataTmp[nodeName] = workon
+                        nodeName = tmpSm.getNextNodeElementName
+                        puts "NodeName : #{nodeName}"
+                        workon = tmpSm.getNodeElement
+                        htDataTmp[nodeName] = workon if nodeName.strip != ""
+                        #puts "----------->>>>>>-------\n\n#{htDataTmp}\n\n---------------------<<<<<<<<<<<-----------------"
                     end
-                    vData << htDataTmp
+                    puts "\n-------END--------"
+                    vData << htDataTmp if htDataTmp.keys.size > 0
                 end
-                @modDataHash[modules.getProperty(@nodeType,"xmlSessionId_#{modData}")] = vData
+                @modDataHash[@modules.getProperty(@nodeType,"xmlSessionId_#{modData}")] = vData
 
             else
 
@@ -109,6 +123,7 @@ class PageModule
                     htDataTmp[xmlHelperMod.getNextNodeElementName()] = xmlHelperMod.getNodeElement()
                 end
                 @modDataHash[@modules.getProperty(@nodeType,"xmlSessionId_#{modData}")] = htDataTmp
+                puts @modDataHash
             end
             modData = modData.next
         end

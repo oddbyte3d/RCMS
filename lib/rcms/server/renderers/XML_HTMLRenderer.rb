@@ -10,6 +10,7 @@ require_relative '../file/exception/FileAccessDenied'
 require_relative '../Hub'
 require_relative './OutputRenderer'
 require_relative '../template/Template'
+require 'erb'
 
 
 class XML_HTMLRenderer < OutputRenderer
@@ -21,11 +22,13 @@ class XML_HTMLRenderer < OutputRenderer
     end
 
     #Render xml -> html output
-    # request - Hash : this will need to be mapped from rails
-    # response - Hash : this will need to be mapped from rails
-    # session - For the moment it is rcms/server/net/HttpSession simple Hash wrapper
+    # request - Hash :
+    # response - Hash :
+    # session - For the moment it is rcms/server/net/HttpSession simple Hash wrapper: possibly keep this way??
     # properties - PropertyLoader
     # etc....
+
+
 
     def renderOutput( request, response, session, properties, xmlFileToRender, theme, baseDocRoot,
                       baseDocRootInclude, onlyModules)
@@ -63,6 +66,8 @@ class XML_HTMLRenderer < OutputRenderer
         # TO-DO: Implement Template system then this....
         myTemplate = Template.new(templateDir, page)
         myTemplate.setRenderer(self)
+        #puts "AdditionalParams :: #{@extraParams}"
+        myTemplate.setAdditionalParameters(@extraParams)
         #myTemplate.setHTMLRenderer(self)
         if(!onlyModules)
           pageContent = myTemplate.getParsedTemplate
@@ -76,7 +81,7 @@ class XML_HTMLRenderer < OutputRenderer
             #//TODO: process page, each module, one at a time.... Need to supply each with the correct module ID.
             pageModuleContent = ""
             mods = page.getAllPageModules
-            puts "Mod count : #{mods.size}"
+            #puts "Mod count : #{mods.size}"
             mods.each{ |mod|
 
                 modType = mod.getModuleType
@@ -91,13 +96,15 @@ class XML_HTMLRenderer < OutputRenderer
 
             }
         end
+        #puts "About to process #{@extraParams}"
 
+
+        #processExtraParameters(pageModuleContent)
         if(!onlyModules)
           pageContent = Parser.replaceAll(pageContent, "*CONTENT*", pageModuleContent)
         else
           pageContent = pageModuleContent
         end
-        pageContent = Hub.applyFilters(request, response, session, pageContent)
 
         return pageContent
     end

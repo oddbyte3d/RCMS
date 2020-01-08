@@ -1,4 +1,5 @@
 .xml: XML_HTMLRenderer
+.admin: XML_HTMLRenderer
 .json: XML_JSONRenderer
 .jpg: Image_Renderer
 .gif: Image_Renderer
