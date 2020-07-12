@@ -131,16 +131,16 @@ class XMLDocument
           if hmTemp.name != nil && hmTemp.isSpecialTextTag && hmTemp.content != nil && hmTemp.content.strip == ""
               deleteNextTextTagEnd = true
           elsif deleteNextTextTagEnd && hmTemp.isSpecialTextTag
-              deleteNextTextTagEnd = false;
+              deleteNextTextTagEnd = false
           else
               @XML_DOC << hmTemp					#Put it into the HTMLDocument
               #System.out.println("Adding::"+hmTemp+"::");
               tagAt = tagAt.next
           end
-          newToSearch = removeTag(newToSearch,hmTemp.name);	#Remove the Tag from the SearchString so it will not be processed again
+          newToSearch = removeTag(newToSearch,hmTemp.name)	#Remove the Tag from the SearchString so it will not be processed again
       end
 
-      return 1;
+      return 1
   end
 
   def getTag(textToSearch)
@@ -406,9 +406,9 @@ class XMLDocument
       toReturn = toSearch
       while tmp.index(toReplace) != nil do
         tmp = replace(toSearch, toReplace, toReplaceWith)
-        toReturn = tmp;
+        toReturn = tmp
       end
-      return toReturn;
+      return toReturn
   end
 
 
@@ -433,7 +433,7 @@ class XMLDocument
 
               tagCount = 0
               if tagsWEndCount[hmTemp.name] != nil			#Count the Tags with this name
-                  tagCount = tagsWEndCount[hmTemp.name];
+                  tagCount = tagsWEndCount[hmTemp.name]
               end
               #tagCount = tagCount.next										#Add one to it
               tagsWEndCount[hmTemp.name] = tagCount.next  #Save how many of this tag there are so far
@@ -502,7 +502,7 @@ class XMLDocument
               tagCount = 0
               if hmTagAt[tagEnd] != nil 		#See if there are more than one of the same tag
 
-                  myTag = nil;
+                  myTag = nil
                   if vOpenedTags[vOpenedSize-1].name  == tagEnd
                       myTag = vOpenedTags[vOpenedSize-1]
                       vOpenedTags.delete_at(vOpenedSize-1)
@@ -564,7 +564,7 @@ class XMLDocument
       for i in 0..deep do
           toTab.concat("\t")
       end
-      toReturn.concat(toTab+"<"+hmTag.name);
+      toReturn.concat(toTab+"<"+hmTag.name)
       attributes = hmTag.attributes
 
       #Set attSet = hmAttributes.keySet();
@@ -572,7 +572,7 @@ class XMLDocument
 
       if !hmTag.isComment
           for i in attObs
-              toAdd = " ";
+              toAdd = " "
               if i != @NO_ATTRIBUTE_END
                   toAdd = "=\"#{attributes[i]}\""
               end
@@ -591,7 +591,7 @@ class XMLDocument
           tagContent = tagContent.strip
           tagContent = replaceAll(tagContent,"\n","\r")
           if tagContent.end_with("\r#{toTag}")
-              length = toTab.size+2;
+              length = toTab.size+2
               tagContent = tagContent[0..tagContent.size-length]
           end
           if isCDATA
@@ -600,7 +600,7 @@ class XMLDocument
               toReturn.concat("#{toTab}\t#{tagInhalt}\n")
           end
       end
-      v = nil;
+      v = nil
 
       if !hmTag.isComment && (v = hmTag.children)!= nil
           #vSize = v.size

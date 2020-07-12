@@ -1,0 +1,8 @@
+MENU: class;./menubuilder/MenuTemplate(/system/menu/oddbyte3d.menu)
+PAGINATION: class;./Pagination(/ContentBlocks/Slides.xml)
+SLIDES: page;/ContentBlocks/Slides.xml
+company_name: global;company_name
+copyright: global;copyright
+title: page_tag;title
+description: page_tag;description
+keywords: page_tag;keywords

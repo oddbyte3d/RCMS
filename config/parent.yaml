@@ -2,6 +2,6 @@
 #Wed Sep 28 10:35:54 WST 2005
 redirect: /redirect.yaml
 OutputRenderers: /OutputRenderers.yaml
-CuppaWEBConfig: /CuppaWEB.yaml
+RCMSConfig: /RCMS.yaml
 DocumentConverters: /DocumentConverters.yaml
 TemplateDirectory: /TemplateMatches.yaml

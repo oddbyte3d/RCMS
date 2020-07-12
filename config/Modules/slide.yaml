@@ -1,0 +1,9 @@
+#List of all modules and the corresponding jsp's
+#-----------------------------------------------
+moduleName: Slide
+moduleDescription: Single slide
+
+xmlSessionId_0: slide-data
+xmlParentNode_0: slide/
+xmlDataToLoad_0: image/header/text/link/link_text
+xmlDataMultiple_0: false

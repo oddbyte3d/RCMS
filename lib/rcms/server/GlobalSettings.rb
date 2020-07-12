@@ -94,13 +94,13 @@ class GlobalSettings
             end
           end #End of loop
 
-          @@INITIALIZED = true;
+          @@INITIALIZED = true
     	end
     end
 
     def getVersionRequested(request)
 
-        int version = -1; #req.query["foo"]
+        version = -1 #req.query["foo"]
         if request.query["version"] != nil
             version = request["version"]
         end
@@ -127,11 +127,11 @@ class GlobalSettings
     def includeEnqueuedJavascriptIncludes(session, content)
 
         #StringBuffer scriptIncludes = new StringBuffer();
-        js = getEnqueuedJavascriptIncludes(session);
+        js = getEnqueuedJavascriptIncludes(session)
         if js != nil
             for i in 0..js.size
                 if(content.index(js[i]) == nil)
-                    scriptIncludes.concat("\t<script type=\"text/javascript\" src=\"#{js[i]}\"></script>\n\t");
+                    scriptIncludes.concat("\t<script type=\"text/javascript\" src=\"#{js[i]}\"></script>\n\t")
                 end
             end
         end
@@ -144,7 +144,7 @@ class GlobalSettings
 
 
     def getTemplateDirectory(request)
-        theme = getTemplate(request);
+        theme = getTemplate(request)
         templateDir = File.absolute_path(getDocumentDataDirectory())+@@FS+"system"+@@FS+"templates"+@@FS+theme
         return templateDir
     end
@@ -485,7 +485,7 @@ class GlobalSettings
 
 
 
-     # Global function to format dates using a system wide standard configured in CuppaWEB.properties
+     # Global function to format dates using a system wide standard configured in RCMS.properties
      # @param formatToUse
      # @param dToFormat
      # @return
@@ -520,12 +520,12 @@ class GlobalSettings
 
         if(version > -1)
           cmsf = FileCMS.new(session, pagePath)
-          vf = cmsf.getVersionedFile()
+          vf = cmsf.VERSIONED_FILE
           fv = vf.getVersionByNumber(version)
           if fv == nil
             version = -1
           else
-            pagePath = getWebPath(fv.getThisVersion())
+            pagePath = getWebPath(fv.thisVersion)
           end
         end
         if(!pagePath.start_with?("/"))
@@ -551,12 +551,12 @@ class GlobalSettings
 
         if version > -1
           cmsf = FileCMS.new(session, pagePath)
-          vf = cmsf.getVersionedFile()
+          vf = cmsf.VERSIONED_FILE
           fv = vf.getVersionByNumber(version)
           if fv == nil
             version = -1
           else
-            pagePath = GlobalSettings.getWebPath(fv.getThisVersion())
+            pagePath = GlobalSettings.getWebPath(fv.thisVersion)
           end
         end
         if !pagePath.start_with?("/")
@@ -588,12 +588,12 @@ class GlobalSettings
         if(version > -1)
 
           cmsf = FileCMS.new(session, pagePath)
-          vf = cmsf.getVersionedFile()
+          vf = cmsf.VERSIONED_FILE
           fv = vf.getVersionByNumber(version)
           if fv == nil
               version = -1
           else
-              pagePath = GlobalSettings.getWebPath(fv.getThisVersion())
+              pagePath = GlobalSettings.getWebPath(fv.thisVersion)
           end
         end
         if !pagePath.start_with?("/")
@@ -648,13 +648,13 @@ class GlobalSettings
         if(version > -1)
 
             cmsf = FileCMS.new(session, pagePath)
-            vf = cmsf.getVersionedFile
+            vf = cmsf.VERSIONED_FILE
             fv = vf.getVersionByNumber(version)
             #puts "Version File ::: #{vf.getVersionByNumber(version)}"
             if(fv == nil)
                 version = -1
             else
-                pagePath = GlobalSettings.getWebPath(fv.getThisVersion)
+                pagePath = GlobalSettings.getWebPath(fv.thisVersion)
             end
         end
         workingDir = GlobalSettings.getWorkArea(session)
@@ -708,7 +708,7 @@ class GlobalSettings
                 if(fv == null)
                     version = -1;
                 else
-                    pagePath = GlobalSettings.getWebPath(fv.getThisVersion());
+                    pagePath = GlobalSettings.getWebPath(fv.thisVersion);
             }catch(Exception e)
             {
                 Logger.doLog(Logger.ERROR, e, GlobalSettings.class);
@@ -970,10 +970,6 @@ class GlobalSettings
         return path
     end
 
-    #public static CuppaUser getUser(HttpSession session)
-    #{
-    #    return new CuppaUser(GlobalSettings.getUserLoggedIn(session));
-    #}
 
     def self.getUserLoggedIn(session)
         #puts "Retrieving User: #{session}"
@@ -986,7 +982,7 @@ class GlobalSettings
           end
         else
 
-          if session["loginName"] != nil
+          if session != nil && session["loginName"] != nil
               #puts "\n\nUser 1 : #{session.sessionId}\n#{@@CURRENT_USERS}\n"
               user = session["loginName"]
               if(AccessControler.new.userExists(user))
@@ -1008,6 +1004,9 @@ class GlobalSettings
           #puts "SessionId: #{session.sessionId}"
           GlobalSettings.addUserSession(session)
           loggedIn = true
+          if RCMSUser.new(userName).IS_ADMIN
+              session["WORKAREA"] = "WORK"
+          end
           #puts "Web logged in!"
         end
         if adminAccess.checkUserLogin(session.sessionId, userName, userPass)
@@ -1021,9 +1020,11 @@ class GlobalSettings
     def self.logoutUser(session)
       if session["loginName"] != nil
         session.delete("loginName")
+        session.delete("WORKAREA")
         removeUserSession(session)
       end
       AdminSession.deleteSession(session.sessionId)
+      return true
     end
 
 
@@ -1067,7 +1068,7 @@ class GlobalSettings
 
     def self.getCurrentWorkArea(session)
 
-        if session["WORKAREA"]!=nil && session["WORKAREA"] == "WORK"
+        if session != nil && session["WORKAREA"]!=nil && session["WORKAREA"] == "WORK"
             return File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory())+@@FS
         else
             return File.absolute_path(GlobalSettings.getDocumentDataDirectory())+@@FS
@@ -1085,7 +1086,7 @@ class GlobalSettings
 
         myXmlFile = getModuleXMLFile(request)
         if(version > -1)
-          myXmlFile = (FileCMS.new(session, myXmlFile)).getVersionedFile().getVersionByNumber(version).getThisVersion()
+          myXmlFile = (FileCMS.new(session, myXmlFile)).VERSIONED_FILE.getVersionByNumber(version).thisVersion
         end
         #System.out.println("Trying to get data for:"+myXmlFile);
         if session[request["id"]] == nil
@@ -1105,7 +1106,7 @@ class GlobalSettings
 
     end
 
-    #TO-DO: Implement CuppaUser... although a different name would be good
+    #TO-DO: Implement RCMSUser... Done.
     def canCommentPage(session)
 
         #CuppaUser user = GlobalSettings.getUser(session);
@@ -1339,7 +1340,7 @@ class GlobalSettings
             return @@SETTINGS[key]
         else
             properties = PropertyLoader.new(GlobalSettings.getGlobal("Parent-PropertyFile"))
-            cuppaWEBConfig = properties.getProperties("CuppaWEBConfig")
+            cuppaWEBConfig = properties.getProperties("RCMSConfig")
 
             if(cuppaWEBConfig == nil)
                 return nil

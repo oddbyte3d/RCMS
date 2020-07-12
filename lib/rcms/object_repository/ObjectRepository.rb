@@ -120,6 +120,10 @@ class ObjectRepository
         end
     end
 
+    def hasKey(objectID)
+      return @REPOSITORY.key? objectID
+    end
+
     # Returns an object from the Repository
     # if found if not then returns null
     # @param objectID Id from the object to get out of the Repository
@@ -192,7 +196,7 @@ class ObjectRepository
                 if(@REPOSITORY_MEMORY != nil && @REPOSITORY_MEMORY.key?(key))
                      repToCheckAgainst = @REPOSITORY_MEMORY[key]
                      if repToCheckAgainst.getCreationDate != repToCheck.getCreationDate
-                         refreshObjectInMemoryCache(key);
+                         refreshObjectInMemoryCache(key)
                      end
                 elsif(@REPOSITORY_MEMORY != nil)
                     @REPOSITORY_MEMORY[key] = repToCheck
@@ -201,7 +205,7 @@ class ObjectRepository
             }
 
         end
-        puts "Done Validating Cache."
+        #puts "Done Validating Cache."
     end
     #end private
 

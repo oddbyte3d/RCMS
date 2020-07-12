@@ -1,4 +1,0 @@
-users: ;
-groups: ;
-adminUsers: ;scott(r);root(rw);
-adminGroups: ;SuperUser(r);

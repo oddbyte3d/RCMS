@@ -1,0 +1,178 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: CuppaWEB v2
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: Scott, Taylor
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    6:
+      nodeName: page-menu
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 7
+  1:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: text
+      nodeValue: ''
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '10'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: bold
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: italic
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: underlined
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: textcolor
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: textsize
+        nodeValue: default
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: textalignment
+        nodeValue: default
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: printtext
+        nodeValue: This is some text...
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 10
+    childCount: 1
+  2:
+    nodeName: module
+    nodeValue: "\n  "
+    nodeAttributes: {}
+    0:
+      nodeName: banner
+      nodeValue: "\n    "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '1'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Banner
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header_title
+        nodeValue: A Title
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: header_text
+        nodeValue: Some title text which is a little bit longer...
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: banner_text
+        nodeValue: Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin
+          aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis,
+          porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi
+          nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac
+          quam. Lorem ipsum dolor sit nullam.
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: action_items
+        nodeValue: "\n      "
+        nodeAttributes: {}
+        0:
+          nodeName: action_item
+          nodeValue: "\n        "
+          nodeAttributes: {}
+          0:
+            nodeName: action
+            nodeValue: "/index.xml"
+            nodeAttributes: {}
+            childCount: 0
+          1:
+            nodeName: action_text
+            nodeValue: Click Here
+            nodeAttributes: {}
+            childCount: 0
+          childCount: 2
+        childCount: 1
+      6:
+        nodeName: image
+        nodeValue: "/images/whoisbenjamin-K-2J2Zq2n6c-unsplash.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: image_alt
+        nodeValue: Some mushrooms
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 8
+    childCount: 1
+  childCount: 3
+CLASS_NAME: Hash
+CREATION_DATE: 2020-05-16
+IS_MEMORY_CACHED: true

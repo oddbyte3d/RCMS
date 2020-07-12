@@ -1,0 +1,8 @@
+title_dark: "#f4554c"
+title_light: "#fa726a"
+border_light: "#e9b9bb"
+border_dark: "#f65b61"
+selected_node_dark: "#bc3339"
+selected_node_light: "#d34a50"
+node_hover: "#efd7d7"
+panel_background: "#f9f1e7"

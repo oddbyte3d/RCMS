@@ -8,10 +8,6 @@ require_relative "./FileVersionInfo"
    attr_accessor :editable, :versionUser, :versionedFile, :versionDescription, :versionName,
                 :versionNumber, :currentVersion, :thisVersion, :versionDate, :VTYPE, :TYPE_DELETED,
                 :TYPE_RENAMED, :TYPE_ROLLBACK, :TYPE_MODIFIED
-    #  index.xml.ADMIN_root__TIME_13-01-2006_10-44-49__MODIFIED
-    #    index.xml.ADMIN_root__TIME_13-01-2006_10-44-49__ROLLBACK
-    #    index.xml.ADMIN_root__TIME_13-01-2006_10-44-49__RENAMED-jackass.xml
-    #    index.xml.ADMIN_root__TIME_13-01-2006_10-44-49__DELETED
 
      # Creates a new instance of FileVersion
     def initialize(vFile, uName, sess, tVersion, cVersion)
@@ -30,16 +26,17 @@ require_relative "./FileVersionInfo"
 
         #puts "FileVersion : vFile:#{vFile} uName:#{uName} sess:#{sess} tVersion:#{tVersion} cVersion:#{cVersion}"
         #versionProps.load(new FileInputStream(thisVersion));
+        #puts "\n\n-------&&&&&&&&&&&&&&&&&&&&&----------\n#{tVersion}\n#{vFile}\n---------------------------"
         @versionProperties = YAML.load_file(tVersion)
 
         vpath = File.absolute_path(@thisVersion)
-        path = File.absolute_path("#{vpath[0,vpath.rindex(@FS)+1]}files#{@FS}")
+        path = "#{vpath[0,vpath.rindex(@FS)+1]}files#{@FS}"
         @thisVersion = "#{path}#{@versionProperties["file"]}"
 
         @versionName = @versionProperties["versionName"]
 
         if @versionProperties["editable"] != nil
-            @editable = (@versionProperties["editable"].downcase == "true" )
+            @editable = @versionProperties["editable"]
         else
             @editable = false
         end
@@ -56,13 +53,13 @@ require_relative "./FileVersionInfo"
             @VTYPE = @TYPE_DELETED
         elsif @type == "RENAMED"
 
-            @VTYPE = @TYPE_RENAMED;
+            @VTYPE = @TYPE_RENAMED
             rename = @versionProperties["renamedto"]
             dir = "#{@currentVersion[0..@currentVersion.rindex(@FS)+1]}#{rename}"
             #puts "Renamed to: #{dir}"
             @renamedTo = dir
         elsif @type.start_with?("ROLLBACK")
-            @VTYPE = @TYPE_ROLLBACK;
+            @VTYPE = @TYPE_ROLLBACK
         end
         @versionUser = @versionProperties["user"]
         @versionDate = Date.jd( @versionProperties["date"].to_i)

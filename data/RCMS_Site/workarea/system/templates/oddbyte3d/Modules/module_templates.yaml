@@ -1,0 +1,6 @@
+slide: slide.erb
+list: list.erb
+link: link.erb
+pagetitle: pagetitle.erb
+rcmsimage: rcmsimage.erb
+text: text.erb

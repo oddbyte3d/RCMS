@@ -1,0 +1,3 @@
+header: header.erb
+banner: banner.erb
+slide: slide.erb

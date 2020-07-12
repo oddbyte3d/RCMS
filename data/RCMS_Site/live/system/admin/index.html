@@ -1,26 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.min.css" />
+    <link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.css" />
     <link rel="stylesheet" type="text/css" href="/system/admin/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/system/templates/coachcast/assets/css/fontawesome-all.min.css" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript" src="/system/admin/w2ui-1.5.rc1.min.js"></script>
+    <meta charset="utf-8"/>
     <title>cms_name vrcms_mav.rcms_miv.rcms_iv dashboard</title>
 </head>
+<script type="text/javascript">
+
+  canEdit = false;  //Need to load based on user profile.
+  canPublish = false;
+  currentFileEdit = '';
+  currentFileShow = '';
+
+</script>
+<style>
+  .fa-save {
+    color: #65fb65 !important;
+  }
+  .fa-pencil-alt {
+    color: #ff9463 !important;
+  }
+</style>
 <body>
     <div id="adminLayout"></div>
 </body>
 <script>
   $(function () {
+      var height = window.innerHeight-130;
       var pstyle = 'background-color: #F5F6F7; border: 1px solid #dfdfdf; padding: 5px;';
       $('#adminLayout').w2layout({
           name: 'adminLayout',
           panels: [
-              { type: 'top',  size: 50, resizable: true, style: pstyle , title: 'Hi user_fname!! Welcome to the cms_name vrcms_mav.rcms_miv.rcms_iv dashboard :)'},
-              { type: 'left', size: 270, resizable: true, style: pstyle, content: '<div id="mySidebar" style="height: 450px; width: 250px;"></div>' },
-              { type: 'main', style: pstyle, content: 'main' },
-              { type: 'right', size: 250, resizable: true, style: pstyle, content: 'right' },
-              { type: 'bottom', size: 50, resizable: true, style: pstyle, content: 'bottom' }
+              { type: 'top',  size: 50, resizable: false, style: pstyle , title: 'Hi user_fname!! Welcome to the cms_name vrcms_mav.rcms_miv.rcms_iv dashboard :)'},
+              { type: 'left', size: 270, resizable: false, style: pstyle, content: '<div id="mySidebar" style="height: 450px; width: 250px;"></div>' },
+              { type: 'main', style: pstyle, content: '<object id="rcms_file" data="/system/admin/main.html" width="100%" height="'+height+'" type="text/html"></object>' },
+              { type: 'right', size: 250, resizable: true, style: pstyle, content: '<div id="info_form" style="width: 220px"></div>' },
+              { type: 'bottom', size: 60, resizable: false, style: pstyle, content: '<div id="filetools" style="padding: 4px; border: 1px solid #dfdfdf; border-radius: 3px"></div>' }
           ]
       });
 
@@ -32,9 +52,13 @@
       		{ id: 'content-folder', text: 'Content', img: 'icon-folder', expanded: true, group: true,
       		  nodes: [ { id: 'pages', text: 'Pages', img: 'icon-page' },
       				       { id: 'assets', text: 'Assets', img: 'icon-page' }
-
       				 ]
-      		}
+      		},
+          { id: 'notification', text: 'Notification', img: 'icon-folder', expanded: true, group: true,
+            nodes: [ { id: 'lists', text: 'Subscriptions', img: 'icon-page' },
+                     { id: 'devices', text: 'Registered Devices', img: 'icon-page' }
+               ]
+          }
       	],
       	onClick: function (event) {
           if(event.target == "pages")
@@ -52,12 +76,17 @@
           }
           else if(event.target.startsWith("file"))
           {
+
             var file = event.target;
             var fileSelected = file.substring(4, file.length);
+            currentFileEdit = fileSelected;
+            //if(!canEdit)
+            currentFileShow = fileSelected.substring(0, fileSelected.lastIndexOf('.'))+'.xml'
+            loadPermissions();
             //alert(fileSelected);
             var h = w2ui['adminLayout'].get('main').height-15;
-            w2ui['adminLayout'].content('main', '<object data="'+fileSelected+'" width="100%" height="'+h+'" type="text/html">'+
-              'Alternative Content</object>');
+            w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileShow+'" width="100%" height="'+h+'" type="text/html"></object>');
+            onFileLoad();
           }
           else
           {
@@ -66,7 +95,153 @@
       	}
       }));
       w2ui['sidebar'].click('pages');
+
+
+      //Define action buttons for editing
+
+      //w2ui['adminLayout'].content('bottom', );
+
   });
+
+
+
+  function loadPageInfo(pversion)
+  {
+    //alert("load info...");
+    $.post( "/admin/pageinfo", { file: currentFileShow, version: pversion })
+      .done(function( data ) {
+          //alert(data.title);
+          //data = JSON.parse(data);
+          $('#info_form').w2form({
+              name   : 'info_form',
+              fields : [
+                  { name: 'title', type: 'text', required: true },
+                  { name: 'keywords',  type: 'text' },
+                  { name: 'description',   type: 'textarea'}
+              ],
+              actions: {
+                  reset: function () {
+                      this.clear();
+                  },
+                  save: function () {
+                      //this.save();
+                  }
+              }
+          });
+          w2ui['info_form'].record['title'] = data.title;
+          w2ui['info_form'].record['keywords'] = data.keywords;
+          w2ui['info_form'].record['description'] = data.description;
+          w2ui['info_form'].refresh();
+      });
+  }
+
+  function onFileUnload()
+  {
+    $('#filetools').html('');
+  }
+  function onFileLoad()
+  {
+
+    $(function () {
+        $('#filetools').w2toolbar({
+            name: 'filetools',
+            items: [
+                { type: 'button', id: 'edit_file', checked: false, text: 'Edit', icon: 'fa fa-pencil-alt' },
+                { type: 'button', id: 'save_changes', disabled: 'true', text: 'Save', icon: 'fa fa-save' },
+                { type: 'break' },
+                { type: 'button', id: 'publish_changes', text: 'Publish', icon: 'fa fa-star' },
+                { type: 'button', id: 'push_not', text: 'Push to clients', icon: 'fa fa-star' }
+            ],
+            onClick: function (event) {
+                //console.log('Target: '+ event.target, event);
+                if(event.target == 'save_changes')
+                {
+                  document.getElementById("rcms_file").contentWindow.doSave();
+                  w2ui['filetools'].disable('save_changes');
+                }
+                else if(event.target == 'edit_file')
+                {
+                  if(!w2ui['filetools'].get('edit_file').checked)
+                  {
+                    w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileEdit+'" width="100%" height="'+h+'" type="text/html">'+
+                    'Alternative Content</object>');
+                  }
+                  else {
+                    w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileShow+'" width="100%" height="'+h+'" type="text/html">'+
+                    'Alternative Content</object>');
+                  }
+                }
+                else if(event.target == 'publish_changes')
+                {
+                    publish(-1);
+                }
+                else if(event.target == 'push_not')
+                {
+                    //publish(-1);
+                    w2alert("Going to push...");
+                }
+            }
+        });
+    });
+
+    if(!canPublish)
+        w2ui['filetools'].disable('publish_changes');
+    if(!canEdit)
+        w2ui['filetools'].disable('edit_file');
+    loadPageInfo(-1);
+  }
+
+  function loadPermissions()
+  {
+      $.post( "/admin/permission", { file: currentFileShow })
+        .done(function( data ) {
+          //alert(currentFileShow+" : "+data);
+          data = JSON.parse(data);
+          //"{\"edit\": \"#{canEdit}\", \"publish\": \"#{canPublish}\"}"
+
+
+          canEdit = data.edit=="true";
+          canPublish = data.publish=="true";
+          //alert(canPublish);
+          if(canPublish)
+            w2ui['filetools'].enable('publish_changes');
+          else
+            w2ui['filetools'].disable('publish_changes');
+          if(canEdit)
+            w2ui['filetools'].enable('edit_file');
+          else
+              w2ui['filetools'].disable('edit_file');
+          //alert("canEdit: "+canEdit+" canPublish: "+canPublish);
+        });
+
+  }
+  function publish(pversion)
+  {
+    $.post( "/admin/actions/publish", { file: currentFileShow, version: pversion })
+      .done(function( data ) {
+
+        var html = "Publish failed! "+JSON.stringify(data);
+        if(data.success.indexOf(" published") > -1)
+          html = 'File published.';
+        $("#filetools").w2overlay('<div style=\'padding: 10px\'>'+html+'</div>');
+      });
+
+  }
+
+  function saveDone(data)
+  {
+      var html = "File write failed!"
+      if(data.success.indexOf(" success") > -1)
+        html = 'File saved.';
+      $("#filetools").w2overlay('<div style=\'padding: 10px\'>'+html+'</div>');
+  }
+
+  function onFileChanged()
+  {
+    if(canEdit)
+      w2ui['filetools'].enable('save_changes');
+  }
+
   /*
 ``  Load a subsection of the Remote File System (RFS)
   */

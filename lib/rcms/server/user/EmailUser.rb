@@ -37,7 +37,7 @@ class EmailUser
     end
 
     def paramHasMultipleValues(key)
-        return (@USER_PARAMS.key?(key) && @USER_PARAMS[key].instance_of? Array);
+        return (@USER_PARAMS.key?(key) && @USER_PARAMS[key].instance_of? Array)
     end
 
     def getParamAtIndex(key, index)

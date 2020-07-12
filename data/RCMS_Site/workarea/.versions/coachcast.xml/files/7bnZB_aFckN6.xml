@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[RCMS v0.0.1]]></pagetitle>
+<author><![CDATA[]]></author>
+<owner><![CDATA[]]></owner>
+<keywords><![CDATA[]]></keywords>
+<description><![CDATA[]]></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><banner>
+  <id><![CDATA[0]]></id>
+  <descriptive_name><![CDATA[Banner module]]></descriptive_name>
+  <header_title><![CDATA[Head title]]></header_title>
+  <header_text><![CDATA[Head text that is a little longer. TEST]]></header_text>
+  <banner_text><![CDATA[Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.]]></banner_text>
+
+  <action_items>
+    
+    <action_item>
+      <action><![CDATA[http://192.168.1.10:9999/coachast_news]]></action>
+      <action_text><![CDATA[Subscribe]]></action_text>
+    </action_item>
+    
+  </action_items>
+
+  <image><![CDATA[http://192.168.1.10:9999/images/jenny-caywood-BrPp2II_xcs-unsplash.jpg]]></image>
+  <image_alt><![CDATA[An image...]]></image_alt>
+</banner>
+</module><module><banner>
+  <id><![CDATA[1]]></id>
+  <descriptive_name><![CDATA[Banner module]]></descriptive_name>
+  <header_title><![CDATA[Title]]></header_title>
+  <header_text><![CDATA[Slightly longer header text, simply click on any item to change.]]></header_text>
+  <banner_text><![CDATA[Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.]]></banner_text>
+
+  <action_items>
+    
+    <action_item>
+      <action><![CDATA[http://subscribe_news/]]></action>
+      <action_text><![CDATA[subscribe here]]></action_text>
+    </action_item>
+    
+  </action_items>
+
+  <image><![CDATA[http://192.168.1.10:9999/images/daniel-j-schwarz-Qhnsv_Ey2mA-unsplash.jpg]]></image>
+  <image_alt><![CDATA[Some mushrooms...]]></image_alt>
+</banner>
+</module>
+</page>

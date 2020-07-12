@@ -156,7 +156,7 @@ class XMLSmartClient
                   #puts "Next node: #{tokens[i]} :: #{@nodeValues}"
               end
           end
-          @node = tokens[tokens.size-1];
+          @node = tokens[tokens.size-1]
           #puts "End Node: #{@node}"
         end
     end
@@ -283,7 +283,7 @@ class XMLSmartClient
       	if(@nodeValues.size > @index)
 
       	    if(@nodeAt < @nodeElements.size)
-          		retStr = @nodeElements[@nodeAt];
+          		retStr = @nodeElements[@nodeAt]
               #@nodeAt = @nodeAt.next
           		return retStr.strip
       	    end

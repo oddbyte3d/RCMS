@@ -11,6 +11,7 @@ require_relative '../GlobalSettings'
 require_relative '../file/exception/FileNotFound'
 require_relative '../file/exception/FileAccessDenied'
 require 'yaml'
+require 'base64'
 
 class Image_Renderer < OutputRenderer
 
@@ -24,9 +25,13 @@ class Image_Renderer < OutputRenderer
             #puts "Image Renderer config : #{rendererConfig}"
 
             cWorkArea = GlobalSettings.getCurrentWorkArea(session)
-            cssFile = FileCMS.new(session, "#{cWorkArea}#{@FS}#{fileToRender}")
-            if cssFile.exist?
-              @out = cssFile.getFileForRead.read
+            imageFile = FileCMS.new(session, "#{cWorkArea}#{@FS}#{fileToRender}")
+            if imageFile.exist?
+
+              @out = imageFile.getFileForRead.read
+              if(request["base64"])
+                @out = Base64.encode64(@out)
+              end
               #if(rendererConfig["ApplyFilters"] != nil &&
               #        rendererConfig["ApplyFilters"] == "true")
               #    @out = Hub.applyFilters(request, response, session, out)

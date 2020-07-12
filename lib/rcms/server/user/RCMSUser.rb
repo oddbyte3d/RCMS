@@ -96,7 +96,7 @@ class RCMSUser
     #@param block
     def setUserWebBlocked(block)
         @WEB_PROPS["BLOCKED"] = block
-        @ACCESS_CONTROL.setUserField(@USER_NAME, "BLOCKED", block);
+        @ACCESS_CONTROL.setUserField(@USER_NAME, "BLOCKED", block)
     end
 
 

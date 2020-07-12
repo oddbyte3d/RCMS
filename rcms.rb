@@ -20,6 +20,9 @@ require 'rcms/server/net/HttpSession'
 require "rcms/PageModule"
 require "rcms/Page"
 require "rcms/server/file/MimeTypes"
+require "rcms/server/android/AndroidDevice"
+require "rcms/server/dashboard/actions/PageInfo"
+require "rcms/server/dashboard/actions/PageActions"
 require "require_all"
 #require "encrypted_strings"
 
@@ -45,7 +48,6 @@ post '/login' do
       my_session = GlobalSettings.getSession(sessionId)
     end
 
-
     #Apparently Sinatra doesnt process form parameters if JSON properly
     #So the following hack is required....
     form_params = JSON.parse(params["request"])
@@ -69,42 +71,83 @@ post '/login' do
 
 end
 
-post '/admin/actions/:action' do
 
-  status = 200
-  #form_params = JSON.parse(params)
-  #puts "POST Parameters: #{params["file_contents"]}"
-  out = ""
-  sessionId = session["sessionId"]
-  my_session = GlobalSettings.getSession(sessionId)
-  userName = GlobalSettings.getUserLoggedIn(my_session)
-  parentProperyFile = GlobalSettings.getGlobal("Parent-PropertyFile")
-  propertyLoader = PropertyLoader.new(parentProperyFile)
+post '/logout' do
 
-  if userName != "guest"
-    #puts "Form parameters: #{form_params}"
-
-    case params["action"]
-    when "save_xml"
-      begin
-        #saver = AdminSaveXML.new(my_session, RCMSUser.new(userName), params["file"], params["file_contents"])
-        puts params["file_contents"]
-        #out = saver.doSave
-        jsonRenderer = JSON_XMLRenderer.new
-        out = jsonRenderer.renderOutput(params, response, my_session, propertyLoader, params["file"], "json_to_xml")
-        #puts "Out:::::::::: #{out}"
-      rescue FileAccessDenied => fae
-        #status = 403
-        out  = "{\"error\": \"#{fae.message}\"}"
-      rescue FileNotFound => fne
-        out  = "{\"error\": \"#{fne.message}\"}"
-      end
+    out = "{\"status\": \"error\", \"message\": \"Logout failed\"}"
+    sessionId = nil
+    if session["sessionId"] == nil
+      sessionId = AdminSession.createSessionID
+      my_session = HttpSession.new(sessionId)
+      session["sessionId"] = sessionId
+      GlobalSettings.trackSession(my_session)
+    else
+      sessionId = session["sessionId"]
+      my_session = GlobalSettings.getSession(sessionId)
     end
-  else
-    status  = 403
-  end
-  # Need to modify the following to support other things....
 
+    #accessControl = AccessControler.new
+    if GlobalSettings.logoutUser(my_session)
+      out = "{\"status\": \"success\"}"
+    end
+
+    status  = 200
+    headers \
+      "Content-Type" => MimeTypes.getFileMimeType("index.json")
+    body    = [out]
+
+    return [status, headers, body]
+
+end
+
+#--------------------Actions to handle requests coming from the Coachcast App------------------------
+get '/android/android_device' do
+  params['session'] = session
+  device = AndroidDevice.new(params)
+  out = device.getResult
+  status = 200
+  headers \
+    "Content-Type" => MimeTypes.getFileMimeType("index.json")
+  body    = [out]
+  return [status, headers, body]
+end
+
+#---------------------Retrieve page info for editing-------------------------------------
+post '/admin/pageinfo' do
+
+  pinfo = PageInfo.new(session, params)
+  out = pinfo.getResult
+  headers \
+    "Content-Type" => MimeTypes.getFileMimeType("index.json")
+  body    = [out]
+  return [202, headers, body]
+end
+
+
+
+#---------------Return the users permissions for a particular file.----------------------
+post '/admin/permission' do
+  if params["file"] != nil
+    file = params["file"]
+    sessionId = session["sessionId"]
+    my_session = GlobalSettings.getSession(sessionId)
+    userName = GlobalSettings.getUserLoggedIn(my_session)
+    admin = AdminAccessControler.new
+    fcms = FileCMS.new(my_session, file)
+    canEdit = admin.checkFileAccessWrite(sessionId, userName, fcms.FILE)
+    canPublish = admin.checkFileAccessPublish(sessionId, userName, fcms.FILE)
+    puts "#{file} :: Can Publish : #{canPublish}"
+    out = "{\"edit\": \"#{canEdit}\", \"publish\": \"#{canPublish}\"}"
+  end
+end
+
+#--------------------Actions like save/publish  that need a http post---------------------------------------
+post '/admin/actions/:action' do
+  status = 200
+  pactions = PageActions.new(session, params)
+  out = pactions.getResult
+  status = pactions.getStatus
+  # Need to modify the following to support other things....
   headers \
     "Content-Type" => MimeTypes.getFileMimeType("index.json")
   body    = [out]
@@ -112,18 +155,14 @@ post '/admin/actions/:action' do
   return [status, headers, body]
 end
 
-get '/system/admin/:admin_file' do
-  #{}"Admin Area...#{params["admin_file"]}"
-  doAllGet
-end
+#-----------------------------Simple admin actions that only need a http get -----------------------------------------------------------------
+# Publish should probably go here....
 
 get '/admin/actions/:action' do
   #"Admin Action: #{params["action"]}"
   out = ""
   sessionId = session["sessionId"]
   my_session = GlobalSettings.getSession(sessionId)
-  #adminSessionId = AdminSession.createSessionID
-  #AdminSession.addNewSession(sessionId)
 
   sub_dir = "/"
   sub_dir = params["sub_dir"] if params["sub_dir"] != nil
@@ -135,9 +174,6 @@ get '/admin/actions/:action' do
     out = JSONListFiles.new(my_session, sub_dir, file_type).listFiles
   when "list_folders"
     out = JSONListFolders.new(my_session, sub_dir).listFiles
-  when "save_xml"
-    file_contents = params["file_contents"]
-    puts "Save XML: #{params["file"]}  :::: #{file_contents}"
   end
 
   # Need to modify the following to support other things....
@@ -145,11 +181,30 @@ get '/admin/actions/:action' do
   headers \
     "Content-Type" => MimeTypes.getFileMimeType("index.json")
   body    = [out]
-
   return [status, headers, body]
 
+end
+
+#------------------Admin File: loads the editor on a page----------------------------------------------------
+get '/*.admin' do
+  # Make sure user is logged in and is also an admin
+  if session["sessionId"] != nil && AdminSession.getSessionHash(session["sessionId"]) != nil
+    doAllGet
+  else
+    redirect GlobalSettings.getGlobal("LoginPage")
+  end
+end
 
 
+get '/system/admin/:admin_file' do
+  #{}"Admin Area...#{params["admin_file"]}"
+  doAllGet
+end
+
+#------------------Following are needed for different mime types----------------------------------------------------
+# maybe there is a more elegant way of handling this???
+get '/*.menu' do
+  doAllGet
 end
 
 get '/*.woff' do
@@ -187,19 +242,17 @@ end
 get '/*.json' do
   doAllGet
 end
-
-get '/*.admin' do
-  # Make sure user is logged in and is also an admin
-  if session["sessionId"] != nil && AdminSession.getSessionHash(session["sessionId"]) != nil
-    doAllGet
-  else
-    redirect GlobalSettings.getGlobal("LoginPage")
-  end
-end
 get '/*.xml' do
   doAllGet
 end
+get '/*.ob3d' do
+  doAllGet
+end
+get '/*.fcm' do
+  doAllGet
+end
 
+#------------------doAllGet this function handles most incoming requests---------------------------------------
 def doAllGet
   #puts "===============================\nRequest Parameters: #{params}\n*****************************************"
 
@@ -217,7 +270,7 @@ def doAllGet
     my_session = GlobalSettings.getSession(sessionId)
     #puts "++++++++++++++++++++++++++++++++++++++\nRetrieved session: #{my_session}\n+++++++++++++++++++++++++++++++++++++++"
   end
-
+  my_session["current_path"] = path
 
   #session["loggedIn"] = true
   #session["loginName"] = "scott"
@@ -257,6 +310,7 @@ def doAllGet
     theme = availableThemes[fileEnding]
   end
   begin
+    params["requested_path"] = path
     render.setAdditionalParameters(params)
     out = render.render( params, Hash.new, my_session, properties, path, theme, baseDocRoot,
                     baseDocRootInc, false)
@@ -266,7 +320,7 @@ def doAllGet
   rescue FileNotFound => e
     #notFoundPath = GlobalSettings.getGlobal("FileNotFound")
 
-    redirect GlobalSettings.getGlobal("FileNotFound")+fileEnding+"?FileNotFound=#{e.message}"
+    redirect GlobalSettings.getGlobal("FileNotFound")+"?FileNotFound=#{e.message}"
   end
   status  = 200
   headers \

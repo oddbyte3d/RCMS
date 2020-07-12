@@ -96,7 +96,7 @@ class RCMSForm
             xml.concat(formHandler.class.name)
             xml.concat(":") if at<length
         }
-        xml.concat("</HANDLER><PAGES>");
+        xml.concat("</HANDLER><PAGES>")
         for i in 0..getPageCount
           xml.concat(getPage(i).getXML)
         end

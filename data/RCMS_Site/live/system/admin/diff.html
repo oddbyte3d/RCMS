@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="/system/admin/js/htmldiff.js"></script>
+    <meta charset="utf-8"/>
+    <title></title>
+    <style type="text/css">
+    ins {
+        text-decoration: none;
+        background-color: #d4fcbc;
+    }
+
+    del {
+        text-decoration: line-through;
+        background-color: #fbb6c2;
+        color: #555;
+    }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+
+  function GetURLParameter(sParam)
+  {
+      var sPageURL = window.location.search.substring(1);
+      var sURLVariables = sPageURL.split('&');
+      for (var i = 0; i < sURLVariables.length; i++)
+      {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam)
+        {
+          return sParameterName[1];
+        }
+      }
+    }
+  var diff1 = "/coachcast2.xml";//GetURLParameter('diff1');
+  var diff2 = "/coachcast2.xml?version=3";//GetURLParameter('diff2');
+  //alert(diff1 + "    "+diff2);
+  $.get( diff1, {} )
+    .done(function( data ) {
+      diff1 = data;
+
+      $.get( diff2, {} )
+        .done(function( data ) {
+          diff2 = data;
+          // Diff HTML strings
+          let output = htmldiff(diff1, diff2);
+
+          // Show HTML diff output as HTML (crazy right?)!
+          document.getElementById("output").innerHTML = output;
+        });
+
+    });
+
+
+</script>
+<div id="output"></div>
+</body>
+</html>

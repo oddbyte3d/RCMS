@@ -49,7 +49,7 @@ class Task
 
 
     def assignUser(assignedUser)
-        @assignedUser = assignedUser;
+        @assignedUser = assignedUser
     end
 
 

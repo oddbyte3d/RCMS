@@ -51,19 +51,19 @@ class XML_JSONRenderer < OutputRenderer
         @myTheme = theme
         rendererConfig = YAML.load_file( "#{GlobalSettings.getGlobal("Server-ConfigPath")}OutputRenderers/XML_JSONRenderer.yaml")
         cWorkArea = GlobalSettings.getCurrentWorkArea(session)
-        docDataDir = GlobalSettings.getDocumentDataDirectory
+        #docDataDir = GlobalSettings.getDocumentDataDirectory
         @FS = File::SEPARATOR
         tmp = properties.getProperties("redirect")
         myPage = FileCMS.new(session, "#{cWorkArea}#{@FS}#{xmlFileToRender}")
 
         #puts "Theme is: #{theme}"
         themeTmp = request["template"]
-        templateDir = "#{docDataDir}#{@FS}system#{@FS}templates#{@FS}#{theme}"
+        templateDir = "#{cWorkArea}#{@FS}system#{@FS}templates#{@FS}#{theme}"
 
         #puts "TemplateDir exists? #{templateDir} -- #{File.exist?(templateDir)}"
         if(!File.exist?(templateDir) && request["template"] == nil)
             theme = "default"
-            templateDir = "#{docDataDir}#{@FS}system#{@FS}templates#{@FS}#{theme}"
+            templateDir = "#{cWorkArea}#{@FS}system#{@FS}templates#{@FS}#{theme}"
         end
 
         version = -1

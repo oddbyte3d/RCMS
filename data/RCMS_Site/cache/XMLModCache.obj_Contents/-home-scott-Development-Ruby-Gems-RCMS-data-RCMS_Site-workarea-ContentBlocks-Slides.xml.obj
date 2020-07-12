@@ -1,0 +1,229 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: CuppaWEB v2
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: Scott, Taylor
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    6:
+      nodeName: page-menu
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 7
+  1:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: slide
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '0'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: image
+        nodeValue: "/system/templates/oddbyte3d/images/Fireboy.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header
+        nodeValue: Fireboy
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: text
+        nodeValue: Kicked out of hell, now he wants back.
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: link
+        nodeValue: http://192.168.1.8:9999/somewhere.tmp
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: link_text
+        nodeValue: Link Text
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 7
+    childCount: 1
+  2:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: slide
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '1'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: image
+        nodeValue: "/system/templates/oddbyte3d/images/b2.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header
+        nodeValue: Header
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: text
+        nodeValue: Some header text
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: link
+        nodeValue: http://192.168.1.8:9999/somewhere.tmp
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: link_text
+        nodeValue: Link Text
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 7
+    childCount: 1
+  3:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: slide
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '2'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: image
+        nodeValue: "/system/templates/oddbyte3d/images/b3.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header
+        nodeValue: Header2
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: text
+        nodeValue: Some header text2
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: link
+        nodeValue: http://192.168.1.8:9999/somewhere.tmp
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: link_text
+        nodeValue: Follow...
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 7
+    childCount: 1
+  4:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: slide
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '3'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: image
+        nodeValue: "/system/templates/oddbyte3d/images/b5.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header
+        nodeValue: Cool stuff
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: text
+        nodeValue: Some text and stuff
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: link
+        nodeValue: http://192.168.1.8:9999/index.xml
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: link_text
+        nodeValue: Link
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 7
+    childCount: 1
+  childCount: 5
+CLASS_NAME: Hash
+CREATION_DATE: 2020-06-05
+IS_MEMORY_CACHED: true

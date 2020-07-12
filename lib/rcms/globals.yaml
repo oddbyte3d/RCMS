@@ -59,7 +59,6 @@ modules: /Modules/
 
 #Mime types are stored here
 mimetypes: /mime_types.yaml
-
 #For the moment, not implemented in RCMS
 #LoadDBConnection1: CONNECT_STRING#jdbc:derby:RSARegister_DB;create=true#DRIVER#org.apache.derby.jdbc.EmbeddedDriver#GLOBAL_KEY#RSARegister_DB#USER#admin#PASS#coder3#
 
@@ -71,3 +70,4 @@ LoadRepository4: REPOSITORY#PublishSchedules.obj#CLASS#FileSafe#
 LoadRepository5: REPOSITORY#FileComments.obj#CLASS#FileSafe#
 LoadRepository6: REPOSITORY#TaskQueues.obj#CLASS#FileSafe#
 LoadRepository7: REPOSITORY#Tasks.obj#CLASS#FileSafe#
+LoadRepository8: REPOSITORY#DeviceIDs.obj#CLASS#FileSafe#

@@ -1,0 +1,17 @@
+{
+  type : 'banner',
+  data : {
+    header_title: '*header_title*',
+    header_text: '*header_text*',
+    banner_text: '*banner_text*',
+    image: '*image*',
+    image_alt: '*image_alt*',
+    items : [
+      <%@action_data.each{ |key|
+        action_item = key
+        %>
+        { action: '<%=action_item["action"]%>',  action_text : '<%=action_item["action_text"]%>'}
+      <%}%>
+    ]
+  }
+},

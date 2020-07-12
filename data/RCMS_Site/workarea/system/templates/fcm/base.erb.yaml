@@ -1,0 +1,10 @@
+author: page_tag;author
+title: page_tag;title
+owner: page_tag;owner
+message: page_tag;description
+keywords: page_tag;keywords
+rcms_major_version: global;RCMS-Major-Version
+rcms_minor_version: global;RCMS-Minor-Version
+rcms_incremental_version: global;RCMS-Incremental-Version
+cms_name: global;CMS-Name
+system_email: page;/ContentBlocks/system_email.block

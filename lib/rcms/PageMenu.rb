@@ -41,7 +41,7 @@ class PageMenu
     def initialize_fcms_reload(menuFile, forceReload)
         #TODO: Finish off to build menu
         @myFileCMS = menuFile
-        buildMenu(File.absolute_path(@myFileCMS.getVersionedFile().getCurrentVersion()), forceReload)
+        buildMenu(File.absolute_path(@myFileCMS.VERSIONED_FILE.getCurrentVersion()), forceReload)
     end
 
     def initialize_fcms_version(menuFile, version)
@@ -52,9 +52,9 @@ class PageMenu
         #TODO: Finish off to build menu
         @myFileCMS = menuFile
         if(version == -1)
-            buildMenu(File.absolute_path(menuFile.getVersionedFile().getCurrentVersion()), forceReload)
+            buildMenu(File.absolute_path(menuFile.VERSIONED_FILE.getCurrentVersion()), forceReload)
         else
-            buildMenu(File.absolute_path(menuFile.getVersionedFile().getVersionByNumber(version).getCurrentVersion()), forceReload)
+            buildMenu(File.absolute_path(menuFile.VERSIONED_FILE.getVersionByNumber(version).getCurrentVersion()), forceReload)
         end
     end
 
@@ -173,7 +173,7 @@ class PageMenu
             link = smart.getNodeElement
             linkText = smart.getNodeElement
             linkTarget = smart.getNodeElement
-            submenu = makeSubMenu("#{@docDataDir}#{@FS}#{link}");
+            submenu = makeSubMenu("#{@docDataDir}#{@FS}#{link}")
             #puts "Menu Item -- link:#{link} :: link_text: #{linkText}"
             linkOpenType = MenuItem.getOpenLinkIn_String(linkTarget)
             #(linkTarget == "_self"? MenuItem.OPEN_SAME_WINDOW:MenuItem.OPEN_NEW_WINDOW )
@@ -182,12 +182,12 @@ class PageMenu
             @menuItems << menuItem
 
         end
-        puts "All menu items ::: #{@menuItems}"
+        #puts "All menu items ::: #{@menuItems}"
     end
 
 
     def makeSubMenu(xmlFile)
-        puts "Making sub menu:::: #{xmlFile}"
+        #puts "Making sub menu:::: #{xmlFile}"
         xmlMenu = XMLSmartClient.new
         xmlMenu.setXmlFile(xmlFile)
         xmlMenu.setNode("page/pageinfo/page-menu/menu-entry")

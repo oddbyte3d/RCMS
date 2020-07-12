@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[CuppaWEB v2]]></pagetitle>
+<author><![CDATA[Scott, Taylor]]></author>
+<owner><![CDATA[]]></owner>
+<keywords><![CDATA[]]></keywords>
+<description><![CDATA[]]></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><slide>
+  <id><![CDATA[0]]></id>
+  <image><![CDATA[/system/templates/oddbyte3d/images/b1.jpg]]></image>
+  <header><![CDATA[Fireboy]]></header>
+  <text><![CDATA[Kicked out of hell, now he wants back.]]></text>
+  <link><![CDATA[http://192.168.1.8:9999/somewhere.tmp]]></link>
+  <link_text><![CDATA[Link Text]]></link_text>
+  <visible><![CDATA[true]]></visible>
+</slide>
+</module><module><slide>
+  <id><![CDATA[1]]></id>
+  <image><![CDATA[/system/templates/oddbyte3d/images/b2.jpg]]></image>
+  <header><![CDATA[Header]]></header>
+  <text><![CDATA[Some header text]]></text>
+  <link><![CDATA[http://192.168.1.8:9999/somewhere.tmp]]></link>
+  <link_text><![CDATA[Link Text]]></link_text>
+  <visible><![CDATA[true]]></visible>
+</slide>
+</module><module><slide>
+  <id><![CDATA[2]]></id>
+  <image><![CDATA[/system/templates/oddbyte3d/images/b3.jpg]]></image>
+  <header><![CDATA[Header2]]></header>
+  <text><![CDATA[Some header text2]]></text>
+  <link><![CDATA[http://192.168.1.8:9999/somewhere.tmp]]></link>
+  <link_text><![CDATA[Follow...]]></link_text>
+  <visible><![CDATA[true]]></visible>
+</slide>
+</module><module><slide>
+  <id><![CDATA[3]]></id>
+  <image><![CDATA[/images/mushrooms.jpg]]></image>
+  <header><![CDATA[Slide Title]]></header>
+  <text><![CDATA[Slightly longer slide header text, simply click on any item to change.]]></text>
+  <link><![CDATA[http://192.168.1.8:9999/index.xml]]></link>
+  <link_text><![CDATA[Some mushrooms...]]></link_text>
+  <visible><![CDATA[true]]></visible>
+</slide>
+</module>
+</page>

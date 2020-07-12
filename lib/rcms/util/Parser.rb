@@ -20,9 +20,9 @@ class Parser
       while tmp.index(toReplace) != nil do
         #puts "Search #{tmp} : for: #{toReplace}"
         tmp = replace(tmp, toReplace, toReplaceWith)
-        toReturn = tmp;
+        toReturn = tmp
       end
-      return toReturn;
+      return toReturn
   end
 
 

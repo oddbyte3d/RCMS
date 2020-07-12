@@ -7,13 +7,6 @@ moduleIcon: IMAGES/CuppaWEB/txt.png
 ###moduleDefaultXML is the default xml descriptor for this module
 ###################################################################
 moduleDefaultXML: <text><id></id><descriptive_name></descriptive_name><bold><![CDATA[false]]></bold><italic><![CDATA[false]]></italic><underlined><![CDATA[false]]></underlined><textcolor></textcolor><textsize><![CDATA[default]]></textsize><textalignment><![CDATA[default]]></textalignment><printtext><![CDATA[New Text Module]]></printtext><visible><![CDATA[true]]></visible></text>
-
-
-fop: com.cuppait.cuppaweb.outputrenderers.xml_pdffop.Text
-pdf: com.cuppait.cuppaweb.outputrenderers.xml_pdf.Text
-link: /global/modules/text.jsp
-eml: /global/modules/text.jsp
-xhtml: /xhtmlstrict/modules/text.jsp
 type: simple
 
 xmlSessionId_0: all-data

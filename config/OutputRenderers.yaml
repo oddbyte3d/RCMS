@@ -1,7 +1,10 @@
 .xml: XML_HTMLRenderer
+.ob3d: XML_HTMLRenderer
 .admin: XML_HTMLRenderer
 .json: XML_JSONRenderer
+.fcm: XML_JSONRenderer
 .jpg: Image_Renderer
 .gif: Image_Renderer
 .png: Image_Renderer
 default: Text_Renderer
+.menu: MENU_JSONRenderer

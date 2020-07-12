@@ -1,7 +1,7 @@
 class MenuItem
 
     @OPEN_NEW_WINDOW = 0
-    @OPEN_SAME_WINDOW = 1;
+    @OPEN_SAME_WINDOW = 1
     @OPEN_IN_STRING = ["_blank", "_self"]
 
 

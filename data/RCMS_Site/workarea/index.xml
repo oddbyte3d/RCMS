@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[RCMS v0.0.1]]></pagetitle>
+<author><![CDATA[]]></author>
+<owner><![CDATA[]]></owner>
+<keywords><![CDATA[some keywords]]></keywords>
+<description><![CDATA[just a description]]></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><pagetitle>
+  <id><![CDATA[0]]></id>
+  <descriptive_name><![CDATA[Header module]]></descriptive_name>
+  <align><![CDATA[center]]></align>
+  <printtext><![CDATA[Test title Hello]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</pagetitle>
+</module><module><text>
+  <id><![CDATA[1]]></id>
+  <descriptive_name><![CDATA[Paragraph module]]></descriptive_name>
+  <bold><![CDATA[false]]></bold>
+  <italic><![CDATA[false]]></italic>
+  <underlined><![CDATA[false]]></underlined>
+  <textcolor><![CDATA[#000000]]></textcolor>
+  <textsize><![CDATA[]]></textsize>
+  <textalignment><![CDATA[left]]></textalignment>
+  <printtext><![CDATA[Congratulations, your RCMS instance is working! Some changes to see it work....<br>]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</text>
+</module><module><list>
+  <id><![CDATA[2]]></id>
+  <descriptive_name><![CDATA[List module]]></descriptive_name>
+  <position><![CDATA[left]]></position>
+  <elements>
+
+    <element><![CDATA[Cool Element 1]]></element>
+
+  </elements>
+  <visible><![CDATA[true]]></visible>
+</list>
+</module><module><text>
+  <id><![CDATA[3]]></id>
+  <descriptive_name><![CDATA[Paragraph module]]></descriptive_name>
+  <bold><![CDATA[false]]></bold>
+  <italic><![CDATA[false]]></italic>
+  <underlined><![CDATA[false]]></underlined>
+  <textcolor><![CDATA[#000000]]></textcolor>
+  <textsize><![CDATA[]]></textsize>
+  <textalignment><![CDATA[left]]></textalignment>
+  <printtext><![CDATA[Just some more text....]]></printtext>
+  <visible><![CDATA[true]]></visible>
+</text>
+</module><module><rcmsimage>
+  <id><![CDATA[4]]></id>
+  <descriptive_name><![CDATA[Rcmsimage module]]></descriptive_name>
+  <path><![CDATA[/images/mushrooms.jpg]]></path>
+  <rounded><![CDATA[true]]></rounded>
+  <position><![CDATA[left]]></position>
+  <title><![CDATA[]]></title>
+  <alt_attribute><![CDATA[]]></alt_attribute>
+  <border><![CDATA[true]]></border>
+  <popup_picture><![CDATA[]]></popup_picture>
+  <popup_alt_attribute><![CDATA[]]></popup_alt_attribute>
+  <popup_title><![CDATA[]]></popup_title>
+  <visible><![CDATA[true]]></visible>
+  <link_target><![CDATA[]]></link_target>
+  <link_url><![CDATA[]]></link_url>
+</rcmsimage>
+</module>
+</page>

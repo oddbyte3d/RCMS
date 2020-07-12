@@ -1,0 +1,118 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: More news
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    6:
+      nodeName: page-menu
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 7
+  1:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: banner
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '0'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Banner module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header_title
+        nodeValue: Coachcast News
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: header_text
+        nodeValue: Latest news from coachcast.
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: banner_text
+        nodeValue: Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin
+          aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis,
+          porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi
+          nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac
+          quam. Lorem ipsum dolor sit nullam.
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: action_items
+        nodeValue: "\n\n    "
+        nodeAttributes: {}
+        0:
+          nodeName: action_item
+          nodeValue: "\n      "
+          nodeAttributes: {}
+          0:
+            nodeName: action
+            nodeValue: my_news
+            nodeAttributes: {}
+            childCount: 0
+          1:
+            nodeName: action_text
+            nodeValue: Subscribe here
+            nodeAttributes: {}
+            childCount: 0
+          childCount: 2
+        childCount: 1
+      6:
+        nodeName: image
+        nodeValue: http://192.168.1.10:9999/images/cedric-letsch-ttJ-qnuboak-unsplash.jpg
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: image_alt
+        nodeValue: An image...
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 8
+    childCount: 1
+  childCount: 2
+CLASS_NAME: Hash
+CREATION_DATE: 2020-05-14
+IS_MEMORY_CACHED: true

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <link href="https://fonts.googleapis.com/css?family=PT+Mono" rel="stylesheet">
+  <link href="/system/admin/assets/demo.css" rel="stylesheet">
+  <link href="/css/module_style.css" rel="stylesheet">
+  <script src="/system/admin/assets/json-preview.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+  <link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.min.css" />
+  <link rel="stylesheet" type="text/css" href="/system/admin/icons.css" />
+  <script type="text/javascript" src="/system/admin/w2ui-1.5.rc1.min.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<body>
+  <div>
+    <div id="editorjs"></div>
+    <!--<div class="ce-example__button" id="saveButton">Save</div>-->
+  </div>
+  <div class="ce-example__output">
+    <pre class="ce-example__output-content" id="output"></pre>
+  </div>
+  <!-- Load Tools -->
+  <!--
+   You can upload Tools to your project's directory and use as in example below.
+   Also you can load each Tool from CDN or use NPM/Yarn packages.
+   Read more in Tool's README file. For example:
+   https://github.com/editor-js/header#installation
+   -->
+  <script src="/system/admin/tools/rcmsimage/RCMSImage.js"></script>
+  <link href="/system/admin/tools/rcmsimage/rcmsimage.css" rel="stylesheet">
+  <script src="/system/admin/tools/slide/Slide.js"></script>
+  <link href="/system/admin/tools/slide/slide.css" rel="stylesheet">
+  <script src="/system/admin/tools/banner/Banner.js"></script>
+  <link href="/system/admin/tools/banner/banner.css" rel="stylesheet">
+  <script src="/system/admin/tools/header/dist/bundle.js"></script><!-- Header -->
+  <script src="/system/admin/tools/paragraph/dist/bundle.js"></script><!-- Paragraph -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script><!-- Delimiter -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/list@latest"></script><!-- List -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script><!-- Checklist -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script><!-- Quote -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script><!-- Code -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/embed@latest"></script><!-- Embed -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script><!-- Table -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/link@latest"></script><!-- Link -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/warning@latest"></script><!-- Warning -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script><!-- Marker -->
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script><!-- Inline Code -->
+
+  <!-- Load Editor.js's Core -->
+  <script src="/system/admin/editor.js"></script>
+
+  <!-- Initialization -->
+  <script>
+    /**
+     * Saving button
+     */
+    //const saveButton = document.getElementById('saveButton');
+    /**
+     * To initialize the Editor, create a new instance with configuration object
+     * @see docs/installation.md for mode details
+     */
+    var editor = new EditorJS({
+      /**
+       * Wrapper of Editor
+       */
+      holder: 'editorjs',
+      /**
+       * Tools list
+       */
+      tools: {
+
+          paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
+          },
+
+        rcmsimage: {
+          class: RCMSImage,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'RCMSImage'
+          }
+        },
+        banner: {
+          class: Banner,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Banner'
+          }
+        },
+        slide: {
+          class: Slide,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Slide'
+          }
+        },
+        /**
+         * Each Tool is a Plugin. Pass them via 'class' option with necessary settings {@link docs/tools.md}
+         */
+        header: {
+          class: Header,
+          inlineToolbar: ['link'],
+          config: {
+            placeholder: 'Header'
+          },
+          shortcut: 'CMD+SHIFT+H'
+        },
+        /**
+         * Or pass class directly without any configuration
+         */
+
+        list: {
+          class: List,
+          inlineToolbar: true,
+          shortcut: 'CMD+SHIFT+L'
+        },
+        checklist: {
+          class: Checklist,
+          inlineToolbar: true,
+        },
+        quote: {
+          class: Quote,
+          inlineToolbar: true,
+          config: {
+            quotePlaceholder: 'Enter a quote',
+            captionPlaceholder: 'Quote\'s author',
+          },
+          shortcut: 'CMD+SHIFT+O'
+        },
+        warning: Warning,
+        marker: {
+          class:  Marker,
+          shortcut: 'CMD+SHIFT+M'
+        },
+        code: {
+          class:  CodeTool,
+          shortcut: 'CMD+SHIFT+C'
+        },
+        delimiter: Delimiter,
+        inlineCode: {
+          class: InlineCode,
+          shortcut: 'CMD+SHIFT+C'
+        },
+        linkTool: LinkTool,
+        embed: Embed,
+        table: {
+          class: Table,
+          inlineToolbar: true,
+          shortcut: 'CMD+ALT+T'
+        },
+      },
+      /**
+       * This Tool will be used as default
+       */
+      // initialBlock: 'paragraph',
+      /**
+       * Initial Editor data
+       */
+
+      data: {
+        pageinfo:{
+          title: '*pagetitle*',
+          keywords: '*keywords*',
+          description: '*description*'
+        },
+
+        blocks: [
+          *CONTENT*
+        ]
+      },
+      onChange: function() {
+        //console.log('something changed');
+        window.parent.onFileChanged();
+      }
+    });
+    /**
+     * Saving example
+     */
+
+    //});
+
+
+    function doSave()
+    {
+        editor.save().then((savedData) => {
+          //alert(JSON.stringify(savedData));
+          var url_string = window.location.href;
+          var url = new URL(url_string);
+          //alert()
+          $.post( "/admin/actions/save_xml", { file: url.pathname, file_contents: savedData })
+            .done(function( data ) {
+              //alert(  JSON.stringify(data) );
+              window.parent.saveDone(data);
+            });
+
+          //cPreview.show(savedData, document.getElementById("output"));
+        });
+
+    }
+  </script>
+</body>
+</html>

@@ -36,6 +36,29 @@ class Hub
       end
   end
 
+  def self.applyFilter(request, response, session, content, filterClass)
+      #puts "-----------------------------------\nIn Apply Filters\n----------------------------------------"
+      if(request["APPLY_FILTERS"] != nil && request["APPLY_FILTERS"] == "false")
+          return content
+      else
+
+        if(filterClass.strip.size > 0)
+
+            className = filterClass[filterClass.rindex("/")+1..filterClass.size]
+            require_relative(filterClass)
+            obFilter = Kernel.const_get(className).new(session)
+            puts "obFilter.is_a?(OutputFilter) #{obFilter.class.name}"
+            if(obFilter.is_a?(OutputFilter))
+              puts "\tAccepted filter..."
+              myContent = obFilter.filterOutput(request, response, session, myContent)
+              #puts "\t...filter done #{myContent}"
+            end
+        end
+        #puts "\tReturning finished content"
+        return myContent
+      end
+  end
+
 
 
 end

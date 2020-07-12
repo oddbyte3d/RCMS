@@ -1,0 +1,163 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: A new title
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: hello, how are you
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: A page description just to test it works...
+      nodeAttributes: {}
+      childCount: 0
+    6:
+      nodeName: page-menu
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 7
+  1:
+    nodeName: module
+    nodeValue: "\n  "
+    nodeAttributes: {}
+    0:
+      nodeName: header
+      nodeValue: "\n    "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '0'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: header...
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: title
+        nodeValue: Coachcast
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: facebook
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: twitter
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: linkedin
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: instagram
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 7
+    childCount: 1
+  2:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: banner
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '1'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Banner module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: header_title
+        nodeValue: Head title WORKAREA
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: header_text
+        nodeValue: Head text that is a little longer. TEST Save!
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: banner_text
+        nodeValue: Aenean ornare velit lacusbbb, ac varius enim ullamcorper eu. Proin
+          aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis,
+          porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi
+          nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac
+          quam. Lorem ipsum dolor sit nullam. This is a test
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: action_items
+        nodeValue: "\n\n    "
+        nodeAttributes: {}
+        0:
+          nodeName: action_item
+          nodeValue: "\n      "
+          nodeAttributes: {}
+          0:
+            nodeName: action
+            nodeValue: coachcast_news
+            nodeAttributes: {}
+            childCount: 0
+          1:
+            nodeName: action_text
+            nodeValue: Subscribe
+            nodeAttributes: {}
+            childCount: 0
+          childCount: 2
+        childCount: 1
+      6:
+        nodeName: image
+        nodeValue: http://192.168.1.10:9999/images/jenny-caywood-BrPp2II_xcs-unsplash.jpg
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: image_alt
+        nodeValue: An image...
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 8
+    childCount: 1
+  childCount: 3
+CLASS_NAME: Hash
+CREATION_DATE: 2020-05-14
+IS_MEMORY_CACHED: true

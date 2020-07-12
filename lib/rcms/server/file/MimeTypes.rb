@@ -23,15 +23,15 @@ class MimeTypes
               return "application/octet-stream"
           end
           if(@@MIMES.key?(extension))
-              puts "Returning for Extension:#{extension} Mime type:#{@@MIMES[extension]}"
+              #puts "Returning for Extension:#{extension} Mime type:#{@@MIMES[extension]}"
               return @@MIMES[extension]
           else
 
-              puts "Mime type does not include #{extension}"
+              #puts "Mime type does not include #{extension}"
               return "application/octet-stream"
           end
       else
-          return "application/octet-stream";
+          return "application/octet-stream"
       end
 
     end

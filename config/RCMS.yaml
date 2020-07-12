@@ -1,0 +1,30 @@
+#CuppaWEB System Properties
+#Mon Aug 10 14:39:30 WST 2009
+company_name: Oddbyte3d
+ShowPageFormatsAvailable: true
+TemplateDirectory: templates
+copyright: RCMS
+PageUpdatedShow: true
+DateFormat_Day: dd/MM/yyyy
+PageUpdatedDateFormat: E d MMM yyyy HH\:mm\:ss
+OutputFilters: ./filters/GlobalWordMatch,./filters/FileSpecific,
+emailTemplates: EmailTemplates/
+RecursivePermissions: true
+FormatsAvailable: XML_PDFRenderer,XML_EMAILRenderer,XML_PRINTRenderer
+UserAdmin: scott.taylor@cuppait.com
+Domain: localhost\:11323
+ShowSearchResultsPerPage: 20
+UseTablesInLayout: false
+DefaultUserGroup: users
+CompanyName: Oddbyte3d
+MailServer: mail.cuppait.com
+ResourceNodesPublishCheck: path,content_block,menu-link,picture_path,popup_picture
+UseApplicationProfiler: false
+DateFormat_Time: HH\:m\:ss
+DateFormat_DayTime: dd/MM/yyyy HH\:mm
+Image-NotFound-Replacement: /images/dummy.gif
+ShowSearchBar: true
+LoginPage: /system/admin/login.html
+#LoginPage: /system/login.xml
+FileNotFound: /system/404.xml
+FirebaseServerKey: AAAA1mqZPA0:APA91bFCDogP4Wby5VIuQC88m9ZqgQCquFubHPqWMEOmqUGNKP4dIR3FMdCmR3Db9cOKUe9VI9e8_sfWHYBJfWLW_y2evg9ASwtD7FILbK5OVEelp_Q0StONw5Dig_kIU0meYt8ZP0wU

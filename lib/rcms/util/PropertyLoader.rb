@@ -181,7 +181,7 @@ class PropertyLoader < Hash
 
           return tmpp[childKey]
         else
-          return nil;
+          return nil
         end
     end
 

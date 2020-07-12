@@ -58,7 +58,7 @@ class PageModule
 
 
         xmlHelperMod = XMLSmart.new
-        xmlHelperMod.setXML(@descriptor); #Load xml Data
+        xmlHelperMod.setXML(@descriptor) #Load xml Data
         modData = 0
         #puts "Module ID :#{@moduleIDS}"
         #puts "Loading mod data :#{@modules.getProperty(@nodeType,"xmlParentNode_#{modData}")}"
@@ -101,16 +101,16 @@ class PageModule
 
                     tmpSm.setNodeElement(@modules.getProperty(@nodeType,"xmlDataToLoad_#{modData}"))
                     htDataTmp = Hash.new
-                    puts "------HELP-----\n#{@modules.getProperty(@nodeType,"xmlDataToLoad_#{modData}")}\n#{tmpSm.getNodeElementCount}"
+                    #puts "------HELP-----\n#{@modules.getProperty(@nodeType,"xmlDataToLoad_#{modData}")}\n#{tmpSm.getNodeElementCount}"
                     for k in 0..tmpSm.getNodeElementCount-1
 
                         nodeName = tmpSm.getNextNodeElementName
-                        puts "NodeName : #{nodeName}"
+                        #puts "NodeName : #{nodeName}"
                         workon = tmpSm.getNodeElement
                         htDataTmp[nodeName] = workon if nodeName.strip != ""
                         #puts "----------->>>>>>-------\n\n#{htDataTmp}\n\n---------------------<<<<<<<<<<<-----------------"
                     end
-                    puts "\n-------END--------"
+                    #puts "\n-------END--------"
                     vData << htDataTmp if htDataTmp.keys.size > 0
                 end
                 @modDataHash[@modules.getProperty(@nodeType,"xmlSessionId_#{modData}")] = vData
@@ -123,7 +123,7 @@ class PageModule
                     htDataTmp[xmlHelperMod.getNextNodeElementName()] = xmlHelperMod.getNodeElement()
                 end
                 @modDataHash[@modules.getProperty(@nodeType,"xmlSessionId_#{modData}")] = htDataTmp
-                puts @modDataHash
+                #puts @modDataHash
             end
             modData = modData.next
         end

@@ -52,12 +52,12 @@ class JSON_XMLRenderer < OutputRenderer
         end
         #puts "Theme is: #{theme}"
         themeTmp = request["template"]
-        templateDir = "#{docDataDir}#{@FS}system#{@FS}templates#{@FS}#{theme}"
+        templateDir = "#{cWorkArea}#{@FS}system#{@FS}templates#{@FS}#{theme}"
 
         puts "TemplateDir exists? #{templateDir} -- #{File.exist?(templateDir)}"
         if(!File.exist?(templateDir) && request["template"] == nil)
             theme = "default"
-            templateDir = "#{docDataDir}#{@FS}system#{@FS}templates#{@FS}#{theme}"
+            templateDir = "#{cWorkArea}#{@FS}system#{@FS}templates#{@FS}#{theme}"
         end
 
         version = -1

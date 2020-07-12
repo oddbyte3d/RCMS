@@ -2,3 +2,4 @@ paragraph: text.erb
 header: pagetitle.erb
 list: list.erb
 rcmsimage: rcmsimage.erb
+banner: banner.erb

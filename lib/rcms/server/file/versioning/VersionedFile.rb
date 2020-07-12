@@ -11,7 +11,8 @@ require_relative './FileVersion'
 
 class VersionedFile
 
-  attr_accessor :USER_NAME, :VERSIONED_FILE
+  attr_accessor :USER_NAME, :VERSIONED_FILE, :BACKUP_RENAMED, :BACKUP_DELETED, :BACKUP_ROLLBACK,
+                :BACKUP_MODIFIED
     #private FileVersion versions[] = new FileVersion[0];
     #private FileVersionInfo versionInfo[];
     #private static final String fs = System.getProperty("file.separator");
@@ -49,26 +50,35 @@ class VersionedFile
             '5','6','7','8','9','0'
         ]
 
-        self.listFileVersions()
+        listFileVersions
     end
 
     # @param type
     # @return
 
-    def createVersion(type)
+    def createVersion(*args)
 
-        return self.createVersion(type, "auto-generated-version", "")
+        if args.size == 1
+          return createVersion_3(args[0], "auto-generated-version", "")
+        elsif args.size == 3
+          return createVersion_3(args[0], args[1], args[2])
+        elsif args.size == 4
+          return createVersion_4(args[0], args[1], args[2], args[3])
+        end
     end
 
 
     def getNextId
 
-        highest = 0;
-        for i in 0..versions.size
+        highest = 0
+        if @versions != nil
+          @versions.each{ |version|
 
-            if versions[i].getVersionNumber()>=highest
-                highest = versions[i].getVersionNumber().next
-            end
+              if version.versionNumber>=highest
+                  highest = version.versionNumber.next
+              end
+          }
+
         end
         return highest
     end
@@ -82,23 +92,24 @@ class VersionedFile
     # @return
     # @throws java.io.IOException
 
-    def createVersion(type, versionName, versionDescription)
-        return self.createVersion(type, versionName, versionDescription, false)
+    def createVersion_3(type, versionName, versionDescription)
+        return createVersion_4(type, versionName, versionDescription, false)
     end
 
-    def createVersion(type, versionName, versionDescription, editable)
+    def createVersion_4(type, versionName, versionDescription, editable)
 
-        versionId = getNextId()
+        versionId = getNextId
         backup = File.absolute_path(@VERSIONED_FILE)
-        backupDir  = backup[0.."#{backup.rindex(@FS)+1})BACKUP#{@FS}#{File.basename(@VERSIONED_FILE)}#{@FS}"]
+        #puts "Backup of : #{backup}"
+        backupDir = "#{backup[0..backup.rindex(@FS)]}.versions#{@FS}#{File.basename(@VERSIONED_FILE)}#{@FS}"
 
-        backup = backup[0.."#{backup.rindex(@FS)+1}BACKUP#{@FS}#{backup[backup.rindex(@FS)+1..backup.size]}"]
+        backup = "#{backup[0..backup.rindex(@FS)]}.versions#{@FS}#{backup[backup.rindex(@FS)+1..backup.size]}"
         #backup = FileUtils.changeFilePathToMatchSystem(backup);
         #backupDir = FileUtils.changeFilePathToMatchSystem(backupDir);
 
         if File.exist?(@VERSIONED_FILE)
 
-            randomFileName = "#{@RANDOM_FILE_NAME.sample(12)}#{File.extname(@VERSIONED_FILE)}"
+            randomFileName = "#{@RANDOM_FILE_NAME.sample(12).join}#{File.extname(@VERSIONED_FILE)}"
 
             #java.util.Date dNow = new java.util.Date();
             #backupDir = File.new(backupDir)
@@ -124,16 +135,16 @@ class VersionedFile
             if File.directory?(@VERSIONED_FILE)
                 FileUtils.cp_r File.absolute_path(@VERSIONED_FILE), backupFile
             elsif File.file?(@VERSIONED_FILE)
-                puts "\n\tCopy: #{@VERSIONED_FILE}\n\tTo: #{backupFile}\n"
+                #puts "\n\tCopy: #{@VERSIONED_FILE}\n\tTo: #{backupFile}\n"
                 FileUtils.cp( @VERSIONED_FILE, backupFile )
             end
 
             #Create and save the version information for this version being created.
-            newVersionInfo = backupDir+@FS+"v"+versionId+".rfs"
+            newVersionInfo = "#{backupDir}#{@FS}v#{versionId}.rfs"
             versionProps = {"user" => @USER_NAME,
                             "date" => Date.today.jd,
                             "type" => backupType,
-                            "file" => Backup.getName(),
+                            "file" => randomFileName,
                             "version" => versionId,
                             "versionName" => versionName,
                             "versionDescription" => versionDescription,
@@ -156,7 +167,7 @@ class VersionedFile
 
     def deleteVersion(toDelete)
 
-            return toDelete.getThisVersion().delete()
+            return toDelete.thisVersion.delete()
     end
 
 
@@ -166,7 +177,7 @@ class VersionedFile
 
     def rollbackVersion(toRollBack)
 
-        toRollBackFile = toRollBack.getThisVersion()
+        toRollBackFile = toRollBack.thisVersion
         #puts "File to rollback :#{File.basename(toRollBackFile)} Exists :#{File.exist?(toRollBackFile)}"
         versionId = this.getNextId() -1
         if myVersionedFile.exists()
@@ -175,7 +186,7 @@ class VersionedFile
         if FileUtils.cp(toRollBackFile, @VERSIONED_FILE)#toRollBack.getCurrentVersion().getAbsolutePath()
             return versionId
         else
-            raise IOException.new("Rollback of version #{toRollBack.getVersionNumber} for file #{toRollBack.getCurrentVersion} failed!")
+            raise IOException.new("Rollback of version #{toRollBack.versionNumber} for file #{toRollBack.currentVersion} failed!")
         end
     end
 
@@ -184,14 +195,14 @@ class VersionedFile
     end
 
 
-    def getVersionCount()
+    def getVersionCount
         return @versions.size
     end
 
     def getVersionByNumber(versionNumber)
 
         for i in 0..@versions.size
-            if(@versions[i].getVersionNumber() == versionNumber)
+            if(@versions[i].versionNumber == versionNumber)
                 return @versions[i]
             end
         end
@@ -208,38 +219,47 @@ class VersionedFile
     end
 
     def getVersion(index)
-
-      return @versions[index]
+      if(index == -1)
+        return getCurrentVersion
+      else
+        return @versions[index]
+      end
     end
 
 
     def listFileVersions
 
         if(@SESSION == nil || @VERSIONED_FILE == nil || File.absolute_path(@VERSIONED_FILE) == nil)
+            #puts "listFileVersions  ::::: No versions...."
             return
         else
           versFile = File.absolute_path(@VERSIONED_FILE)
 
-          dirPath = "#{versFile[0..versFile.rindex(@FS)]}BACKUP#{@FS}#{File.basename(@VERSIONED_FILE)}#{@FS}"
+          dirPath = "#{versFile[0..versFile.rindex(@FS)]}.versions#{@FS}#{File.basename(@VERSIONED_FILE)}#{@FS}"
 
           #puts "VersionedFile: listFileVersions; #{dirPath} exists: #{File.exist?(dirPath)}"
 
           if(File.exist?(dirPath) && File.directory?(dirPath))
 
             Dir.chdir(dirPath)
-            filtered = Dir.glob("*.properties") #TO-DO: need to sort this...
+            filtered = Dir.glob("*.rfs") #TO-DO: need to sort this...
             @versions = Array.new
+
             @versionInfo = Array.new
             i = 0
             filtered.each {|fnext|
               #puts "Reading file version: #{i} : #{fnext}"
-              @versions << FileVersion.new(
-                      self,
-                      @USER_NAME,
-                      @SESSION,
-                      fnext,
-                      @VERSIONED_FILE)
-              @versionInfo << @versions[i].getSerialisedVersion()
+              begin
+                @versions << FileVersion.new(
+                        self,
+                        @USER_NAME,
+                        @SESSION,
+                        fnext,
+                        @VERSIONED_FILE)
+                @versionInfo << @versions[i].getSerialisedVersion()
+              rescue
+
+              end
               i = i.next
             }
 
@@ -255,7 +275,7 @@ class VersionedFile
         #elsif(o instanceof VersionedFile)
         #    return this.myVersionedFile.compareTo(((VersionedFile)o).getCurrentVersion());
         #elsif(o instanceof FileVersion)
-        #    return this.myVersionedFile.compareTo(((FileVersion)o).getThisVersion());
+        #    return this.myVersionedFile.compareTo(((FileVersion)o).thisVersion);
         #else
         #    return -1;
         return -1

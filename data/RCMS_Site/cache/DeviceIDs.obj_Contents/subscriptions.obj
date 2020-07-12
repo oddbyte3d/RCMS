@@ -1,0 +1,28 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  coachcast_news: &1 !ruby/object:Subscription
+    subName: coachcast_news
+    devices:
+      ? c_M2fiZXQn6U-HJ50cQxH2:APA91bHbCsnX1NWVCFwVhCl181GPQlvvs33FM6_qYIp4lo0HljPW17CsQldK8D3E7_DxFzM885a0ytaSp_zq4ojrTl6LdXjRIArHGErqh0mMt2bqVJVd2_yqcfShY101kOxpgb7P9CnR
+      : !ruby/object:Device
+        userName: scott
+        deviceId: c_M2fiZXQn6U-HJ50cQxH2:APA91bHbCsnX1NWVCFwVhCl181GPQlvvs33FM6_qYIp4lo0HljPW17CsQldK8D3E7_DxFzM885a0ytaSp_zq4ojrTl6LdXjRIArHGErqh0mMt2bqVJVd2_yqcfShY101kOxpgb7P9CnR
+        subscriptions:
+          coachcast_news: *1
+  my_news: &3 !ruby/object:Subscription
+    subName: my_news
+    devices:
+      ? c_M2fiZXQn6U-HJ50cQxH2:APA91bHbCsnX1NWVCFwVhCl181GPQlvvs33FM6_qYIp4lo0HljPW17CsQldK8D3E7_DxFzM885a0ytaSp_zq4ojrTl6LdXjRIArHGErqh0mMt2bqVJVd2_yqcfShY101kOxpgb7P9CnR
+      : &2 !ruby/object:Device
+        userName: scott
+        deviceId: c_M2fiZXQn6U-HJ50cQxH2:APA91bHbCsnX1NWVCFwVhCl181GPQlvvs33FM6_qYIp4lo0HljPW17CsQldK8D3E7_DxFzM885a0ytaSp_zq4ojrTl6LdXjRIArHGErqh0mMt2bqVJVd2_yqcfShY101kOxpgb7P9CnR
+        subscriptions:
+          coachcast_news: !ruby/object:Subscription
+            subName: coachcast_news
+            devices:
+              ? c_M2fiZXQn6U-HJ50cQxH2:APA91bHbCsnX1NWVCFwVhCl181GPQlvvs33FM6_qYIp4lo0HljPW17CsQldK8D3E7_DxFzM885a0ytaSp_zq4ojrTl6LdXjRIArHGErqh0mMt2bqVJVd2_yqcfShY101kOxpgb7P9CnR
+              : *2
+          my_news: *3
+CLASS_NAME: Hash
+CREATION_DATE: 2020-03-15
+IS_MEMORY_CACHED: false

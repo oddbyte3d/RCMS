@@ -80,7 +80,7 @@ class AdminAccessControler
 
     def createNewUser(userName, initialGroup, userEmail, fname, lname, password)
         password = password.encrypt
-        user = Hash.new;
+        user = Hash.new
         user["login"] = userName
         user["adminGroup0"] = initialGroup
         user["email"] = userEmail
@@ -749,7 +749,7 @@ class AdminAccessControler
         if(!File.directory?(filePath) && filePath.index(@FS) != nil)
             filePath = filePath[0..filePath.rindex(@FS)]
         end
-        if(filePath.end_with("/"))
+        if(filePath.end_with?("/"))
             filePath = filePath[0..filePath.rindex('/')]
         end
         fAccess = "#{filePath}.access"
@@ -792,12 +792,13 @@ class AdminAccessControler
         filePath = GlobalSettings.changeFilePathToMatchSystem(filePath)
 
         fAccess = "#{filePath}.access"
+        puts "------------ CHECK::::: #{fAccess}"
         if(File.exist?(fAccess))
 
             fileProps = YAML.load_file(fAccess)
             fileUsers = fileProps["adminUsers"]
             fileGroups = fileProps["adminGroups"]
-
+            puts "ACCESS FILE ::::: #{fileProps}"
             user = YAML.load_file(fullPath)
 
             if(fileUsers.index(";#{userName}(rp") != nil || fileUsers.index(";#{userName}(rwp") != nil ||

@@ -1,0 +1,89 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: CuppaWEB v2
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: Scott, Taylor
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    6:
+      nodeName: page-menu
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 7
+  1:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: link
+      nodeValue: "\n    "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '9'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: System email.
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: target
+        nodeValue: _blank
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: path
+        nodeValue: mailto:scott@oddbyte3d.com
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: text
+        nodeValue: scott@oddbyte3d.com
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 6
+    childCount: 1
+  childCount: 2
+CLASS_NAME: Hash
+CREATION_DATE: 2020-03-06
+IS_MEMORY_CACHED: true

@@ -1,0 +1,8 @@
+text: text.erb
+link: link.erb
+pagetitle: pagetitle.erb
+list: list.erb
+rcmsimage: rcmsimage.erb
+header: header.erb
+banner: banner.erb
+slide: slide.erb

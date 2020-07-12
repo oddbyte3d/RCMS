@@ -75,7 +75,6 @@ class TemplateFile
     end
 
     def setSession(session)
-      puts "Setting Session::::::::: #{@mySession}"
       @mySession = session
     end
 
@@ -97,17 +96,53 @@ class TemplateFile
             parameters = Hash.new
             #puts "Page to render :#{@myPageToRender}"
             template = File.read(@myPart)
-            puts "------------------\n#{@configProperties}\n-----------------------------"
+            #puts "------------------\n#{@configProperties}\n-----------------------------"
             if(template == nil)
                 template = ""
             end
+
+
+            if(@myModuleToRender != nil)
+              moduleData = @myModuleToRender.getModuleData
+
+              template = processKey("visible", "#{@myModuleToRender.isVisible}", template)
+              template = processKey("id", "#{@myModuleToRender.moduleID}", template)
+              #puts "-------------------Module Data----------------------\n#{moduleData}\n---------------------------"
+              at = 0
+
+              moduleData.keys.each{ |key|
+
+                subData = moduleData[key]
+                if(at == 0)
+                  @configPropertiesSecond = subData
+                  if(@configPropertiesSecond.is_a?(Hash))
+                    @configProperties = @configProperties.merge(@configPropertiesSecond)
+                  end
+                  at = at.next
+                end
+                if subData.is_a? Array
+                  #The following is exposed to the ERB template
+                  parameters[key] = subData
+
+                else
+                  subData.keys.each{ |subkey|
+                    replace = subData[subkey]
+                    template = processKey(subkey, replace, template)
+                  }
+                end
+              }
+
+            end
+
 
             while(template.index("*IF(") != nil)
                 #puts "IF....."
                 start = template.index("*IF(")
                 #if(start > 0)
                 #  start = start-1
+                #  startIfB = start+3
                 #end
+
                 startIfB = start+4
                 endIfB = template.index('){*', startIfB)+2
                 bend = template.index("*}*", start)-1
@@ -116,15 +151,20 @@ class TemplateFile
                 if(check.index('|') != nil)
                   key = check[check.index('|')+1..check.size-1]
                   check = check[0..check.index('|')-1]
-                  puts "-----\nCheck: #{check}\nKey: #{key}\n------"
+                  #puts "-----\nCheck: #{check}\nKey: #{key}\n"
+                  #puts "#{@configProperties}\n\n#{@configPropertiesSecond}\n------------------------------"
                 end
                 #puts "CHECK : #{check}"
-                #puts "--------Config Props-------------\n#{@configProperties[check].strip != ""}\n------------------------------"
+
+                #if( @configProperties != nil &&  @configProperties[check] != nil )
+                #  puts "--------Config Props-------------\n#{@configProperties[check]}\n------------------------------"
+                #end
+
                 # Next check is to see if an empty or !empty case is requested, well I guess the !empty case is handled above....
                 if( (!@configProperties.key?(check) && key == "[empty]") || (@configProperties.key?(check) && @configProperties[check].strip == "" && key == "[empty]") ||
                           (@configProperties.key?(check) && key == "[!empty]" && @configProperties[check].strip != ""))
 
-                          puts "\n------Found Empty Check:::: #{key}-------------"
+                          #puts "\n------Found Empty Check:::: #{key}-------------"
                           templateTmp = template
                           if(start == 0)
                             template = "#{templateTmp[endIfB+2..bend-1]}#{templateTmp[bend+6..templateTmp.size-1]}"
@@ -144,7 +184,7 @@ class TemplateFile
                     if(start == 0)
                       template = "#{templateTmp[endIfB+2..bend]}#{templateTmp[bend+4..templateTmp.size-1]}"
                     else
-                      template = "#{templateTmp[0..start]}#{templateTmp[endIfB+1..bend]}#{templateTmp[bend+4..templateTmp.size-1]}"
+                      template = "#{templateTmp[0..start]}#{templateTmp[endIfB..bend]}#{templateTmp[bend+4..templateTmp.size-1]}"
                     end
 
 
@@ -174,34 +214,7 @@ class TemplateFile
 
 
 
-            if(@myModuleToRender != nil)
-              moduleData = @myModuleToRender.getModuleData
 
-              template = processKey("visible", "#{@myModuleToRender.isVisible}", template)
-              template = processKey("id", "#{@myModuleToRender.moduleID}", template)
-              #puts "-------------------Module Data----------------------\n#{moduleData}\n---------------------------"
-              at = 0
-
-              moduleData.keys.each{ |key|
-
-                subData = moduleData[key]
-                if(at == 0)
-                  @configPropertiesSecond = subData
-                  at = at.next
-                end
-                if subData.is_a? Array
-                  #The following is exposed to the ERB template
-                  parameters[key] = subData
-
-                else
-                  subData.keys.each{ |subkey|
-                    replace = subData[subkey]
-                    template = processKey(subkey, replace, template)
-                  }
-                end
-              }
-
-            end
 
             #puts "Template : #{template}"
 
@@ -352,7 +365,7 @@ class TemplateFile
           end
           className = className[className.rindex("/")+1..className.size]
 
-          puts "Class To Load : #{load} #{parameters}"
+          #puts "Class To Load : #{load} #{parameters}"
           require_relative(load)
 
           cr = Kernel.const_get(className).new(*parameters)

@@ -15,7 +15,7 @@ class MenuTemplate < GenericContent
       if args.size == 1
         @myPage = args[0]
       end
-      puts "Init menu: #{@myPage}"
+      #puts "Init menu: #{@myPage}"
       @@MENUITEM_TEMPLATE = "MenuItem.erb"
       @@FS = File::SEPARATOR
     end
@@ -37,7 +37,7 @@ class MenuTemplate < GenericContent
           @myPage = Page.new(@myPage, @session)
         end
         user = GlobalSettings.getUserLoggedIn(@session)
-        workPath = GlobalSettings.getCurrentWorkArea(@session);
+        workPath = GlobalSettings.getCurrentWorkArea(@session)
 
         myMenu = @myPage.getMenu
         if(myMenu != nil && myMenu.getMenuItems.size > 0)
@@ -47,7 +47,7 @@ class MenuTemplate < GenericContent
             if File.exist? @menuItemT
                 #puts "User: #{user} Menu Items: #{mItems}"
                 mItems.each{ |mitem|
-                  puts "........Menu Item : #{mitem.getLink}"
+                  #puts "........Menu Item : #{mitem.getLink}"
                   if(@ACCESS.checkUserFileAccess(user, "#{workPath}#{mitem.getLink}"))
                       value.concat( processMenuItem(mitem, @menuItemT) )
                   end
@@ -60,9 +60,9 @@ class MenuTemplate < GenericContent
     end
 
     def processMenuItem(myItem, menuItem)
-      puts "Menu Item:::: #{myItem}"
+      #puts "Menu Item:::: #{myItem}"
       options = createOptions(myItem)
-      puts "\n\n-----------------------\nOptions ::: #{options}"
+      #puts "\n\n-----------------------\nOptions ::: #{options}"
       tmp = TemplateFile.new(@myTemplateDir, menuItem, @myPage, options)
       tmp.setSession(@session)
       tmp.setRequest(@request)

@@ -71,6 +71,8 @@ swf: application/futurespash
 zip: application/zip
 dms: application/octet-stream
 json: application/json
+menu: application/json
+fcm: application/json
 bat: application/x-msdos-program
 hh: text/plain
 vcs: text/x-vCalendar
@@ -122,6 +124,7 @@ hpp: text/plain
 hdf: application/x-hdf
 xml: text/html
 admin: text/html
+ob3d: text/html
 smil: application/smil
 bcpio: application/x-bcpio
 ra: audio/vnd.rn-realaudio

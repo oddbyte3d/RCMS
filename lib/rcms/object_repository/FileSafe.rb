@@ -19,8 +19,6 @@ class FileSafe
     @REPOSITORYPATHORSELECT = ""
     @DIR_NAME = ""
     @FILE_NAME = ""
-    #private String dirName;
-    #private String fileName;
 
     def initialize
     end
@@ -68,7 +66,6 @@ class FileSafe
 
     def loadRepository
 
-        #Repository = null;
         @DIR_NAME = @REPOSITORYPATHORSELECT
 
         #puts "#{@DIR_NAME}  Index is... #{@DIR_NAME.index("/")}  : #{@@FS}"
@@ -145,7 +142,7 @@ class FileSafe
     # @param path Path of the object to load
     # @return Loaded Object
     def loadRepositoryObject(path)
-      puts "loadRepositoryObject :: #{path}"
+      #puts "loadRepositoryObject :: #{path}"
       if File.exist?("#{path}.obj")
         loadeOb = File.open("#{path}.obj").read
         repObj = YAML::load(loadeOb)

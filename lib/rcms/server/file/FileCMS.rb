@@ -59,10 +59,11 @@ class FileCMS
                 path.index(File.absolute_path(GlobalSettings.getDocumentConfigDirectory())) == nil &&
                 path.index(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory())) == nil
             path = "#{currentArea}#{path}"
-            #puts "FileCMS 54 path=#{@FILE}"
+            #puts "FileCMS 62 path=#{path}"
         end
         @FILE = path
-        #puts "FileCMS 57 path=#{@FILE}"
+        @FILE = GlobalSettings.changeFilePathToMatchSystem(@FILE)
+        #puts "FileCMS 65 path=#{@FILE}"
         @USER_NAME = GlobalSettings.getUserLoggedIn(@SESSION)
         #puts "User 2 : #{@USER_NAME}"
 
@@ -106,10 +107,11 @@ class FileCMS
                 path.index(File.absolute_path(GlobalSettings.getDocumentConfigDirectory())) == nil &&
                 path.index(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory())) == nil
             path = "#{currentArea}#{path}"
-            #puts "FileCMS 54 path=#{@FILE}"
+            #puts "FileCMS 109 path=#{path}"
         end
         @FILE = path
-
+        @FILE = GlobalSettings.changeFilePathToMatchSystem(@FILE)
+        #puts "FileCMS 113 path=#{@FILE}"
         #If the user has no read permissions to this file then just throw an exception and do not provide the opportunity for access.
         if !@ADMIN_ACCESS_CONTROL.checkFileAccessRead(@ADMIN_SESSION_ID, @USER_NAME, @FILE)
           raise FileAccessDenied.new("Read access denied to user: #{@USER_NAME} for file: #{getFileURL}")
@@ -123,7 +125,7 @@ class FileCMS
         else
 
           if (!File.exist?(@FILE) && !create)
-              raise FileNotFound.new("File: #{getFileURL} does not exist!");
+              raise FileNotFound.new("File: #{getFileURL} does not exist!")
           elsif (!File.exist?(@FILE) && create)
               File.new(@FILE,  "w+")
           end
@@ -223,7 +225,8 @@ class FileCMS
 
           if(@ADMIN_ACCESS_CONTROL.checkFileAccessWrite(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
             #puts "Opening to write!!!"
-              return File.open(@FILE, "w+")
+            @VERSIONED_FILE.createVersion(@VERSIONED_FILE.BACKUP_MODIFIED)
+            return File.open(@FILE, "w+")
           else
               raise FileAccessDenied.new("Write access denied to user: #{@USER_NAME} for file: #{getFileURL}")
           end
@@ -233,10 +236,13 @@ class FileCMS
 
     def publishFile
         #System.out.println("Inside FileCMS.publishFile() publish to:"+GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL());
-        if(AccessControler.checkFileAccessPublish("default/", @USER_NAME, File.absolute_path(@FILE)))
-
+        puts "\n\n publish 0"
+        if(@ADMIN_ACCESS_CONTROL.checkFileAccessPublish(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
+            puts "\n\n-------------------\npublish 1"
             if(File.exists?(@FILE))
+              puts "publish 2"
               FileUtils.cp_r(@FILE, "#{File.absolute_path(GlobalSettings.getDocumentDataDirectory())}#{getFileURL()}")
+              puts "publish 3\n-------------------------"
               return true
             else   #This case, is when we are to publish a deleted file or better said unpublishing a file
               File.delete("#{File.absolute_path(GlobalSettings.getDocumentDataDirectory())}#{getFileURL()}")
@@ -248,73 +254,59 @@ class FileCMS
     end
 
     def publishVersion(version)
-        if(@ADMIN_ACCESS_CONTROL.checkFileAccessPublish("default/", @USER_NAME, File.absolute_path(@FILE)))
-
+        if(@ADMIN_ACCESS_CONTROL.checkFileAccessPublish(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
+            puts " #{version.class.name} == -1 : #{version == -1}"
             if(version == -1)
-                return publishFile()
-            end
-            if(!File.exist?(@FILE))   #This case, is when we are to publish a deleted file or better said unpublishing a file
-                return (File.new(GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL())).delete();
-            end
-            versions = @VERSIONED_FILE.getAllVersions()
-            versions.each { |n_version|
-                if(version.getVersionNumber(n_version) == version)
-                  if(n_version.getVersionType != FileVersion.TYPE_DELETED)
-                      #return FileUtils.cp_r(n_version.thisVersion,
-                      #          new File(GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL()), true);
-
-                  else
-                    return true
+                return publishFile
+            else
+              if(!File.exist?(@FILE))   #This case, is when we are to publish a deleted file or better said unpublishing a file
+                  return (File.new(GlobalSettings.getDocumentDataDirectory().getAbsolutePath()+this.getFileURL())).delete();
+              end
+              versions = @VERSIONED_FILE.getAllVersions()
+              versions.each { |n_version|
+                  #puts ":::: #{n_version.versionNumber} :::: #{version}"
+                  if(n_version.versionNumber == version)
+                    if(n_version.VTYPE != n_version.TYPE_DELETED)
+                        #puts "::::::::::::::::::: cp_r #{n_version.thisVersion} -> #{GlobalSettings.getDocumentDataDirectory+getFileURL}"
+                        return FileUtils.cp_r(n_version.thisVersion, GlobalSettings.getDocumentDataDirectory+getFileURL)
+                    else
+                      return true
+                    end
                   end
-                end
-            }
+              }
+            end
         end
         return false
     end
 
 
-     #Enables safe deleting of a file. Checks permissions and makes a backup of the latest version.
-     #
-     # @return
-     # @throws java.io.FileNotFoundException
-     # @throws com.cuppait.cuppaweb.file.exception.FileAccessDenied
-     # @throws java.io.IOException
-=begin
-    public boolean deleteFile()
-            throws FileNotFoundException, FileAccessDenied, IOException
-    {
-        if(adminSessionId == null)
-            throw new FileAccessDenied("File Access Denied!");
-        if(de.codefactor.web.admin.security.AccessControler.checkFileAccessWrite(this.adminSessionId, this.userName, this.myFile))
-        {
-            this.myVersionedFile.createVersion(VersionedFile.BACKUP_DELETED);
-            return this.myVersionedFile.getCurrentVersion().delete();
-        }
+    #Enables safe deleting of a file. Checks permissions and makes a backup of the latest version.
+    def delete
+
+        if(@ADMIN_SESSION_ID == nil)
+            raise FileAccessDenied.new("File Access Denied!")
+        end
+        if @ADMIN_ACCESS_CONTROL.checkFileAccessWrite(@ADMIN_SESSION_ID, @USER_NAME, @FILE)
+
+            @VERSIONED_FILE.createVersion(@VERSIONED_FILE.BACKUP_DELETED)
+            deleted = File.delete(@VERSIONED_FILE.getCurrentVersion)
+            return (deleted > 0)
         else
-            throw new FileAccessDenied("Delete access denied to user: "+this.userName+" for file: "+this.myFile.getAbsolutePath());
-    }
-=end
+            raise FileAccessDenied.new("Delete access denied to user: #{@USER_NAME} for file: #{@FILE}")
+        end
+    end
 
     #Enables safe renaming of a file. Checks permissions and makes a backup of the latest version.
-    #
-     # @param newPath
-     # @return
-     # @throws java.io.FileNotFoundException
-     # @throws com.cuppait.cuppaweb.file.exception.FileAccessDenied
-     # @throws java.io.IOException
-=begin
-    public boolean renameFile(File newPath)
-            throws FileNotFoundException, FileAccessDenied, IOException
-    {
-        if(adminSessionId == null)
-            throw new FileAccessDenied("File Access Denied!");
-        if(de.codefactor.web.admin.security.AccessControler.checkFileAccessWrite(this.adminSessionId, this.userName, this.myFile))
-        {
-            this.myVersionedFile.createVersion(VersionedFile.BACKUP_RENAMED);
-            return this.myVersionedFile.getCurrentVersion().renameTo(newPath);
-        }
+    def renameFile(newPath)
+        if(@ADMIN_SESSION_ID == nil)
+            raise FileAccessDenied.new("File Access Denied!")
+        end
+        if(@ADMIN_ACCESS_CONTROL.checkFileAccessWrite(@ADMIN_SESSION_ID, @USER_NAME, @FILE))
+            @VERSIONED_FILE.createVersion(@VERSIONED_FILE.BACKUP_RENAMED)
+            return File.rename(@VERSIONED_FILE.getCurrentVersion, newPath)
         else
-            throw new FileAccessDenied("Rename access denied to user: "+this.userName+" for file: "+this.myFile.getAbsolutePath());
-    }
-=end
+            raise FileAccessDenied.new("Rename access denied to user: #{@USER_NAME} for file: #{getFileURL}")
+        end
+    end
+
 end

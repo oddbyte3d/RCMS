@@ -56,7 +56,7 @@ class XMLSmart
     end
 
     def addCacheHTML(xmlFile, html)
-      @OBMANAGER = GlobalSettings.getGlobal("ActiveRepositoryLoader");
+      @OBMANAGER = GlobalSettings.getGlobal("ActiveRepositoryLoader")
       @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(Parser.replaceAll(xmlFile, "/", "-"), html, true)
     end
 
@@ -68,7 +68,7 @@ class XMLSmart
     end
 
     def getCacheHTML(xmlFile)
-        @OBMANAGER = GlobalSettings.getGlobal("ActiveRepositoryLoader");
+        @OBMANAGER = GlobalSettings.getGlobal("ActiveRepositoryLoader")
         if (@OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(Parser.replaceAllInString(@XMLFILE, "/", "-")) == nil)
             return nil
         else
@@ -87,12 +87,15 @@ class XMLSmart
         end
 
         fcms = FileCMS.new(@session, fullPath)
-        fv = fcms.getVersionedFile.getVersionByNumber(version)
-        if (fv != nil && fv.getThisVersion != nil)
-            self.setXmlFile(fv.getThisVersion.getAbsolutePath)
+        fv = fcms.VERSIONED_FILE.getVersionByNumber(version)
+        #puts "\n\n___________________________________\nRetrieving Version: #{version} #{fv.thisVersion}"
+        if (fv != nil && fv.thisVersion != nil)
+            #puts "Loading version: #{File.absolute_path(fv.thisVersion)}"
+            setXmlFile(File.absolute_path(fv.thisVersion))
         else
-            self.setXmlFile(fcms.getFileURL)
+            setXmlFile(fcms.getFileURL)
         end
+        #puts "\n___________________________________"
       end
     end
 
@@ -104,15 +107,14 @@ class XMLSmart
     # it from the file system.
     # @param @XMLFILE Path to the file
 
-    #def setXmlFile(xmlFileTmp)
     def setXmlFile(*args)
       if(args.size == 2)
         setXmlFile_2(args[0], args[1])
       else
-        obManager = GlobalSettings.getGlobal("ActiveRepositoryLoader");
+        @OBMANAGER = GlobalSettings.getGlobal("ActiveRepositoryLoader")
         xmlFileTmp = args[0]
         if (@XMLFILE != nil && @XMLFILE == xmlFileTmp && @XML != nil)
-          #puts "returning nil....."
+            #puts "returning nil....."
             return nil
         end
         @XMLFILE = args[0]
@@ -122,7 +124,7 @@ class XMLSmart
         if(scndPath == @serverDataPath)
             scndPath = "#{File.absolute_path(GlobalSettings.getDocumentDataDirectory)}#{@@FS}"
         end
-        if (!(fullPath.index(@serverDataPath) != nil) && !(fullPath.index(scndPath) != nil))
+        if ((fullPath.index(@serverDataPath) == nil) && (fullPath.index(scndPath) == nil))
             fullPath = @serverDataPath.concat(fullPath)
         end
 
@@ -132,9 +134,9 @@ class XMLSmart
         if (fullPath.index("//") != nil)
             fullPath = Parser.replaceAll(fullPath, "//", "/")
         end
-
+        #puts "FullPath::::1::::: #{fullPath}"
         fullPath = GlobalSettings.changeFilePathToMatchSystem(fullPath)
-
+        #puts "FullPath::::2::::: #{fullPath}"
         fullPathMod = Parser.replaceAll(Parser.replaceAll(fullPath, @@FS, "-"), ":", "[")
         xmlFileMod = Parser.replaceAll(Parser.replaceAll(@XMLFILE, @@FS, "-"), ":", "[")
 
@@ -144,9 +146,8 @@ class XMLSmart
         if (@OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME) != nil &&
             @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod) != nil &&
             (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getObject()) != nil)
-            if (@XML != nil || !@XML == Array.new)
-                #java.io.File fTest = new java.io.File(fullPath);
-
+            if (@XML != nil || @XML != Array.new)
+                #puts "========> 1 Time diff : #{(File.mtime(fullPath).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE.to_time.to_i)}"
                 if ((File.mtime(fullPath).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE.to_time.to_i) > 1500)
                     xmlDoc = XMLDocument.new(fullPath, true)
                     #xmlDoc.tagToString( xmlDoc.XML_DOC[0], 0 )
@@ -167,42 +168,38 @@ class XMLSmart
         elsif (@OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME) != nil &&
                @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod) != nil &&
                (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getObject()) != nil)
-            if (@XML != nil || !@XML == Array.new)
-                #java.io.File fTest = new java.io.File(@XMLFILE);
-
-                if ((File.mtime(@XMLFILE) - obManager.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getCreationDate()) > 1500)
+            if (@XML != nil || @XML != Array.new)
+                #puts "========> 2"
+                if ((File.mtime(@XMLFILE) - obManager.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).CREATION_DATE) > 1500)
                     hmXML = @xmlTool.createHashtableFromXMLDocument(XMLDocument.new(@XMLFILE, true))
                     @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).removeRepositoryObject(xmlFileMod)
                     @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(xmlFileMod, hmXML, true)
                     @XML = hmXML
-                    File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getCreationDate(), fullPath)
-                    File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getCreationDate(), @XMLFILE)
+                    File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE, fullPath)
+                    File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).CREATION_DATE, @XMLFILE)
                     GlobalSettings.clearPageModules(@session, @XMLFILE, -1)
                 end
             end
         else
-          #puts "FullPath : #{fullPath} exist? #{File.exist?(fullPath)}"
+            #puts "========> 3"
+            #puts "FullPath : #{fullPath} exist? #{File.exist?(fullPath)}"
             if (File.exist?(fullPath) && !File.directory?(fullPath))
                 #puts "Load XML..."
                 @XML = @xmlTool.createHashtableFromXMLDocument(XMLDocument.new(fullPath, true))
             end
             #puts "XML: #{@XML}"
             if (@XML != nil)
-                #java.io.File fTest = new java.io.File(fullPath);
-
                 #puts "3 Commiting :#{fullPathMod}"
                 @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(fullPathMod, @XML, true)
-                File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getCreationDate().to_time, fullPath)
+                File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE.to_time, fullPath)
 
             else
                 if (File.exist?(@XMLFILE) && !File.directory?(@XMLFILE))
                     @XML = @xmlTool.createHashtableFromXMLDocument(XMLDocument.new(@XMLFILE, true))
                     if (@XML != nil )
-                        #java.io.File fTest = new java.io.File(@XMLFILE);
-
                         #puts "4 Commiting :#{fullPathMod}"
-                        @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(xmlFileMod, @XML, truFile.utime(0, @OBMANAGER..getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getCreationDate(), fullPath))
-                        File.utime(0, @OBMANAGER..getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getCreationDate().to_time, @XMLFILE)
+                        @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).commitObject(xmlFileMod, @XML, File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).CREATION_DATE, fullPath))
+                        File.utime(0, @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).CREATION_DATE.to_time, @XMLFILE)
                     end
                 end
                 #}
@@ -212,9 +209,9 @@ class XMLSmart
     end
 
     #-------------------------------------------------------------------------------
-    def isNewest(xmlFileTmp, version)
+    def isNewest_2(xmlFileTmp, version)
         if (version == -1)
-            return self.isNewest(xmlFileTmp)
+            return isNewest(xmlFileTmp)
         end
         if (@session != nil)
           fullPath = xmlFileTmp
@@ -222,62 +219,64 @@ class XMLSmart
               fullPath = @serverDataPath.concat(fullPath)
           end
           fcms = FileCMS.new(@session, fullPath)
-          fv = fcms.getVersionedFile().getVersionByNumber(version)
-          if (fv != nil && fv.getThisVersion() != nil)
-              return self.isNewest(fv.getThisVersion().getAbsolutePath())
+          fv = fcms.VERSIONED_FILE.getVersionByNumber(version)
+          if (fv != nil && fv.thisVersion != nil)
+              return isNewest(File.absolute_path(fv.thisVersion))
           else
-              return false #this.isNewest(fv.getCurrentVersion().getAbsolutePath());
+              return false
           end
         end
         return true
     end
 
 
-    def isNewest(xmlFileTmp)
-
-
-        @XMLFILE = xmlFileTmp
-        fullPath = @XMLFILE
-
-        if (fullPath.index(@serverDataPath) == nil)
-            fullPath = @serverDataPath.cocat(fullPath)
-        end
-        if (@XMLFILE.index("//") != nil)
-            @XMLFILE = Parser.replaceAll(@XMLFILE, "//", "/")
-        end
-        if (fullPath.index("//") != nil)
-            fullPath = Parser.replaceAll(fullPath, "//", "/")
-        end
-
-        fullPath = GlobalSettings.changeFilePathToMatchSystem(fullPath)
-        fullPathMod = Parser.replaceAll(Parser.replaceAll(fullPath, @FS, "-"), ":", "[")
-        xmlFileMod = Parser.replaceAll(Parser.replaceAll(@XMLFILE, @FS, "-"), ":", "[")
-
-        if (@XML != nil && @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod) != nil &&
-          (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getObject()) != nil)
-            if (@XML != nil)
-
-
-                if ((File.mtime(fullPath).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getObject(fullPathMod).CREATION_DATE.to_time.to_i) > 1500)
-                    return false
-                else
-                    return true
-                end
-            end
-        elsif (@XML != nil && @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod) != nil && (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getObject()) != nil)
-            if (@XML != nil) #|| !@XML.equals(new Hashtable()))
-
-                if ((File.mtime(@XMLFILE).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).CREATION_DATE.to_time.to_i) > 1500)
-                    return false
-                else
-                    return true
-                end
-            end
+    def isNewest(*args)
+        if args.size == 2
+          return isNewest_2(args[0], args[1])
         else
-            return false
-        end
+          @XMLFILE = args[0]
+          fullPath = @XMLFILE
 
-        return false
+          if (fullPath.index(@serverDataPath) == nil)
+              fullPath = @serverDataPath.cocat(fullPath)
+          end
+          if (@XMLFILE.index("//") != nil)
+              @XMLFILE = Parser.replaceAll(@XMLFILE, "//", "/")
+          end
+          if (fullPath.index("//") != nil)
+              fullPath = Parser.replaceAll(fullPath, "//", "/")
+          end
+
+          fullPath = GlobalSettings.changeFilePathToMatchSystem(fullPath)
+          fullPathMod = Parser.replaceAll(Parser.replaceAll(fullPath, @FS, "-"), ":", "[")
+          xmlFileMod = Parser.replaceAll(Parser.replaceAll(@XMLFILE, @FS, "-"), ":", "[")
+
+          if (@XML != nil && @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod) != nil &&
+            (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(fullPathMod).getObject()) != nil)
+              if (@XML != nil)
+
+
+                  if ((File.mtime(fullPath).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getObject(fullPathMod).CREATION_DATE.to_time.to_i) > 1500)
+                      return false
+                  else
+                      return true
+                  end
+              end
+          elsif (@XML != nil && @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod) != nil && (@XML = @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).getObject()) != nil)
+              if (@XML != nil) #|| !@XML.equals(new Hashtable()))
+
+                  if ((File.mtime(@XMLFILE).to_time.to_i - @OBMANAGER.getObjectRepsoitory(@@REPOSITORY_NAME).getRepositoryObject(xmlFileMod).CREATION_DATE.to_time.to_i) > 1500)
+                      return false
+                  else
+                      return true
+                  end
+              end
+          else
+              return false
+          end
+
+          return false
+        end
     end
 
 
@@ -286,7 +285,7 @@ class XMLSmart
     end
 
     def setXML(xml)
-        @XMLFILE = "Hashtable given";
+        @XMLFILE = "Hashtable given"
         @XML = xml
     end
 
@@ -532,7 +531,7 @@ class XMLSmart
                 #puts "---->1 #{@nodeElements[@nodeAt]}"
                 if (@nodeElements[@nodeAt].index(':') != nil)
                     @nodeName = @nodeElements[@nodeAt][0..@nodeElements[@nodeAt].index(':')]
-                    @attributeName = @nodeElements[@nodeAt][@nodeElements[@nodeAt].index(':') + 1];
+                    @attributeName = @nodeElements[@nodeAt][@nodeElements[@nodeAt].index(':') + 1]
                     retStr = @xmlTool.searchForAttribute(tmp, @nodeName, @attributeName)
                 else
                     #puts "Searching for : #{@nodeElements[@nodeAt]}"

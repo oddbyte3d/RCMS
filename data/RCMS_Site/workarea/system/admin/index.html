@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="/system/admin/w2ui-1.5.rc1.css" />
+    <link rel="stylesheet" type="text/css" href="/system/admin/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/system/templates/coachcast/assets/css/fontawesome-all.min.css" />
+    <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">-->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="/system/admin/w2ui-1.5.rc1.min.js"></script>
+    <script type="text/javascript" src="/system/admin/js/Subscriptions.js"></script>
+    <meta charset="utf-8"/>
+    <title>cms_name vrcms_mav.rcms_miv.rcms_iv dashboard</title>
+</head>
+<script type="text/javascript">
+
+  canEdit = false;  //Need to load based on user profile.
+  canPublish = false;
+  currentFileEdit = '';
+  currentFileShow = '';
+
+</script>
+<style>
+  .fa-save {
+    color: #65fb65 !important;
+  }
+  .fa-pencil-alt {
+    color: #ff9463 !important;
+  }
+</style>
+<body>
+    <div id="adminLayout"></div>
+</body>
+<script>
+
+  $(function () {
+      var height = window.innerHeight-130;
+      var pstyle = 'background-color: #F5F6F7; border: 1px solid #dfdfdf; padding: 5px;';
+
+
+
+      $('#adminLayout').w2layout({
+          name: 'adminLayout',
+          panels: [
+              { type: 'top',  size: 50, resizable: false, style: pstyle , title: 'Hi user_fname!! Welcome to the cms_name vrcms_mav.rcms_miv.rcms_iv dashboard :)'},
+              { type: 'left', size: 270, resizable: false, style: pstyle, content: '<div id="mySidebar" style="height: 450px; width: 250px;"></div>' },
+              { type: 'main', style: pstyle, content: '<object id="rcms_file" data="/system/admin/main.html" width="100%" height="'+height+'" type="text/html"></object>' },
+              { type: 'right', size: 300, resizable: false, style: pstyle, content: '<div id="info_form" style="width: 290px;"></div><div id="versions_grid" style="width: 290px; height: 45%;"></div><div id="v_buttons" style="width: 290px; height: 10%;">'},
+              { type: 'bottom', size: 60, resizable: false, style: pstyle, content: '<div id="filetools" style="padding: 4px; border: 1px solid #dfdfdf; border-radius: 3px"></div>' }
+          ]
+      });
+
+      // then define the sidebar
+      w2ui['adminLayout'].content('left', $().w2sidebar({
+      	name: 'sidebar',
+        flatButton: true,
+        topHTML    : '<div id="option_bar"></div>',
+      	img: null,
+      	nodes: [
+      		{ id: 'content-folder', text: 'Content', img: 'icon-folder', expanded: true, group: true,
+      		  nodes: [ { id: 'pages', text: 'Pages', img: 'icon-page' },
+      				       { id: 'assets', text: 'Assets', img: 'icon-page' }
+      				 ]
+      		},
+          { id: 'notification', text: 'Notification', img: 'icon-folder', expanded: true, group: true,
+            nodes: [ { id: 'lists', text: 'Subscriptions', img: 'icon-page' },
+                     { id: 'devices', text: 'Registered Devices', img: 'icon-page' }
+               ]
+          }
+      	],
+        onFlat: function (event) {
+            w2ui['adminLayout'].sizeTo("left", (event.goFlat ? '40px' : '270px'));
+            (event.goFlat ? w2ui['sidebar'].collapse('content-folder') : w2ui['sidebar'].expand('content-folder'));
+        },
+      	onClick: function (event) {
+          onFileUnload();
+          if(event.target == "pages")
+          {
+            loadRFS(event.target, 'folder','/admin/actions/list_folders?sub_dir=/&file_type=*');
+            loadRFS(event.target, 'file','/admin/actions/list_files?sub_dir=/&file_type=xml');
+          }
+          else if(event.target.startsWith("folder"))
+          {
+            var folder = event.target;
+            var subFolder = folder.substring(6, folder.length);
+            loadRFS(event.target, 'folder','/admin/actions/list_folders?sub_dir='+subFolder+'&file_type=*');
+            loadRFS(event.target, 'file','/admin/actions/list_files?sub_dir='+subFolder+'&file_type={admin_supported_files}');
+
+          }
+          else if(event.target.startsWith("file"))
+          {
+
+            var file = event.target;
+            var fileSelected = file.substring(4, file.length);
+            currentFileEdit = fileSelected;
+            currentFileShow = fileSelected.substring(0, fileSelected.lastIndexOf('.'))+'.xml'
+            loadPermissions();
+            var h = w2ui['adminLayout'].get('main').height-15;
+            w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileShow+'" width="100%" height="'+h+'" type="text/html"></object>');
+            onFileLoad();
+          }
+          else if(event.target == "lists")
+          {
+            setGridArea("main");
+            setGridDetailArea("right");
+            createListGrid();
+          }
+          else
+          {
+            //alert(fileSystem);
+          }
+      	}
+      }));
+      w2ui['sidebar'].click('pages');
+
+      //initSubscriptions();
+
+  });
+
+  function diff_versions(selection)
+  {
+    //alert((selection instanceof Array));
+    var version1 = -1;
+    var version2 = selection[0];
+    if(selection.length == 2)
+    {
+      version1= selection[0];
+      version2= selection[1];
+    }
+    var load = '/system/admin/diff.html?file='+currentFileShow+'&v1='+version1+'&v2='+version2;
+    openInNewTab(load);
+
+  }
+  function view(selection)
+  {
+    //alert((selection instanceof Array));
+    var load = currentFileShow+'?version='+selection;
+    openInNewTab(load);
+
+  }
+  function openInNewTab(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+  }
+
+  function loadPageInfo(pversion)
+  {
+    //alert("load info...");
+    $.post( "/admin/pageinfo", { file: currentFileShow, version: pversion })
+      .done(function( data ) {
+
+        var pinfo_form = w2ui["pinfo_form"];
+        if(pinfo_form != null ) pinfo_form.destroy();
+
+        var relement = w2ui["relement"];
+        if(relement != null ) relement.destroy();
+        w2ui.adminLayout.refresh('right');
+
+          //alert(data.title);
+          //data = JSON.parse(data);
+          $('#info_form').empty();
+          $('#info_form').w2form({
+              name   : 'pinfo_form',
+              fields : [
+                  { name: 'title', type: 'text', required: true },
+                  { name: 'keywords',  type: 'text' },
+                  { name: 'description',   type: 'textarea'}
+              ],
+              actions: {
+                  reset: function () {
+                      //this.clear();
+                  },
+                  save: function () {
+                      //this.save();
+                      //alert("on-save..."+w2ui['pinfo_form'].record['title']);
+                      $.post( "/admin/pageinfo", { file: currentFileShow,
+                            version: pversion, save: "true",title: w2ui['pinfo_form'].record['title'],
+                            keywords: w2ui['pinfo_form'].record['keywords'],
+                            description: w2ui['pinfo_form'].record['description']
+                          })
+                        .done(function( data ) {
+                            var html = "Save failed! "+JSON.stringify(data);
+                            if(data.title != null)
+                              html = 'Changes saved.';
+                            $("#info_form").w2overlay('<div style=\'padding: 10px\'>'+html+'</div>');
+                        });
+                  }
+              }
+          });
+          //w2ui['pinfo_form'].record['title'] = "";
+          //w2ui['pinfo_form'].record['keywords'] = "";
+          //w2ui['pinfo_form'].record['description'] = "";
+          //w2ui['pinfo_form'].refresh();
+          //w2ui['pinfo_form'].clear();
+          w2ui['pinfo_form'].record['title'] = data.pageinfo.title;
+          w2ui['pinfo_form'].record['keywords'] = data.pageinfo.keywords;
+          w2ui['pinfo_form'].record['description'] = data.pageinfo.description;
+          w2ui['pinfo_form'].refresh();
+
+
+
+          $('#versions_grid').w2grid({
+              name: 'relement',
+              header: 'Versions',
+              show: {
+                  header: true,
+                  toolbar: true,
+                  selectColumn: true,
+                  footer: true
+              },
+              columns: [
+                  { field: 'recid', caption: 'ID', size: '30px', sortable: true, attr: 'align=center' },
+                  { field: 'ver_by', caption: 'User', size: '20%', sortable: true, resizable: true },
+                  { field: 'ver_desc', caption: 'Description', size: '35%', sortable: true, resizable: true },
+                  { field: 'ver_type', caption: 'Type', size: '35%', sortable: true, resizable: true },
+              ],
+              sortData: [{ field: 'recid', direction: 'ASC' }],
+              records: []
+          });
+          //w2ui['relement'].add({ recid: 3, fname: 'Jin', lname: 'Franson', email: '--', sdate: '4/23/2012' });
+          //var append = "";
+          w2ui['relement'].clear();
+          data.versions.forEach(function(item){
+            w2ui['relement'].add({ recid: item.recid, ver_by: item.ver_by, ver_desc: item.ver_desc, ver_type: item.ver_type });
+          });
+          w2ui['relement'].sort('recid', 'asc');
+          //alert(JSON.stringify(data.versions));
+          $('#v_buttons').html( '<button class="w2ui-btn" onclick="view(w2ui.grid.getSelection()[0]);">View</button>'+
+                                '<button class="w2ui-btn" onclick="diff_versions(w2ui.grid.getSelection());">Diff Selection</button>'+
+                                '<button class="w2ui-btn" onclick="publish(w2ui.grid.getSelection()[0]);">Publish</button>');
+          //publish
+
+      });
+  }
+
+  function onFileUnload()
+  {
+    //$('#filetools').html('');
+  }
+  function onFileLoad()
+  {
+
+    $(function () {
+      var fbut = w2ui["filebuttons"];
+      if(fbut != null ) fbut.destroy();
+        w2ui.adminLayout.refresh('bottom');
+        $('#filetools').w2toolbar({
+            name: 'filebuttons',
+            items: [
+                { type: 'check', id: 'edit_file', checked: false, text: 'Edit', icon: 'fa fa-pencil-alt' },
+                { type: 'button', id: 'save_changes', disabled: 'true', text: 'Save', icon: 'fa fa-save' },
+                { type: 'break' },
+                { type: 'button', id: 'publish_changes', text: 'Publish', icon: 'fa fa-star' },
+                { type: 'button', id: 'push_not', text: 'Push to clients', icon: 'fa fa-star' }
+            ],
+            onClick: function (event) {
+                //console.log('Target: '+ event.target, event);
+                if(event.target == 'save_changes')
+                {
+                  document.getElementById("rcms_file").contentWindow.doSave();
+                  w2ui['filebuttons'].disable('save_changes');
+                }
+                else if(event.target == 'edit_file')
+                {
+                  if(!w2ui['filebuttons'].get('edit_file').checked)
+                  {
+                    w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileEdit+'" width="100%" height="'+h+'" type="text/html">'+
+                    'Alternative Content</object>');
+                  }
+                  else {
+                    w2ui['adminLayout'].content('main', '<object id="rcms_file" data="'+currentFileShow+'" width="100%" height="'+h+'" type="text/html">'+
+                    'Alternative Content</object>');
+                  }
+                }
+                else if(event.target == 'publish_changes')
+                {
+                    publish(-1);
+                }
+                else if(event.target == 'push_not')
+                {
+                    //publish(-1);
+                    w2alert("Pushing to clients...");
+                }
+            }
+        });
+    });
+
+    if(!canPublish)
+        w2ui['filebuttons'].disable('publish_changes');
+    if(!canEdit)
+        w2ui['filebuttons'].disable('edit_file');
+
+    loadPageInfo(-1);
+  }
+
+
+  function loadPermissions()
+  {
+      $.post( "/admin/permission", { file: currentFileShow })
+        .done(function( data ) {
+          //alert(currentFileShow+" : "+data);
+          data = JSON.parse(data);
+          //"{\"edit\": \"#{canEdit}\", \"publish\": \"#{canPublish}\"}"
+
+
+          canEdit = data.edit=="true";
+          canPublish = data.publish=="true";
+          //alert(canPublish);
+          if(canPublish)
+            w2ui['filebuttons'].enable('publish_changes');
+          else
+            w2ui['filebuttons'].disable('publish_changes');
+          if(canEdit)
+            w2ui['filebuttons'].enable('edit_file');
+          else
+              w2ui['filebuttons'].disable('edit_file');
+          //alert("canEdit: "+canEdit+" canPublish: "+canPublish);
+        });
+
+  }
+  function publish(pversion)
+  {
+    $.post( "/admin/actions/publish", { file: currentFileShow, version: pversion })
+      .done(function( data ) {
+
+        var html = "Publish failed! "+JSON.stringify(data);
+        if(data.success.indexOf(" published") > -1)
+          html = 'File published.';
+        $("#filetools").w2overlay('<div style=\'padding: 10px\'>'+html+'</div>');
+      });
+
+  }
+
+  function saveDone(data)
+  {
+      var html = "File write failed!"
+      if(data.success.indexOf(" success") > -1)
+        html = 'File saved.';
+      $("#filetools").w2overlay('<div style=\'padding: 10px\'>'+html+'</div>');
+  }
+
+  function onFileChanged()
+  {
+    if(canEdit)
+      w2ui['filebuttons'].enable('save_changes');
+  }
+
+  /*
+``  Load a subsection of the Remote File System (RFS)
+  */
+  function loadRFS(parentId, idPrefix, path)
+  {
+      $.get( path, {} )
+        .done(function( data ) {
+          processRFS(parentId, idPrefix, data);
+        });
+  }
+  /*
+``  Process a subsection of the Remote File System (RFS)
+  */
+  function processRFS(parentId, idPrefix, obj)
+  {
+    var nextObj = obj["files"];
+    Object.keys(nextObj).forEach(function(key) {
+        var value = nextObj[key];
+        addFileNode(parentId, idPrefix+key, value);
+    });
+  }
+  /*
+``  Add a File/Folder node to the local representation of the Remote File System (RFS)
+  */
+  function addFileNode(parentId, nodeId, nodeText)
+  {
+    var icon = getIcon(nodeId);
+    w2ui['sidebar'].add(parentId, [{ id: nodeId, text: nodeText, img: icon }]);
+    w2ui['sidebar'].expand(parentId);
+  }
+  /*
+``  Determine what kind of icon to display based on file type
+  */
+  function getIcon(nodeId)
+  {
+    if(nodeId.startsWith("folder"))
+      return 'icon-folder-custom';
+    else
+    {
+      var fileType = nodeId.substring(nodeId.indexOf('.'), nodeId.length);
+      var icon = "";
+      //alert(fileType)
+      switch(fileType) {
+        case ".admin":
+          icon = 'icon-xml';
+          break;
+        case ".block":
+          icon = 'icon-block';
+          break;
+      }
+      return icon;
+
+    }
+
+  }
+  //addSubscriptionQueue("test1");
+  //addSubscriptionQueue("test2");
+  var h = window.innerHeight;
+  $('#adminLayout').css('height', h+'px');
+
+
+</script>
+</html>

@@ -7,7 +7,7 @@ require "erb"
 
 class ERBContext
   def initialize(hash)
-    puts "Init ERBContext : #{hash}"
+    #puts "Init ERBContext : #{hash}"
     hash.each_pair do |key, value|
       instance_variable_set('@' + key.to_s, value)
     end
@@ -103,9 +103,10 @@ class JSONTemplateFile
             if(@moduleData != nil)
               at = 0
               @moduleData.keys.each{ |key|
-                #puts "Processing mod data: #{key} ::::::: #{@moduleData[key]}"
+                puts "Processing mod data: #{key} ::::::: #{@moduleData[key]}"
                 subData = @moduleData[key]
-                if subData.is_a? Array
+                if subData.is_a?(Array) || subData.is_a?(Hash)
+                  puts "Processing Array or hash: #{subData.class.name}"
                   #The following is exposed to the ERB template
                   parameters["#{key}"] = subData
                 else
@@ -173,7 +174,7 @@ class JSONTemplateFile
               end
             end
 
-            #puts "ERBContext parameters:: #{parameters}"
+            puts "ERBContext parameters:: #{parameters}"
             b = ERBContext.new( parameters)
             erb = ERB.new(template)
             template = erb.result(b.get_binding)
@@ -286,13 +287,6 @@ class JSONTemplateFile
             part = TemplateFile.new(@myTemplateDir, replace, @myPageToRender)
             template = Parser.replaceAll(template, "*#{key}*", part.parseTemplate)
         elsif(type == "page")
-
-          #tmpRenderer = @myTemplate.getRenderer
-          #renderer = tmpRenderer.class.new#.loadPageContent(replace, @myPageToRender.webPath)
-          #properties = PropertyLoader.new(GlobalSettings.getGlobal("Parent-PropertyFile"))
-          #replace = renderer.renderOutput( tmpRenderer.myRequest, tmpRenderer.myResponse,
-          #                                tmpRenderer.mySession, properties, replace,
-          #                                tmpRenderer.myTheme, tmpRenderer.baseDocRoot, tmpRenderer.baseDocRootInc)
 
           #puts "Lets parse page: #{replace}"
           myreplace = @myTemplate.getRenderer().loadPageContent(replace, @myPageToRender.webPath)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[More news]]></pagetitle>
+<author><![CDATA[]]></author>
+<owner><![CDATA[]]></owner>
+<keywords><![CDATA[]]></keywords>
+<description><![CDATA[]]></description>
+<page-menu></page-menu>
+</pageinfo>
+<module><banner>
+  <id><![CDATA[0]]></id>
+  <descriptive_name><![CDATA[Banner module]]></descriptive_name>
+  <header_title><![CDATA[Coachcast News]]></header_title>
+  <header_text><![CDATA[Latest news from coachcast.]]></header_text>
+  <banner_text><![CDATA[Aenean ornare velit lacus, ac varius enim ullamcorper eu. Proin aliquam facilisis ante interdum congue. Integer mollis, nisl amet convallis, porttitor magna ullamcorper, amet egestas mauris. Ut magna finibus nisi nec lacinia. Nam maximus erat id euismod egestas. Pellentesque sapien ac quam. Lorem ipsum dolor sit nullam.]]></banner_text>
+
+  <action_items>
+
+    <action_item>
+      <action><![CDATA[my_news]]></action>
+      <action_text><![CDATA[Subscribe here]]></action_text>
+    </action_item>
+
+  </action_items>
+
+  <image><![CDATA[http://192.168.1.10:9999/images/cedric-letsch-ttJ-qnuboak-unsplash.jpg]]></image>
+  <image_alt><![CDATA[An image...]]></image_alt>
+</banner>
+</module>
+</page>

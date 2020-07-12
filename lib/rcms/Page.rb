@@ -4,6 +4,7 @@ require_relative './util/Parser'
 require_relative './xml/XMLSmart'
 require_relative './PageModule'
 require_relative './PageMenu'
+require_relative './server/file/FileCMS'
 #require_relative './MenuItem'
 
  class Page
@@ -13,9 +14,16 @@ require_relative './PageMenu'
    #attr_accessor :description
 
     def initialize(*args)
+      @VERSION = -1
+      @xmlDoc = XMLDocumentHash.new
+      #puts "__________------------->>>> Page Init <<<<<<-------------____________"
+      #args.each{ |arg|
+      #  puts "      #{arg.class.name} | #{arg}"
+      #}
+      #puts "__________------------->>>> Page Init END <<<<<<-------------____________"
       beforeInit
       if(args.size == 2)
-        puts "Args : #{args[1].class.name} #{args[1]}"
+
         if(args[1].class.name == "HttpSession")
           initialize_session(args[0], args[1])
         else
@@ -35,6 +43,7 @@ require_relative './PageMenu'
       if(@page.index(@workArea) == nil)
         @page = @workArea.concat(@page)
       end
+      @fcms = FileCMS.new(@SESSION, @page)
       @pagePath = File.absolute_path(@page)
       if File.absolute_path(@pagePath).index(@serverDataPath) == nil
           @serverDataPath = GlobalSettings.changeFilePathToMatchSystem(File.absolute_path(GlobalSettings.getDocumentWorkAreaDirectory()))
@@ -55,9 +64,11 @@ require_relative './PageMenu'
        #throws FileNotFound, FileAccessDenied, IOException
 
         @SESSION = session
+        @VERSION = version
+        @fcms = myPage
         @pageSmart = XMLSmart.new(@SESSION, "<test/>")
-        @pageSmart.setXmlFile(File.absolute_path(myPage.VERSIONED_FILE.getCurrentVersion()), version)
-        parsePage(@pageSmart.getXML, File.absolute_path(myPage.VERSIONED_FILE.getCurrentVersion()))
+        @pageSmart.setXmlFile(File.absolute_path(myPage.VERSIONED_FILE.getCurrentVersion), @VERSION)
+        parsePage(@pageSmart.getXML, File.absolute_path(myPage.VERSIONED_FILE.getCurrentVersion))
     end
 
     def initialize_2(page, pagePath)
@@ -85,10 +96,7 @@ require_relative './PageMenu'
       @mods = Array.new #PageModule
       #private PageMenu menu;
 
-
       @serverDataPath = GlobalSettings.changeFilePathToMatchSystem(@serverDataPath)
-
-
     end
 
 
@@ -104,7 +112,7 @@ require_relative './PageMenu'
         @pageSmart.setXML(page)
         #puts "Set XML: #{@pageSmart.getXML}"
         data = @pageSmart.getNodeElement("page/pageinfo",0,"pagetitle/author/owner/keywords/description")
-        puts "Page Data:::::::#{data}"
+        #puts "Page Data:::::::#{data}"
         @title = data[0]
         @author = data[1]
         @owner = data[2]
@@ -144,8 +152,8 @@ require_relative './PageMenu'
             @description = @DATA_NOT_PROVIDED
         end
 
-        #puts "-------------------------------"
-        @pageSmart.setXmlFile(pagePath)
+        #puts ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Version:: #{@VERSION}"
+        @pageSmart.setXmlFile(pagePath, @VERSION)
         #puts "XML :::::: #{@pageSmart.getXML}"
         @pageSmart.setNode("module")
         #puts "Module Count: #{@pageSmart.getCount}"
@@ -187,6 +195,36 @@ require_relative './PageMenu'
 
     def getModuleCount
         return @modCount
+    end
+
+    def setTitle(ntitle)
+        @title = ntitle
+        xml = @pageSmart.getXML
+        pageInfo = @xmlDoc.getHashForName(xml, "pageinfo")
+        @xmlDoc.replaceValue(pageInfo, "pagetitle", ntitle);
+    end
+
+    def setKeywords(nkeywords)
+        @keywords = nkeywords
+        xml = @pageSmart.getXML
+        pageInfo = @xmlDoc.getHashForName(xml, "pageinfo")
+        @xmlDoc.replaceValue(pageInfo, "keywords", nkeywords);
+    end
+
+    def setDescription(ndescription)
+        @description = ndescription
+        xml = @pageSmart.getXML
+        pageInfo = @xmlDoc.getHashForName(xml, "pageinfo")
+        @xmlDoc.replaceValue(pageInfo, "description", ndescription);
+    end
+
+
+    def saveChanges
+      xml = @xmlDoc.parseHashtableToXML(@pageSmart.getXML, true)
+      myFile = @fcms.getFileForWrite
+      myFile.write( xml )
+      myFile.close
+
     end
 
 end

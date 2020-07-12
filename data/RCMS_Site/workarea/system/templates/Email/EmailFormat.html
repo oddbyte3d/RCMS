@@ -1,0 +1,295 @@
+<html>
+<head>
+<style type="text/css">
+	.main{
+		position: absolute; 
+		top: 0px;
+		left: 10px; 
+		height: 100%; 
+		width: 833px;
+	}
+	.header{
+		position: relative; 
+		top:0px; 
+		left:0px; 
+		height:125px; 
+		width: 833px; 
+		background: url('/system/templates/Email/images/EmailHeader.jpg')
+	}
+	.bodyc{
+		position: relative; 
+		top:0px; 
+		left:0px; 
+		height:80%; 
+		width: 833px; 
+		background: url('/system/templates/Email/images/EmailBackground.jpg') repeat-y
+	}
+	.content{
+		position: relative; 
+		top:10px; 
+		left: 30px;
+		width: 780px;
+		height: 100%;
+		overflow: auto;
+	}
+	.foot{
+		position: relative;
+		top:0px;
+		left:0px;
+		height:19px;
+		width: 833px;
+		background: url('/system/templates/Email/images/EmailFoot.jpg')
+	}
+	.copyright{
+		position: relative;
+		top:0px;
+		left:0px;
+		height:20px;
+		width: 833px;
+		color: white;
+	}
+	.container{
+		margin-top:10px;
+		margin-left:auto;
+		margin-right:auto;
+		width:800px;
+		height:auto;
+	}
+
+	.white_box{
+		float:left;
+		margin-left:auto;
+		margin-right:auto;
+		border-color:#e6e7e7;
+		border-style:solid;
+		border-width:13px;
+		width:795px;
+		height:auto;
+		background-color:#FFFFFF;
+		padding-bottom:8px;
+	}
+
+	.logo{
+		float:left;
+		width: 795px;
+		height: 107px;
+	}
+
+	.navigation{
+		float:left;
+		width: 120px;
+		height: auto;
+		padding-left:10px;
+	}
+
+	.artglass{
+		float:left;
+		background-color:#EFEFEF;
+		margin-top:10px;
+		height:auto;
+		width:640px;
+	}
+	
+	.artglass_text{
+		float:left;
+		margin-top:10px;
+		height:auto;
+		width:640px;
+	}
+	
+	.feature_image{
+		float:left;
+		width:299px;
+		height:382px;
+		border-color:#CCCCCC;
+		border-style:solid;
+		border-width:1px;
+	}
+
+	
+	.left_column{
+		float:left;
+		width:299px;
+		height:auto;
+		border-top-color:#E6E7E7;
+		border-top-width:1px;
+		border-top-style:solid;
+		border-bottom-color:#E6E7E7;
+		border-bottom-width:1px;
+		border-bottom-style:solid;
+	}
+
+	.right_column{
+		float: left;
+		width:299px;
+		height:390px;
+		padding-left:15px;
+	}
+
+	p{
+		float: left;
+		width:336px;
+		height:410px;
+		padding-left:15px;
+	}
+
+	.text{
+		float: left;
+		width:336px;
+		height:410px;
+		padding-left:15px;
+	}
+
+	.thumbnails{
+		float:left;
+		width:636px;
+		height:52px;
+		margin-left:130px;
+	}
+
+	.popup_h{
+		margin-left:10px;
+		margin-top:10px;
+		width:585px;
+		height:392px;
+		background-color:#FFFFFF;
+	}
+
+	.popup_v{
+		margin-left:10px;
+		margin-top:10px;
+		width:309px;
+		height:392px;
+		background-color:#FFFFFF;
+	}
+
+	.popup_splash{
+		margin-left:10px;
+		margin-top:10px;
+		width:601px;
+		height:286px;
+		background-color:#FFFFFF;
+	}
+
+	.popup_artglass_h{
+		margin-left:10px;
+		margin-top:10px;
+		width:585px;
+		height:392px;
+		background-color:#FFFFFF;
+	}
+
+	.popup_artglass_v{
+		margin-left:10px;
+		margin-top:10px;
+		width:309px;
+		height:458px;
+		background-color:#FFFFFF;
+	}
+
+	.footer{
+		float:left;
+		width:770px;
+		height:20px;
+		padding-top:10px;
+		padding-right:25px;
+	}
+
+	.copyright{
+		width:810px;
+		height:20px;
+		background-color:#222222;
+	}
+
+	body {
+		margin: 0;
+		font-family:century gothic, arial;
+		font-size:10px;
+		color:#666666;
+	    text-decoration:none;
+		line-height:17px;
+		background-color:#222222;
+	}
+
+	h2 {
+		margin: 0;
+		font-family:century gothic, arial;
+		font-size:10px;
+		font-weight:lighter;
+		color:#FFFFFF;
+	    text-decoration:none;
+		line-height:17px;
+	}
+
+	h3 {
+		margin: 0;
+		font-family:century gothic, arial;
+		font-size:10px;
+		font-weight:lighter;
+		color:#111111;
+	    text-decoration:none;
+		line-height:17px;
+	}
+
+	/***************** LINKS BEGIN ***********************/
+
+	a { 
+		text-decoration:none }
+
+	a:link {
+		text-decoration: none;
+		font-family:century gothic, arial;
+		font-size: 10px;
+		font-style: normal;
+		line-height: 17px;
+		color: #08475E;
+	}
+
+	a:visited {
+		text-decoration: none;
+		font-family: century gothic, arial;
+		font-size: 10px;
+		font-style: normal;
+		line-height: 17px;
+		color: #08475E;
+	}
+
+	a:active {
+		text-decoration: none;
+		font-family:century gothic, arial;
+		font-size: 10px;
+		font-style: normal;
+		line-height: 17px;
+		color: #08475E;
+	}
+
+	a:hover {
+		text-decoration: none;
+		font-family:century gothic, arial;
+		font-size: 10px;
+		font-style: normal;
+		line-height: 17px;
+		color: #999999;
+	}
+	/************ LINKS END*******************************/
+</style>
+</head>
+<body>
+	<div class="main">
+		<div class="header"></div>
+		<div class="bodyc">
+			<div class="content">
+			*CONTENT*
+			</div>
+		</div>
+		<div class="foot"'>
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;To unsubscribe from this list, <a href="*UNSUBSCRIBE*">use this link</a>
+		</div>
+		<div class="copyright">
+			<div align="right" style='color:white;'>*COPYRIGHT* Powered by <a style='color:white;' href="http://www.cuppait.com">CuppaWEBv*CUPPAWEB_VERSION*</a></div>
+		</div>
+	</div>
+	
+
+</body>
+</html>

@@ -810,6 +810,7 @@ class XMLDocumentHash
 
     def replaceValue(xml, nodeName, toReplaceWith)
 
+        puts "\n\n--_________-----------______________________\n#{xml}"
         if( xml["nodeName"] == nodeName )
             xml["nodeValue"] = toReplaceWith
         end
@@ -819,34 +820,38 @@ class XMLDocumentHash
         for j in 0..size
 
             values = xml[j]
-            if(values["nodeName"] == nodeName)
+            if values != nil
+              if values["nodeName"] == nodeName
 
-            #    if(values.get("0") == null)
-            #    {
-	          #     System.out.println("Adding val");
-            #        Hashtable childMe = new Hashtable();     //Create a new Hashtable this represents the Node
-            #        childMe.put("nodeName","#text");    //This is the Node Name ie(<nodeName></nodeName>)
-            #        childMe.put("nodeValue",toReplaceWith);  //This is the Node Value ie(<nodeName>NodeValue</nodeName>)
-            #        childMe.put("nodeAttributes",new Hashtable());    //These are the Node attributesie(<nodeName nodeAttribute="value"></nodeName>)
-            #        childMe.put("childCount",new Integer(""+0));      //Amount of children Nodes
-            #
-            #        this.addNodeAtPos(values, childMe,nodeName);
-            #    }
-            #    else
-            #    {
-	          #   System.out.println("Replacing val");
-            #        Hashtable hmValue = (Hashtable)values.get("0");
-            #        hmValue.put("nodeValue",toReplaceWith);
-            #    }
-                values["nodeValue"] = toReplaceWith
+              #    if(values.get("0") == null)
+              #    {
+  	          #     System.out.println("Adding val");
+              #        Hashtable childMe = new Hashtable();     //Create a new Hashtable this represents the Node
+              #        childMe.put("nodeName","#text");    //This is the Node Name ie(<nodeName></nodeName>)
+              #        childMe.put("nodeValue",toReplaceWith);  //This is the Node Value ie(<nodeName>NodeValue</nodeName>)
+              #        childMe.put("nodeAttributes",new Hashtable());    //These are the Node attributesie(<nodeName nodeAttribute="value"></nodeName>)
+              #        childMe.put("childCount",new Integer(""+0));      //Amount of children Nodes
+              #
+              #        this.addNodeAtPos(values, childMe,nodeName);
+              #    }
+              #    else
+              #    {
+  	          #   System.out.println("Replacing val");
+              #        Hashtable hmValue = (Hashtable)values.get("0");
+              #        hmValue.put("nodeValue",toReplaceWith);
+              #    }
+                  values["nodeValue"] = toReplaceWith
 
-            else
+              else
 
-                count = values["childCount"].to_i
-                for k in 0..count
-
-                    replaceValue(values[k],nodeName,toReplaceWith)
-                end
+                  count = values["childCount"].to_i
+                  puts "Count is #{count}"
+                  if count > 0
+                    for k in 0..count
+                        replaceValue(values[k],nodeName,toReplaceWith)
+                    end
+                  end
+              end
             end
         end
     end
@@ -1106,7 +1111,7 @@ class XMLDocumentHash
  # @return
 
   def searchForValueStartingAt(xml, toStartAt, nodeName, index)
-      count = 0;
+      count = 0
       size = xml.children.size #((Integer)rolle.get("childCount")).intValue();
       for j in 0..size do
         value = xml.children[j]

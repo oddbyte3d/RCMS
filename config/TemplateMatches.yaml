@@ -2,3 +2,5 @@ default: coachcast
 .xml: coachcast
 .json: json
 .admin: dashboard
+.fcm: fcm
+.ob3d: oddbyte3d

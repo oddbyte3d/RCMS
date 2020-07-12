@@ -194,12 +194,12 @@ class Template
                 input = Parser.replaceAll(input, "*USER_NAME*", "Guest")
             end
             if(input.index("*USER_EMAIL*") != nil)
-                input = Parser.replaceAll(input, "*USER_EMAIL*", "");
+                input = Parser.replaceAll(input, "*USER_EMAIL*", "")
             end
             while(input.index("*USER_FIELD:") != nil)
                 beg = input.index("*USER_FIELD:")
                 bend = input.index(":*", beg+11)+1
-                replace = input.substring(beg, bend);
+                replace = input.substring(beg, bend)
                 field = input[beg+11, bend-1]
                 #puts "Template 177 replace :#{replace}: field :#{field}:"
 

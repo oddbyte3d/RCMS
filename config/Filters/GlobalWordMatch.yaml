@@ -10,3 +10,17 @@ rcms_iv: global;RCMS-Incremental-Version
 user_fname: user;fname
 user_lname: user;lname
 user_email: user;email
+border_size: 3px
+border_style: solid
+border_color: "#222D25"
+border_radius: 3px
+
+#---Set a Global font just change the last line-------------------------
+font_family: justafontname
+font_1_woff2: /system/templates/oddbyte3d/webfonts/justafont.woff2
+font_1_woff: /system/templates/oddbyte3d/webfonts/justafont.woff
+_logo_: /system/templates/oddbyte3d/images/Oddbyte3d.png
+justafont2: mail_ray_stuff-webfont
+justafont: walibi-holland-webfont
+#-----------------------------------------------------------------------
+admin_supported_files: xml,form,block,menu,jpg,png,gif,jpeg

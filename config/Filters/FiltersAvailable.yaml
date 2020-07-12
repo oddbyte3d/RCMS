@@ -1,1 +1,2 @@
 1: ./filters/GlobalWordMatch
+2: ./filters/FileSpecific

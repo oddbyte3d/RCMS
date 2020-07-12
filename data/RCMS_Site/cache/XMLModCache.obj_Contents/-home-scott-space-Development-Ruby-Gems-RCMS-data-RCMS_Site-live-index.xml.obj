@@ -1,0 +1,570 @@
+--- !ruby/object:RepositoryObject
+REPOSITORY_OBJ:
+  nodeName: page
+  nodeValue: ''
+  nodeAttributes: {}
+  0:
+    nodeName: pageinfo
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: cache_page
+      nodeValue: 'false'
+      nodeAttributes: {}
+      childCount: 0
+    1:
+      nodeName: pagetitle
+      nodeValue: RCMS v0.0.1
+      nodeAttributes: {}
+      childCount: 0
+    2:
+      nodeName: author
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    3:
+      nodeName: owner
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    4:
+      nodeName: keywords
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    5:
+      nodeName: description
+      nodeValue: ''
+      nodeAttributes: {}
+      childCount: 0
+    childCount: 6
+  1:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: pagetitle
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '0'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Header module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: align
+        nodeValue: center
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: printtext
+        nodeValue: Test title Hello
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 5
+    childCount: 1
+  2:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: text
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '1'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Paragraph module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: bold
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: italic
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: underlined
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: textcolor
+        nodeValue: "#000000"
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: textsize
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: textalignment
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: printtext
+        nodeValue: Congratulations, your RCMS instance is working! Some changes to
+          see it work....<br>
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 10
+    childCount: 1
+  3:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: list
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '2'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: List module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: position
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: elements
+        nodeValue: "\n\n    "
+        nodeAttributes: {}
+        0:
+          nodeName: element
+          nodeValue: Cool Element 1
+          nodeAttributes: {}
+          childCount: 0
+        1:
+          nodeName: element
+          nodeValue: Element 2
+          nodeAttributes: {}
+          childCount: 0
+        2:
+          nodeName: element
+          nodeValue: Element 3
+          nodeAttributes: {}
+          childCount: 0
+        3:
+          nodeName: element
+          nodeValue: test 4<br>
+          nodeAttributes: {}
+          childCount: 0
+        childCount: 4
+      4:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 5
+    childCount: 1
+  4:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: text
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '3'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Paragraph module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: bold
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: italic
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: underlined
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: textcolor
+        nodeValue: "#000000"
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: textsize
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: textalignment
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: printtext
+        nodeValue: Just some more text....
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 10
+    childCount: 1
+  5:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: rcmsimage
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '4'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Rcmsimage module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: path
+        nodeValue: "/images/mushrooms.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: rounded
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: position
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: title
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: alt_attribute
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: border
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: popup_picture
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: popup_alt_attribute
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      10:
+        nodeName: popup_title
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      11:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      12:
+        nodeName: link_target
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      13:
+        nodeName: link_url
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 14
+    childCount: 1
+  6:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: pagetitle
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '5'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Header module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: align
+        nodeValue: center
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: printtext
+        nodeValue: Hello another title
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 5
+    childCount: 1
+  7:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: text
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '6'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Paragraph module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: bold
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: italic
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: underlined
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: textcolor
+        nodeValue: "#000000"
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: textsize
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: textalignment
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: printtext
+        nodeValue: And some more text... Ok so this is going to work!!!!!
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 10
+    childCount: 1
+  8:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: text
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '7'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Paragraph module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: bold
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: italic
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: underlined
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: textcolor
+        nodeValue: "#000000"
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: textsize
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: textalignment
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: printtext
+        nodeValue: Hello more tests
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 10
+    childCount: 1
+  9:
+    nodeName: module
+    nodeValue: ''
+    nodeAttributes: {}
+    0:
+      nodeName: rcmsimage
+      nodeValue: "\n  "
+      nodeAttributes: {}
+      0:
+        nodeName: id
+        nodeValue: '8'
+        nodeAttributes: {}
+        childCount: 0
+      1:
+        nodeName: descriptive_name
+        nodeValue: Rcmsimage module
+        nodeAttributes: {}
+        childCount: 0
+      2:
+        nodeName: path
+        nodeValue: "/images/cedric-letsch-ttJ-qnuboak-unsplash.jpg"
+        nodeAttributes: {}
+        childCount: 0
+      3:
+        nodeName: rounded
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      4:
+        nodeName: position
+        nodeValue: left
+        nodeAttributes: {}
+        childCount: 0
+      5:
+        nodeName: title
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      6:
+        nodeName: alt_attribute
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      7:
+        nodeName: border
+        nodeValue: 'false'
+        nodeAttributes: {}
+        childCount: 0
+      8:
+        nodeName: popup_picture
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      9:
+        nodeName: popup_alt_attribute
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      10:
+        nodeName: popup_title
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      11:
+        nodeName: visible
+        nodeValue: 'true'
+        nodeAttributes: {}
+        childCount: 0
+      12:
+        nodeName: link_target
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      13:
+        nodeName: link_url
+        nodeValue: ''
+        nodeAttributes: {}
+        childCount: 0
+      childCount: 14
+    childCount: 1
+  childCount: 10
+CLASS_NAME: Hash
+CREATION_DATE: 2020-03-09
+IS_MEMORY_CACHED: true

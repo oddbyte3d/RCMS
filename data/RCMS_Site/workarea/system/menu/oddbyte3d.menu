@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page><pageinfo><cache_page><![CDATA[false]]></cache_page>
+<pagetitle><![CDATA[Menu]]></pagetitle>
+<author><![CDATA[Scott, Taylor]]></author>
+<owner></owner>
+<keywords></keywords>
+<description></description>
+<page-menu>
+	<menu-entry>
+		<menu-link><![CDATA[/index.ob3d]]></menu-link>
+		<menu-link-target><![CDATA[_self]]></menu-link-target>
+		<menu-text><![CDATA[Home]]></menu-text>
+		<menu-image><![CDATA[]]></menu-image>
+	</menu-entry>
+	<menu-entry>
+		<menu-link><![CDATA[/Contact.ob3d]]></menu-link>
+		<menu-link-target><![CDATA[_self]]></menu-link-target>
+		<menu-text><![CDATA[Contact]]></menu-text>
+		<menu-image><![CDATA[]]></menu-image>
+	</menu-entry>
+</page-menu>
+</pageinfo>
+</page>

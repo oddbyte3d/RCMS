@@ -49,7 +49,7 @@ class JSONListFiles
         title = Page.new(nfile, -1, @session, nfile.getFileURL).title
       end
 
-      json.concat("\"#{nurl}\": \"#{title}\"")
+      json.concat("\"#{nurl}\": \"#{nfile.getFileName}(#{title})\"")
       json.concat(",") if at < accessable.size
     }
 
